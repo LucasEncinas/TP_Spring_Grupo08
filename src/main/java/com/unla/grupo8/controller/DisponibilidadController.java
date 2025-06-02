@@ -2,6 +2,7 @@ package com.unla.grupo8.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class DisponibilidadController {
         this.disponibilidadService = disponibilidadService;
     }
     
+    @GetMapping("/dia/{dia}")
     public List<Disponibilidad> obtenerDisponibilidadesPorDia(@PathVariable Dia dia) {
         return disponibilidadService.obtenerDisponibilidadesPorDia(dia);
     }

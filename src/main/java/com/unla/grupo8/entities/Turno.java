@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -20,11 +18,8 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="paciente", unique=true, nullable=false, length=45)
-    private String paciente;
-
-    @CreationTimestamp
-    private LocalDateTime fechaHora;
+    @Column(name="hora", unique=true, nullable=false, length=45)
+    private LocalTime hora;
     
     @Column(name="estado", nullable=false)
     private String estado; // Ej: "pendiente", "confirmado", "cancelado"
@@ -40,9 +35,8 @@ public class Turno {
     private Empleado empleado;
     
     // Constructor con parámetros
-    public Turno(String paciente, LocalDateTime fechaHora, String estado) {
-        this.paciente = paciente;
-        this.fechaHora = fechaHora;
+    public Turno(LocalTime hora, String estado) {
+        this.hora = hora;
         this.estado = estado;
     }
 

@@ -20,7 +20,7 @@ public class SucursalController {
         this.sucursalService = sucursalService;
     }
     
-    @GetMapping("/sucursales")
+    @GetMapping("/sucursales/{nombre}")
     public List<Sucursal> obtenerSucursalPorNombre(@PathVariable String nombre) {
         return sucursalService.obtenerSucursalPorNombre(nombre);
     }

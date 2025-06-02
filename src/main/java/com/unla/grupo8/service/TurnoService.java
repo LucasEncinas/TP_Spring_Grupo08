@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.repositories.TurnoRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -17,12 +17,8 @@ public class TurnoService {
         this.turnoRepository = turnoRepository;
     }
 
-    public List<Turno> obtenerTurnosPorPaciente(String paciente) {
-        return turnoRepository.findByPaciente(paciente);
-    }
-
-    public List<Turno> obtenerTurnosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
-        return turnoRepository.findByFechaHoraBetween(inicio, fin);
+    public List<Turno> obtenerTurnosPorHora(LocalTime hora) {
+        return turnoRepository.findByHora(hora);
     }
 
     public List<Turno> obtenerTurnosPorEstado(String estado) {

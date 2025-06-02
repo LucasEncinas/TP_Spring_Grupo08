@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.service.TurnoService;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -19,19 +19,13 @@ public class TurnoController {
     }
 
     @GetMapping("/paciente/{nombre}")
-    public List<Turno> obtenerTurnosPorPaciente(@PathVariable String nombre) {
-        return turnoService.obtenerTurnosPorPaciente(nombre);
+    public List<Turno> obtenerTurnosPorHora(@PathVariable LocalTime hora) {
+        return turnoService.obtenerTurnosPorHora(hora);
     }
-   
-
 
     @GetMapping("/estado/{estado}")
     public List<Turno> obtenerTurnosPorEstado(@PathVariable String estado) {
         return turnoService.obtenerTurnosPorEstado(estado);
     }
 
-    @GetMapping("/entre-fechas")
-    public List<Turno> obtenerTurnosEntreFechas(@RequestParam LocalDateTime inicio, @RequestParam LocalDateTime fin) {
-        return turnoService.obtenerTurnosEntreFechas(inicio, fin);
-    }
 }
