@@ -22,6 +22,8 @@ public class TurnoController {
     public List<Turno> obtenerTurnosPorPaciente(@PathVariable String nombre) {
         return turnoService.obtenerTurnosPorPaciente(nombre);
     }
+   
+
 
     @GetMapping("/estado/{estado}")
     public List<Turno> obtenerTurnosPorEstado(@PathVariable String estado) {

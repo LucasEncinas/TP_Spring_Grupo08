@@ -21,7 +21,7 @@ public class ContactoController {
         this.contactoService = contactoService;
     }
 
-    @GetMapping("/contacto/{nombre}")
+    @GetMapping("/contacto/{direccion}")
     public List<Contacto> obtenerContactoPorDireccion(@PathVariable String direccion) {
         return contactoService.obtenerContactoPorDireccion(direccion);
     }

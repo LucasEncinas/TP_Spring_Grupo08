@@ -29,7 +29,16 @@ public class Turno {
     @Column(name="estado", nullable=false)
     private String estado; // Ej: "pendiente", "confirmado", "cancelado"
 
+    //relacion con cliente
+     @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
+    //relacion con empleado
+    @ManyToOne
+    @JoinColumn(name = "empleado_id")
+    private Empleado empleado;
+    
     // Constructor con parámetros
     public Turno(String paciente, LocalDateTime fechaHora, String estado) {
         this.paciente = paciente;

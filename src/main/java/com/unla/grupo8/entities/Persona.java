@@ -9,11 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "persona")
-public class Persona {
 
+@Table(name = "persona")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Persona {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Usa AUTO en lugar de IDENTITY
     private Long id;
 
     @Column(name="nombre", nullable=false, length=45)
