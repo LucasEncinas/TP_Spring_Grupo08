@@ -1,5 +1,6 @@
 package com.unla.grupo8.entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,16 @@ public class Cliente extends Persona {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     //private Long idCliente;
 
+    @Column(name = "nroCliente", unique = true, nullable = false)
+    private String nroCliente;
 
     @OneToMany(mappedBy = "cliente")
     private List<Turno> turnos = new ArrayList<>();
 
-     
     // Constructor que hereda de Persona
-    public Cliente(String nombre, String apellido, String dni, Contacto contacto) {
-        super(nombre, apellido, dni, contacto);
+    public Cliente(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto, String nroCliente) {
+        super(nombre, apellido, dni, fechaNacimiento, contacto);
+        this.nroCliente = nroCliente;
     }
     
 }

@@ -1,5 +1,6 @@
 package com.unla.grupo8.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     List<Persona> findByApellido(String apellido);
 
     List<Persona> findByDni(String dni);
+
+    List<Persona> findByFechaNacimiento(LocalDate fechaNacimiento);
 
 }

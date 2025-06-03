@@ -1,7 +1,9 @@
 package com.unla.grupo8.entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,9 +30,17 @@ public class Empleado extends Persona {
     @OneToMany(mappedBy = "empleado")
     private List<Turno> turnos = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
+   @ManyToMany(mappedBy = "empleados")
+   private Set<Servicio> servicios;
+
+
     //CONSTRUCTOR que hereda de Persona
-    public Empleado(String nombre, String apellido, String dni, Contacto contacto, String legajo) {
-        super(nombre, apellido, dni, contacto);
+    public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto, String legajo) {
+        super(nombre, apellido, dni, fechaNacimiento, contacto);
         this.legajo = legajo;
     }
     

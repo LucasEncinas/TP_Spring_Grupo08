@@ -21,6 +21,10 @@ public class Dia {
     @Column(name = "fecha", unique = true, nullable = false)
     private LocalDate fecha;
 
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
     public Dia(LocalDate fecha) {
         this.fecha = fecha;
     }

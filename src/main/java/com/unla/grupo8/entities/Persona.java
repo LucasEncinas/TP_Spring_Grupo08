@@ -1,5 +1,7 @@
 package com.unla.grupo8.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +28,19 @@ public class Persona {
     @Column(name="dni", unique=true, nullable=false, length=15)
     private String dni;
 
+    @Column(name="fecha_nacimiento", unique = true, nullable=false)
+    private LocalDate fechaNacimiento;
+
     @OneToOne
     @JoinColumn(name = "contacto_id")
     private Contacto contacto;
 
     // Constructor con referencia a Contacto
-    public Persona(String nombre, String apellido, String dni, Contacto contacto) {
+    public Persona(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
+        this.fechaNacimiento = fechaNacimiento;
         this.contacto = contacto;
     }
 }

@@ -25,7 +25,7 @@ public class Turno {
     private String estado; // Ej: "pendiente", "confirmado", "cancelado"
 
     //relacion con cliente
-     @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
@@ -33,6 +33,18 @@ public class Turno {
     @ManyToOne
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
+
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
+    @ManyToOne
+    @JoinColumn(name = "dia_id")
+    private Dia dia;
+
+    @ManyToOne
+    @JoinColumn(name = "servicio_id")
+    private Servicio servicio;
     
     // Constructor con parámetros
     public Turno(LocalTime hora, String estado) {

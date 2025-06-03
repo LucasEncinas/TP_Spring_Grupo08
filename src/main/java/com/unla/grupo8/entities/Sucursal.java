@@ -1,5 +1,7 @@
 package com.unla.grupo8.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,15 @@ public class Sucursal {
     @Column(name="mail", unique=true, nullable=false, length=45)
     private String mail;
 
-    
+    @OneToMany(mappedBy = "sucursal")
+    private List<Empleado> empleados;
+
+    @OneToMany(mappedBy = "sucursal")
+    private List<Turno> turnos;
+
+    @OneToMany(mappedBy = "sucursal")
+    private List<Servicio> servicios;
+
     public Sucursal(String nombre, String direccion, String telefono, String mail) {
         this.nombre = nombre;
         this.direccion = direccion;

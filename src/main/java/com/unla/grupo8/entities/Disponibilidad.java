@@ -37,4 +37,8 @@ public class Disponibilidad {
     @Enumerated(EnumType.STRING)
     @Column(name = "dia", unique = false, nullable = false)
     private Dia dia; // Día de la semana (Lunes, Martes, etc.)
+
+    @ManyToOne
+    @JoinColumn(name = "servicio_id")
+    private Servicio servicio;
 }
