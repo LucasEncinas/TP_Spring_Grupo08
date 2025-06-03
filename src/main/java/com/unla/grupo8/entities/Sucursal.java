@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Sucursal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idSucursal;
 
     @Column(name="nombre", unique=true, nullable=false, length=45)
     private String nombre;

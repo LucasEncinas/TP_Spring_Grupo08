@@ -15,14 +15,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "empleado")
-@PrimaryKeyJoinColumn(name = "id")
+
+@PrimaryKeyJoinColumn(name = "idEmpleado")
 
 public class Empleado extends Persona {
-   // @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long idEmpleado;
+   
 
-    
     @Column(name = "Nro_legajo", unique = true, nullable = false, length = 15)
     private String legajo;
 

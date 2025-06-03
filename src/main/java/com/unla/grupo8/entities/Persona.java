@@ -16,8 +16,9 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Persona {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Usa AUTO en lugar de IDENTITY
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPersona")
+    private Long idPersona;
 
     @Column(name="nombre", nullable=false, length=45)
     private String nombre;
