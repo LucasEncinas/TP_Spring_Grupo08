@@ -36,7 +36,7 @@ public class EmpleadoController {
 
     @GetMapping("/index")
     public String verTurnos(Model model) {
-        List<Turno> turnos = turnoService.obtenerTurnosConfirmados(); // Obtener desde BD
+        List<Turno> turnos = turnoService.obtenerTodos(); // Obtener desde BD
         model.addAttribute("turnos", turnos);
         return "empleado/index";
     }

@@ -34,6 +34,10 @@ public class TurnoService {
         turnoRepository.save(turno);
     }
 
+    public List<Turno> obtenerTodos() {
+        return turnoRepository.findAll();
+    }
+
     public List<Turno> obtenerTurnosConfirmados() {
         return turnoRepository.findByEstado("confirmado"); // Filtra solo los asignados
     }
