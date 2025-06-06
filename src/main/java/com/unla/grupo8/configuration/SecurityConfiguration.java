@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 import com.unla.grupo8.service.implementation.ClienteService;
 
 @Configuration
@@ -30,9 +29,10 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler successHandler) throws Exception {
-		 System.out.println(" SecurityFilterChain inicializado con successHandler");
-	return http
+	SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler successHandler)
+			throws Exception {
+		System.out.println(" SecurityFilterChain inicializado con successHandler");
+		return http
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
@@ -40,7 +40,7 @@ SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationS
 							"/vendor/jquery/*", "/vendor/bootstrap/js/*", "/api/v1/**").permitAll();
 					auth.anyRequest().authenticated();
 				})
-				.formLogin(login ->  {
+				.formLogin(login -> {
 					login.loginPage("/login");
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
@@ -58,20 +58,21 @@ SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationS
 	}
 
 	// @Bean
-	// AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-	// 	return authenticationConfiguration.getAuthenticationManager();
+	// AuthenticationManager authenticationManager(AuthenticationConfiguration
+	// authenticationConfiguration) throws Exception {
+	// return authenticationConfiguration.getAuthenticationManager();
 	// }
 
 	// @Bean
 	// AuthenticationProvider authenticationProvider(){
-	// 	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	// 	provider.setPasswordEncoder(passwordEncoder());
-	// 	provider.setUserDetailsService(userService);
-	// 	return provider;
+	// DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+	// provider.setPasswordEncoder(passwordEncoder());
+	// provider.setUserDetailsService(userService);
+	// return provider;
 	// }
 
 	// @Bean
 	// PasswordEncoder passwordEncoder(){
-	// 	return new BCryptPasswordEncoder();
+	// return new BCryptPasswordEncoder();
 	// }
 }

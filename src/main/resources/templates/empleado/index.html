@@ -7,10 +7,32 @@
 </head>
 <body>
     <div class="container">
-        <h1>Turnos a Atender</h1>
-        <div th:each="turno : ${turnos}">
-            <p th:text="'Fecha: ' + ${turno.fecha}"></p>
-        </div>
+        <h1>Turnos Asignados</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Empleado</th>
+                    <th>Sucursal</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="turno : ${turnos}">
+                    <td th:text="${turno.hora}"></td>
+                    <td th:text="${turno.cliente.nombre}"></td>
+                    <td th:text="${turno.servicio.nombre}"></td>
+                    <td th:text="${turno.empleado.nombre}"></td>
+                    <td th:text="${turno.sucursal.nombre}"></td>
+                    <td th:text="${turno.estado}"></td>
+                    <td>
+                        <a th:href="@{/empleado/turnos/{id}(id=${turno.idTurno})}" class="btn btn-primary">Modificar</a>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

@@ -90,7 +90,7 @@ public class TurnoController {
         turnoService.guardar(turno);
         System.out.println("Guardando turno: " + turno);
 
-        return "test";//"redirect:/turnos/listar"; // Redirigir después de guardar
+        return "redirect:/empleado/index"; // Redirigir después de guardar
     }
 
 }

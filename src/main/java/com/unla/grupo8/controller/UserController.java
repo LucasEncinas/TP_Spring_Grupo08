@@ -13,8 +13,8 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String login(Model model,
-						@RequestParam(name="error",required=false) String error,
-						@RequestParam(name="logout", required=false) String logout) {
+			@RequestParam(name = "error", required = false) String error,
+			@RequestParam(name = "logout", required = false) String logout) {
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
 		return ViewRouteHelper.USER_LOGIN;
@@ -30,14 +30,13 @@ public class UserController {
 		return "redirect:/index";
 	}
 
-
-	//@GetMapping("/loginprocess")
-      public String login(@RequestParam String username, @RequestParam String password, @RequestParam String userType) {
-     if (userType.equals("cliente")) {
-        return "redirect:/cliente";
-     } else {
-        return "redirect:/empleado";
-     }
-}
+	// @GetMapping("/loginprocess")
+	public String login(@RequestParam String username, @RequestParam String password, @RequestParam String userType) {
+		if (userType.equals("cliente")) {
+			return "redirect:/cliente";
+		} else {
+			return "redirect:/empleado";
+		}
+	}
 
 }

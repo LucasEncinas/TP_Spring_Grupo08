@@ -29,9 +29,13 @@ public class TurnoService {
 
     public void guardar(Turno turno) {
         if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
-            turno.setEstado("pendiente"); // Valor por defecto si no se envía desde el formulario
+            turno.setEstado("confirmado"); // Valor por defecto si no se envía desde el formulario
         }
-
         turnoRepository.save(turno);
     }
+
+    public List<Turno> obtenerTurnosConfirmados() {
+        return turnoRepository.findByEstado("confirmado"); // Filtra solo los asignados
+    }
+
 }
