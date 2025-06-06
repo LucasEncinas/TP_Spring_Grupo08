@@ -16,5 +16,19 @@ spring:
 
   security:
     user:
-      name: admin
-      password: admin
+      name: ${MAIL_USERNAME}
+      password: grupo8
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}  # Contraseña o clave de aplicación
+    protocol: smtp
+    tls: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: true
+

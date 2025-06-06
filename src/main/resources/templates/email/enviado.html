@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Correo Enviado</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 40px;">
+    <div
+        style="background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; text-align: center;">
+        <h2 style="color: #4CAF50;">¡Correo enviado exitosamente!</h2>
+        <p>Tu mensaje fue enviado a <strong th:text="${emailDestino}">destinatario@example.com</strong>.</p>
+        <p>Revisá tu bandeja de entrada para confirmar que lo recibiste.</p>
+        <a href="cliente/index"
+            style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Volver
+            al inicio</a>
+    </div>
+</body>
+
+</html>

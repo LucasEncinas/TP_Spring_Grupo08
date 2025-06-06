@@ -46,6 +46,7 @@ SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationS
 					login.usernameParameter("username");
 					login.passwordParameter("password");
 					login.defaultSuccessUrl("/index", true);
+					login.successHandler(successHandler);
 					login.permitAll();
 				})
 				.logout(logout -> {
