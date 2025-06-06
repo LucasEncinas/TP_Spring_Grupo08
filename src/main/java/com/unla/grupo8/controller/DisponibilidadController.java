@@ -2,16 +2,16 @@ package com.unla.grupo8.controller;
 
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.unla.grupo8.entities.Disponibilidad;
 import com.unla.grupo8.entities.Disponibilidad.Dia;
-import com.unla.grupo8.service.DisponibilidadService;
+import com.unla.grupo8.service.implementation.DisponibilidadService;
 
-@RestController
+@Controller
 @RequestMapping("/disponibilidades")
 public class DisponibilidadController {
 

@@ -1,16 +1,17 @@
 package com.unla.grupo8.controller;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.unla.grupo8.entities.Cliente;
 
-import com.unla.grupo8.service.ClienteService;
+import com.unla.grupo8.service.implementation.ClienteService;
 
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/clientes")
 public class ClienteController {
 

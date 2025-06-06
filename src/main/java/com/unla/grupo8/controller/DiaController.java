@@ -3,15 +3,15 @@ package com.unla.grupo8.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.unla.grupo8.entities.Dia;
-import com.unla.grupo8.service.DiaService;
+import com.unla.grupo8.service.implementation.DiaService;
 
-@RestController
+@Controller
 @RequestMapping("/dias")
 public class DiaController {
 

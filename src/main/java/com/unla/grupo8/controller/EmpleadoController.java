@@ -1,15 +1,16 @@
 package com.unla.grupo8.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.unla.grupo8.entities.Empleado;
-import com.unla.grupo8.service.EmpleadoService;
+import com.unla.grupo8.service.implementation.EmpleadoService;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/empleados")
 public class EmpleadoController {
 

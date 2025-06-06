@@ -1,4 +1,4 @@
-package com.unla.grupo8.service;
+package com.unla.grupo8.service.implementation;
 import org.springframework.stereotype.Service;
 import com.unla.grupo8.entities.Contacto;
 import com.unla.grupo8.repositories.ContactoRepository;
