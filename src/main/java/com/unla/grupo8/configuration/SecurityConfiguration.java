@@ -43,7 +43,7 @@ public class SecurityConfiguration {
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.defaultSuccessUrl("/loginprocess");
+					login.defaultSuccessUrl("/index", true);
 					login.permitAll();
 				})
 				.logout(logout -> {
