@@ -1,28 +1,22 @@
 package com.unla.grupo8.controller;
 
-<<<<<<< HEAD
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-=======
-import org.springframework.stereotype.Controller;
->>>>>>> cbaa2ba22cd0e9b7db2641b72b52109704d0e63a
 import org.springframework.web.bind.annotation.*;
 
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
-import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
-<<<<<<< HEAD
+
 import com.unla.grupo8.repositories.ServicioRepository;
-import com.unla.grupo8.service.ClienteService;
-import com.unla.grupo8.service.EmpleadoService;
-import com.unla.grupo8.service.ServicioService;
-import com.unla.grupo8.service.TurnoService;
-=======
+import com.unla.grupo8.service.implementation.ClienteService;
+import com.unla.grupo8.service.implementation.EmpleadoService;
+import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.TurnoService;
->>>>>>> cbaa2ba22cd0e9b7db2641b72b52109704d0e63a
+
 
 import java.time.LocalTime;
 import java.util.List;
