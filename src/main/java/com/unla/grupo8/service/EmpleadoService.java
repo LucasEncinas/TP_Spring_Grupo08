@@ -28,4 +28,8 @@ public class EmpleadoService {
         return empleadoRepository.findAll();
     }
 
+    public List<Empleado> obtenerTodos() {
+        return empleadoRepository.findAll();
+    }
+
 }

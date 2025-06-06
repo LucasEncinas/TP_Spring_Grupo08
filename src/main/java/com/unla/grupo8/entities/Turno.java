@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -19,7 +20,7 @@ public class Turno {
     private Long idTurno;
 
     @Column(name="hora", unique=true, nullable=false, length=45)
-    private LocalTime hora;
+    private LocalDateTime hora;
     
     @Column(name="estado", nullable=false)
     private String estado; // Ej: "pendiente", "confirmado", "cancelado"
@@ -47,9 +48,21 @@ public class Turno {
     private Servicio servicio;
     
     // Constructor con parámetros
-    public Turno(LocalTime hora, String estado) {
+    public Turno(LocalDateTime hora, String estado) {
         this.hora = hora;
         this.estado = estado;
     }
 
+    public String toString() {
+        return "Turno{" +
+                "idTurno=" + idTurno +
+                ", hora=" + hora +
+                ", estado='" + estado + '\'' +
+                ", cliente=" + (cliente != null ? cliente.getIdPersona() : null) +
+                ", empleado=" + (empleado != null ? empleado.getIdPersona() : null) +
+                ", sucursal=" + (sucursal != null ? sucursal.getIdSucursal() : null) +
+                ", dia=" + (dia != null ? dia.getIdDia() : null) +
+                ", servicio=" + (servicio != null ? servicio.getIdServicio() : null) +
+                '}';
+    }
 }

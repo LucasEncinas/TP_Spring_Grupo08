@@ -17,5 +17,8 @@ public class ServicioService {
     public List<Servicio> obtenerServiciosPorNombre(String nombre) {
         return servicioRepository.findByNombre(nombre);
     }
+    public List<Servicio> obtenerTodos() {
+        return servicioRepository.findAll();
+    }
     
 }

@@ -41,6 +41,11 @@ public class Empleado extends Persona {
         super(nombre, apellido, dni, fechaNacimiento, contacto);
         this.legajo = legajo;
     }
+
+
+    public String getIdEmpleado() {
+        return getIdEmpleado();
+    }
     
   
 

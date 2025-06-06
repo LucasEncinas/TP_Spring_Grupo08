@@ -28,5 +28,9 @@ public class Dia {
     public Dia(LocalDate fecha) {
         this.fecha = fecha;
     }
+
+    public String getIdDia() {
+        return getIdDia();
+    }
     
 }
