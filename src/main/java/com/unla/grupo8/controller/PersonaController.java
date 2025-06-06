@@ -2,12 +2,15 @@ package com.unla.grupo8.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+
 import com.unla.grupo8.entities.Persona;
-import com.unla.grupo8.service.PersonaService;
+import com.unla.grupo8.service.implementation.PersonaService;
+
 import java.util.List;
 
 
-@RestController
+@Controller
 @RequestMapping("/personas")
 public class PersonaController {
 
@@ -20,7 +23,7 @@ public class PersonaController {
     // Traer todas las personas
     @GetMapping
     public ResponseEntity<List<Persona>> traerTodasLasPersonas() {
-        return ResponseEntity.ok(personaService.traerTodasLasPersonas());
+        return ResponseEntity.ok(personaService.getAll());
     }
 
     

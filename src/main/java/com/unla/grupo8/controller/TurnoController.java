@@ -1,14 +1,15 @@
 package com.unla.grupo8.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.unla.grupo8.entities.Turno;
-import com.unla.grupo8.service.TurnoService;
+import com.unla.grupo8.service.implementation.TurnoService;
 
 import java.time.LocalTime;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/turnos")
 public class TurnoController {
 
@@ -18,7 +19,7 @@ public class TurnoController {
         this.turnoService = turnoService;
     }
 
-    @GetMapping("/paciente/{nombre}")
+    @GetMapping("/hora/{hora}")
     public List<Turno> obtenerTurnosPorHora(@PathVariable LocalTime hora) {
         return turnoService.obtenerTurnosPorHora(hora);
     }
