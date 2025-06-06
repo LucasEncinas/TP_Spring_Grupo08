@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Empleado - Turnos</title>
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1>Turnos a Atender</h1>
+        <div th:each="turno : ${turnos}">
+            <p th:text="'Fecha: ' + ${turno.fecha}"></p>
+        </div>
+    </div>
+</body>
+</html>

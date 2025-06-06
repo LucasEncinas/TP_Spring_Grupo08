@@ -12,11 +12,19 @@
 	    <div class="container">
 	      <div class="jumbotron">
 	        <h1 class="display-5">Login</h1>
-	        <form th:action="@{/loginprocess}" method="post">
-		      	<input type="text" name="username" id="username" placeholder="Username" />
-		      	<input type="password" name="password" id="password" placeholder="Password" />
-		      	<input type="submit" />
-	      	</form>
+	       <form th:action="@{/loginprocess}" method="post">
+    <label for="userType">Selecciona tu rol:</label>
+    <select name="userType" id="userType">
+        <option value="cliente">Cliente</option>
+        <option value="empleado">Empleado</option>
+    </select>
+
+    <input type="text" name="username" id="username" placeholder="Username" required />
+    <input type="password" name="password" id="password" placeholder="Password" required />
+
+    <input type="submit" value="Iniciar sesión" />
+</form>
+
 	      	<div th:if="${error != null}" class="alert alert-danger">
 		    	Invalid username or password.
 		    </div>

@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 import com.unla.grupo8.service.implementation.ClienteService;
 
 @Configuration
@@ -29,8 +30,9 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		return http
+SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler successHandler) throws Exception {
+		 System.out.println(" SecurityFilterChain inicializado con successHandler");
+	return http
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
@@ -38,12 +40,13 @@ public class SecurityConfiguration {
 							"/vendor/jquery/*", "/vendor/bootstrap/js/*", "/api/v1/**").permitAll();
 					auth.anyRequest().authenticated();
 				})
-				.formLogin(login -> {
+				.formLogin(login ->  {
 					login.loginPage("/login");
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.defaultSuccessUrl("/loginprocess");
+					login.defaultSuccessUrl("/index", true);
+					login.successHandler(successHandler);
 					login.permitAll();
 				})
 				.logout(logout -> {
