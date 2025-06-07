@@ -17,11 +17,14 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
+    public void guardarCliente(Cliente cliente) {
+        clienteRepository.save(cliente);
+    }
+
     // Traer un cliente por su ID
     public Optional<Cliente> traerClientePorId(Long id) {
         return clienteRepository.findById(id);
     }
-
 
     // Traer todos los clientes
     public List<Cliente> traerTodosLosClientes() {

@@ -13,15 +13,18 @@ public class EmpleadoService {
     
     private final EmpleadoRepository empleadoRepository;    
 
-    public EmpleadoService(EmpleadoRepository turnoRepository) {
-        this.empleadoRepository = turnoRepository;
+    public EmpleadoService(EmpleadoRepository empleadoRepository) {
+        this.empleadoRepository = empleadoRepository;
+    }
+
+    public void guardarEmpleado(Empleado empleado) {
+        empleadoRepository.save(empleado);
     }
 
      // Traer un empleado por su ID
     public Optional<Empleado> traerEmpleadoPorId(Long id) {
         return empleadoRepository.findById(id);
     }
-
 
     // Traer todos los empleados
     public List<Empleado> traerTodosLosEmpleados() {
