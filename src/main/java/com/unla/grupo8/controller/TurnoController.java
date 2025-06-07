@@ -88,7 +88,7 @@ public class TurnoController {
 
         // Guardar el turno con la sucursal asignada (si la hay)
         turnoService.guardar(turno);
-        System.out.println("Guardando turno: " + turno);
+        //System.out.println("Guardando turno: " + turno);
 
         return "redirect:/empleado/index"; // Redirigir después de guardar
     }
