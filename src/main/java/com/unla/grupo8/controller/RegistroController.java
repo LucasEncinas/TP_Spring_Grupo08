@@ -42,16 +42,22 @@ public class RegistroController {
     //Casteo de fecha de nacimiento
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formatter);
+    long totalClientes = clienteService.contarClientes();
+    long totalEmpleados = empleadoService.contarEmpleados();
     // Verificamos si es cliente o empleado
     if (tipo.equals("cliente")) {
         // Creaamos y guardamos cliente
-        Cliente nuevoCliente = new Cliente(nombre, apellido, dni, fechaNac, null, "2");
+        String nroCliente = String.valueOf(totalClientes + 1);
+        
+        Cliente nuevoCliente = new Cliente(nombre, apellido, dni, fechaNac, null, "CL-" + nroCliente);
         clienteService.guardarCliente(nuevoCliente); // Guarda en MySQL
         redirectAttributes.addFlashAttribute("mensaje", "Cliente guardado correctamente");
+        
         return "redirect:/formularios/formularioRegistro";
     } else if (tipo.equals("empleado")) {
         // Creamos y guardamos empleado
-        Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "AAA174");
+        String nroLegajo = String.valueOf(totalEmpleados + 1);
+        Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "EM-" + nroLegajo);
         empleadoService.guardarEmpleado(nuevoEmpleado); // Guarda en MySQL
         redirectAttributes.addFlashAttribute("mensaje", "Empleado guardado correctamente");
         return "redirect:/formularios/formularioRegistro";

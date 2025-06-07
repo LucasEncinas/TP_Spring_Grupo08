@@ -21,6 +21,10 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
+    public long contarClientes() {
+        return clienteRepository.count(); // Cuenta el total de clientes en la BD
+    }
+
     // Traer un cliente por su ID
     public Optional<Cliente> traerClientePorId(Long id) {
         return clienteRepository.findById(id);

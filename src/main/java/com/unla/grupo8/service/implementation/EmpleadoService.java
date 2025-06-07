@@ -20,6 +20,9 @@ public class EmpleadoService {
     public void guardarEmpleado(Empleado empleado) {
         empleadoRepository.save(empleado);
     }
+    public long contarEmpleados() {
+        return empleadoRepository.count(); // Cuenta el total de clientes en la BD
+    }
 
      // Traer un empleado por su ID
     public Optional<Empleado> traerEmpleadoPorId(Long id) {

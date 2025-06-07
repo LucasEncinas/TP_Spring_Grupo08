@@ -52,7 +52,12 @@
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Registrarse</button>
                     </div>
+
                 </form>
+                 <!-- Mensaje de éxito -->
+                    <div th:if="${mensaje}" class="alert alert-success text-center">
+                      <p th:text="${mensaje}"></p>
+                    </div>
                 
             </div>
         </div>
