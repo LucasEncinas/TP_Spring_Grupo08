@@ -38,6 +38,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/*", "/vendor/bootstrap/js/*", "/api/v1/**").permitAll();
+							auth.requestMatchers("/formularios/formularioRegistro").permitAll(); 
 					auth.anyRequest().authenticated();
 				})
 				.formLogin(login -> {
