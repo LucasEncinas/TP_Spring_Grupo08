@@ -12,10 +12,13 @@ public class ContactoService {
     public ContactoService(ContactoRepository contactoRepository) {
         this.contactoRepository = contactoRepository;
     }
-    
-    public List<Contacto> obtenerContactoPorDireccion(String direccion) {
-        return contactoRepository.findByDireccion(direccion); 
+
+    public void guardarContacto(Contacto contacto) {
+        contactoRepository.save(contacto); // Guarda el contacto en la base de datos
     }
     
-  
+    public List<Contacto> obtenerContactoPorDireccion(String direccion) {
+        return contactoRepository.findByDireccion(direccion);  
+    }
 }
+
