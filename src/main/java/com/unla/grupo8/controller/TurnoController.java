@@ -1,22 +1,22 @@
 package com.unla.grupo8.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.unla.grupo8.entities.Cliente;
+import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Turno;
 
 import com.unla.grupo8.repositories.ServicioRepository;
 import com.unla.grupo8.service.implementation.ClienteService;
+import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.TurnoService;
-
 
 import java.time.LocalTime;
 import java.util.List;
@@ -31,6 +31,10 @@ public class TurnoController {
     private final ServicioService servicioService;
     @Autowired
     private ServicioRepository servicioRepository;
+
+    @Autowired
+    private DiaService diaService;
+
 
     public TurnoController(TurnoService turnoService, ClienteService clienteService,
             EmpleadoService empleadoService,
@@ -70,20 +74,23 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute Turno turno) {
+    public String guardarTurno(@ModelAttribute Turno turno, Dia dia) {
         // Obtener el servicio desde el repositorio
         Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
 
         // Asignar la sucursal si el servicio tiene una asociada
         if (servicio != null && servicio.getSucursal() != null) {
             turno.setSucursal(servicio.getSucursal());
+            dia.setSucursal(servicio.getSucursal());
         } else {
             System.out.println("El servicio no tiene una sucursal asociada.");
         }
 
-        // Guardar el turno con la sucursal asignada (si la hay)
+        dia = diaService.guardarDiaR(dia); // Guardar primero Dia
+        turno.setDia(dia);
         turnoService.guardar(turno);
-        //System.out.println("Guardando turno: " + turno);
+
+     
 
         return "redirect:/empleado/index"; // Redirigir después de guardar
     }

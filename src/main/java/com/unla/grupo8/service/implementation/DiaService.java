@@ -16,6 +16,15 @@ public class DiaService {
     public DiaService(DiaRepository diaRepository) {
         this.diaRepository = diaRepository;
     }
+
+    public void guardarDia(Dia dia) {
+        diaRepository.save(dia);
+    }
+
+    public Dia guardarDiaR(Dia dia) {
+        diaRepository.save(dia);
+        return dia;
+    }
     
     public List<Dia> obtenerDiasPorFecha(LocalDate fecha) {
         return diaRepository.findByFecha(fecha);

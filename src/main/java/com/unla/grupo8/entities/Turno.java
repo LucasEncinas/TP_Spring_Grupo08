@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -18,36 +18,36 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTurno;
 
-    @Column(name="hora", unique=true, nullable=false, length=45)
-    private LocalDateTime hora;
-    
-    @Column(name="estado", nullable=false)
+    @Column(name = "hora", unique = true, nullable = false, length = 45)
+    private LocalTime hora;
+
+    @Column(name = "estado", nullable = false)
     private String estado; // Ej: "pendiente", "confirmado", "cancelado"
 
-    //relacion con cliente
+    // relacion con cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    //relacion con empleado
+    // relacion con empleado
     @ManyToOne
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
-
-    @ManyToOne
-    @JoinColumn(name = "sucursal_id")
-    private Sucursal sucursal;
 
     @ManyToOne
     @JoinColumn(name = "dia_id")
     private Dia dia;
 
     @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
+    @ManyToOne
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
-    
+
     // Constructor con parámetros
-    public Turno(LocalDateTime hora, String estado) {
+    public Turno(LocalTime hora, String estado) {
         this.hora = hora;
         this.estado = estado;
     }
@@ -59,7 +59,6 @@ public class Turno {
                 ", estado='" + estado + '\'' +
                 ", cliente=" + (cliente != null ? cliente.getIdPersona() : null) +
                 ", empleado=" + (empleado != null ? empleado.getIdPersona() : null) +
-                ", sucursal=" + (sucursal != null ? sucursal.getIdSucursal() : null) +
                 ", dia=" + (dia != null ? dia.getIdDia() : null) +
                 ", servicio=" + (servicio != null ? servicio.getIdServicio() : null) +
                 '}';

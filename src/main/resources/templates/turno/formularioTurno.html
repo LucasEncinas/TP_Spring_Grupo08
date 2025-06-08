@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Nuevo Turno</title>
     <style>
@@ -38,7 +39,8 @@
             margin-top: 10px;
         }
 
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -61,6 +63,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Crear Turno</h1>
@@ -77,32 +80,36 @@
         </div>
 
         <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
+            <label for="fecha">Fecha del turno:</label>
+            <input type="date" th:field="*{dia.fecha}" id="fecha" required />
+
             <label for="hora">Hora del turno:</label>
-            <input type="datetime-local" th:field="*{hora}" id="hora" required />
+            <input type="time" th:field="*{hora}" id="hora" required />
 
             <label for="cliente">Cliente:</label>
             <select th:field="*{cliente.idPersona}" id="cliente" required>
                 <option value="" disabled selected>Seleccione un cliente</option>
-                <option th:each="cliente : ${clientes}" th:value="${cliente.idPersona}" th:text="${cliente.nombre + ' ' + cliente.apellido}"></option>
+                <option th:each="cliente : ${clientes}" th:value="${cliente.idPersona}"
+                    th:text="${cliente.nombre + ' ' + cliente.apellido}"></option>
             </select>
 
             <label for="empleado">Empleado:</label>
             <select th:field="*{empleado.idPersona}" id="empleado" required>
                 <option value="" disabled selected>Seleccione un empleado</option>
-                <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}" th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
+                <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}"
+                    th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
             </select>
 
             <label for="servicio">Servicio:</label>
             <select th:field="*{servicio.idServicio}" id="servicio" required>
                 <option value="" disabled selected>Seleccione un servicio</option>
-                <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}" th:text="${servicio.nombre}"></option>
+                <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
+                    th:text="${servicio.nombre}"></option>
             </select>
 
             <button type="submit">Guardar Turno</button>
         </form>
     </div>
 </body>
+
 </html>
-
-
-
