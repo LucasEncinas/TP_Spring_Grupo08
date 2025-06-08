@@ -1,19 +1,17 @@
 package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Turno;
-import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Controller
@@ -31,7 +29,7 @@ public class EmpleadoController {
 
     //@GetMapping("/index")
     //public String mostrarVistaEmpleado() {
-    //    return "empleado/index"; // ✅ Verifica que esté en `templates/empleado/index.html`
+    //    return "empleado/index"; // 
     //}
 
     @GetMapping("/index")

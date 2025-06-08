@@ -31,6 +31,7 @@ public class ServicioController {
     public String mostrarFormularioNuevo(Model model) {
         // Obtenemos la lista de todas las sucursales
         List<Sucursal> sucursales = sucursalService.obtenerTodas();
+
         // Agregamos la lista de sucursales al modelo para que esté disponible en la vista
         model.addAttribute("sucursales", sucursales);
         return "servicios/formularioServicio";
@@ -65,6 +66,7 @@ public class ServicioController {
     public String listarServicios(Model model) {
         List<Servicio> servicios = servicioService.obtenerTodos();
         model.addAttribute("servicios", servicios);
+
         return "servicios/listaServicios";
     }
 

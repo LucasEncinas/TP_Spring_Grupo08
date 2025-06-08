@@ -2,25 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Listado de Servicios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-<h1>Servicios disponibles</h1>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Duración (minutos)</th>
-            <th>Sucursal</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="servicio : ${servicios}">
-            <td th:text="${servicio.nombre}">Nombre</td>
-            <td th:text="${servicio.duracion}">Duración</td>
-            <td th:text="${servicio.sucursal != null ? servicio.sucursal.nombre : 'Sin asignar'}">Sucursal</td>
-        </tr>
-    </tbody>
-</table>
-<a href="/servicios/nuevo">Agregar nuevo servicio</a>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Servicios disponibles</h2>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center align-middle shadow">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Duración (minutos)</th>
+                        <th>Sucursal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="servicio : ${servicios}">
+                        <td th:text="${servicio.nombre}">Nombre</td>
+                        <td th:text="${servicio.duracion}">Duración</td>
+                        <td th:text="${servicio.sucursal != null ? servicio.sucursal.nombre : '-'}">Sucursal</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-3">
+            <a href="/servicios/formularioServicio" class="btn btn-success">Agregar nuevo servicio</a>
+        </div>
+    </div>
 </body>
 </html>

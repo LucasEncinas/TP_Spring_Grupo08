@@ -2,6 +2,7 @@ package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,10 @@ import java.time.format.DateTimeFormatter;
 
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Empleado;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
+import com.unla.grupo8.service.implementation.SucursalService;
 
 @Controller
 @RequestMapping("/formularios")
@@ -26,8 +29,14 @@ public class RegistroController {
     @Autowired
     private EmpleadoService empleadoService;
 
+    @Autowired
+    private SucursalService sucursalService;
+
     @GetMapping("/formularioRegistro")
-    public String mostrarFormularioRegistro() {
+    public String mostrarFormularioRegistro(Model model) {
+       
+        model.addAttribute("sucursales", sucursalService.obtenerTodas());
+
         return "formularios/formularioRegistro";
     }
 
@@ -38,10 +47,12 @@ public class RegistroController {
                               @RequestParam("dni") String dni,
                               @RequestParam("fechaNacimiento") String fechaNacimiento,
                               @RequestParam("tipo") String tipo, // "cliente" o "empleado"
+                              @RequestParam(value = "sucursal", required = false) String idSucursal, // solo si es empleado
                               RedirectAttributes redirectAttributes) {
-    //Casteo de fecha de nacimiento
+    //Casteo de fecha de nacimiento 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formatter);
+
     long totalClientes = clienteService.contarClientes();
     long totalEmpleados = empleadoService.contarEmpleados();
     // Verificamos si es cliente o empleado
@@ -55,10 +66,19 @@ public class RegistroController {
         
         return "redirect:/formularios/formularioRegistro";
     } else if (tipo.equals("empleado")) {
+        Long idSucursalAux = Long.valueOf(idSucursal); // Casteo de idSucursal a Long
+        Sucursal sucursal = sucursalService.obtenerPorId(idSucursalAux);
+        // Verificamos si existe la sucursal
+        if (sucursal == null) {
+            redirectAttributes.addFlashAttribute("error", "El campo sucursal es obligatorio para un empleado");
+            return "redirect:/formularios/formularioRegistro"; // Redirige al formulario con el error
+        } 
+    
         // Creamos y guardamos empleado
         String nroLegajo = String.valueOf(totalEmpleados + 1);
         Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "EM-" + nroLegajo);
-        empleadoService.guardarEmpleado(nuevoEmpleado); // Guarda en MySQL
+        nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
+        empleadoService.guardarEmpleado(nuevoEmpleado); 
         redirectAttributes.addFlashAttribute("mensaje", "Empleado guardado correctamente");
         return "redirect:/formularios/formularioRegistro";
     }
