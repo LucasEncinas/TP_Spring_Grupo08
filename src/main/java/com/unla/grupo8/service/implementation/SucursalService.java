@@ -3,6 +3,8 @@ package com.unla.grupo8.service.implementation;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.repositories.SucursalRepository;
 
@@ -13,6 +15,10 @@ public class SucursalService {
 
     public SucursalService(SucursalRepository sucursalRepository) {
         this.sucursalRepository = sucursalRepository;
+    }
+
+    public void guardar(Sucursal sucursal) {
+    sucursalRepository.save(sucursal);
     }
 
     public List<Sucursal> obtenerSucursalPorNombre(String nombre) {

@@ -40,6 +40,7 @@ public class SecurityConfiguration {
 							"/vendor/jquery/", "/vendor/bootstrap/js/", "/api/v1/**","/contacto/**").permitAll();
 							auth.requestMatchers("/formularios/formularioRegistro", "/formularios/guardar").permitAll();
 							auth.requestMatchers( "/servicios/formularioServicio").permitAll();
+							auth.requestMatchers( "/sucursal/formularioSucursal").permitAll();
 					auth.anyRequest().authenticated();
 				})
 				.formLogin(login -> {
