@@ -74,34 +74,28 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute Turno turno) {
-        // Inicializar Dia si es nulo
-        if (turno.getDia() == null || turno.getDia().getId() == null) {
-            turno.setDia(new Dia());
-        }
-
+    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
+        // Asignar estado por defecto si está vacío
         if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
-        turno.setEstado("Confirmado");  // Valor por defecto
-    }
-
-        // Obtener el servicio desde el repositorio
+            turno.setEstado("Confirmado");
+        }
+        // Validar que la fecha no sea nula
+        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
+            throw new IllegalArgumentException("La fecha del turno no puede ser nula.");
+        }
+        // Obtener el servicio y asociar la sucursal si existe
         Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
-
-        // Asignar sucursal si el servicio tiene una asociada
         if (servicio != null && servicio.getSucursal() != null) {
             turno.setSucursal(servicio.getSucursal());
             turno.getDia().setSucursal(servicio.getSucursal());
         } else {
-            System.out.println("El servicio no tiene una sucursal asociada.");
+            System.out.println("⚠ El servicio no tiene una sucursal asociada.");
         }
-
-        // Guardar primero Dia para garantizar que tenga ID
+        // Guardar el día primero
         Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
-        turno.setDia(diaGuardado); // Asignar el Dia guardado al Turno
-
-        // Guardar el turno en la base de datos
+        turno.setDia(diaGuardado);
+        // Guardar el turno
         turnoService.guardar(turno);
-
         return "redirect:/empleado/index";
     }
 
