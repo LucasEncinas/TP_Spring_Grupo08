@@ -35,6 +35,7 @@ public class ServicioController {
         // Agregamos la lista de sucursales al modelo para que esté disponible en la
         // vista
         model.addAttribute("sucursales", sucursales);
+        model.addAttribute("servicio", new Servicio()); 
         return "servicios/formularioServicio";
 
     }
@@ -59,8 +60,10 @@ public class ServicioController {
         nuevoServicio.setSucursal(sucursal);
         servicioService.guardar(nuevoServicio);
 
-        redirectAttributes.addFlashAttribute("mensaje", "Servicio guardado correctamente");
-        return "redirect:/servicios/formularioServicio";
+        redirectAttributes.addFlashAttribute("servicioId", nuevoServicio.getIdServicio()); 
+
+        redirectAttributes.addFlashAttribute("mensaje", "Servicio guardado correctamente, agregue disponibilidad");
+        return "redirect:/disponibilidad/nuevaDisponibilidad?servicioId=" + nuevoServicio.getIdServicio();
     }
 
     @GetMapping
