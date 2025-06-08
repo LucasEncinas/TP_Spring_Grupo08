@@ -92,10 +92,15 @@
 </head>
 
 <body>
+    <nav style="background-color: #007bff; padding: 15px; display: flex; justify-content: center; gap: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <a class="btn btn-outline-dark" href="/turno/formularioTurno" style="color: white; border-color: white;">Nuevo Turno</a>
+        <a class="btn btn-outline-dark" href="/servicios/formularioServicio" style="color: white; border-color: white;">Nuevo Servicio</a>
+        <a class="btn btn-outline-dark" href="/servicios" style="color: white; border-color: white;">Lista de Servicios</a>
+        <a class="btn btn-outline-dark" href="/sucursal/formularioSucursal" style="color: white; border-color: white;">Nueva Sucursal</a>
+        <!-- Podés agregar más enlaces aquí después -->
+    </nav>
+
     <h2>Turnos Asignados</h2>
-    <a type="button" class="btn btn-outline-dark" href="/turno/formularioTurno">Nuevo Turno</a>
-    <a type="button" class="btn btn-outline-dark" href="/servicios/formularioServicio">Nuevo Servicio</a>
-    <a type="button" class="btn btn-outline-dark" href="/sucursal/formularioSucursal">Nueva Sucursal</a>
 
     <table>
         <tr>
@@ -119,14 +124,20 @@
                 <td th:if="${turno.estado != null}" th:text="${turno.estado}">Sin estado</td>
                 <td>
                     <div class="vstack gap-3 col-md-8 mx-auto">
-                        <a type="button" class="btn btn-outline-danger" href=""
+                        <a type="button" class="btn btn-outline-danger"
+                            th:href="@{'/turno/eliminar/' + ${turno.idTurno}}"
                             onclick="return confirm('¿Desea eliminar el turno?')">Eliminar</a>
-                        <a type="button" class="btn btn-outline-dark" href="">Modificar</a>
+                        <a type="button" class="btn btn-outline-dark"
+                            th:href="@{'/turno/editar/' + ${turno.idTurno}}">Modificar</a>
                     </div>
-                </td>s
+                </td>
             </tr>
         </tbody>
+        <div th:if="${mensajeExito}" class="success">
+            <p th:text="${mensajeExito}"></p>
+        </div>
     </table>
 </body>
+
 
 </html>

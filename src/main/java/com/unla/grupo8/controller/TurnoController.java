@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Dia;
@@ -72,32 +73,57 @@ public class TurnoController {
         return turnoService.obtenerTurnosPorEstado(estado);
     }
 
-@PostMapping("/guardar")
-public String guardarTurno(@ModelAttribute Turno turno) {
-    // Inicializar Dia si es nulo
-    if (turno.getDia() == null) {
-        turno.setDia(new Dia());
+    @PostMapping("/guardar")
+    public String guardarTurno(@ModelAttribute Turno turno) {
+        // Inicializar Dia si es nulo
+        if (turno.getDia() == null || turno.getDia().getId() == null) {
+            turno.setDia(new Dia());
+        }
+
+        if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
+        turno.setEstado("Confirmado");  // Valor por defecto
     }
 
-    // Obtener el servicio desde el repositorio
-    Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
+        // Obtener el servicio desde el repositorio
+        Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
 
-    // Asignar sucursal si el servicio tiene una asociada
-    if (servicio != null && servicio.getSucursal() != null) {
-        turno.setSucursal(servicio.getSucursal());
-        turno.getDia().setSucursal(servicio.getSucursal());
-    } else {
-        System.out.println("El servicio no tiene una sucursal asociada.");
+        // Asignar sucursal si el servicio tiene una asociada
+        if (servicio != null && servicio.getSucursal() != null) {
+            turno.setSucursal(servicio.getSucursal());
+            turno.getDia().setSucursal(servicio.getSucursal());
+        } else {
+            System.out.println("El servicio no tiene una sucursal asociada.");
+        }
+
+        // Guardar primero Dia para garantizar que tenga ID
+        Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
+        turno.setDia(diaGuardado); // Asignar el Dia guardado al Turno
+
+        // Guardar el turno en la base de datos
+        turnoService.guardar(turno);
+
+        return "redirect:/empleado/index";
     }
 
-    // Guardar primero Dia para garantizar que tenga ID
-    Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
-    turno.setDia(diaGuardado); // Asignar el Dia guardado al Turno
+    @GetMapping("/eliminar/{id}")
+    public String eliminarTurno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        System.out.println("ID a eliminar: " + id);
+        turnoService.eliminarPorId(id);
+        redirectAttributes.addFlashAttribute("mensajeExito", "✅ Turno eliminado correctamente.");
+        return "redirect:/empleado/index"; // o donde quieras redirigir
+    }
 
-    // Guardar el turno en la base de datos
-    turnoService.guardar(turno);
-    
-    return "redirect:/empleado/index";
+    @GetMapping("/editar/{id}")
+public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
+    Turno turno = turnoService.buscarPorId(id);
+    model.addAttribute("turno", turno);
+
+    model.addAttribute("clientes", clienteService.traerTodosLosClientes());
+    model.addAttribute("empleados", empleadoService.obtenerTodos());
+    model.addAttribute("servicios", servicioService.obtenerTodos());
+
+    return "turno/formularioTurno"; // el mismo HTML que ya usás
 }
+
 
 }
