@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Listado de Servicios</title>
+</head>
+<body>
+<h1>Servicios disponibles</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Duración (minutos)</th>
+            <th>Sucursal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="servicio : ${servicios}">
+            <td th:text="${servicio.nombre}">Nombre</td>
+            <td th:text="${servicio.duracion}">Duración</td>
+            <td th:text="${servicio.sucursal != null ? servicio.sucursal.nombre : 'Sin asignar'}">Sucursal</td>
+        </tr>
+    </tbody>
+</table>
+<a href="/servicios/nuevo">Agregar nuevo servicio</a>
+</body>
+</html>

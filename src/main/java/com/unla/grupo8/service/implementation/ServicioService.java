@@ -14,6 +14,12 @@ public class ServicioService {
     public ServicioService(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
     }
+    
+    public void guardar(Servicio servicio) {
+    servicioRepository.save(servicio);
+    }
+
+    
     public List<Servicio> obtenerServiciosPorNombre(String nombre) {
         return servicioRepository.findByNombre(nombre);
     }
