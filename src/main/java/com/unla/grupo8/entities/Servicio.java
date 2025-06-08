@@ -18,8 +18,8 @@ public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idServicio;
-    
-    @Column(name = "nombre", unique = true, nullable = false, length = 45)
+
+    @Column(name = "nombre", unique = false, nullable = false, length = 45)
     private String nombre;
 
     @Column(name = "duracion", unique = false, nullable = false)
@@ -30,17 +30,12 @@ public class Servicio {
     private Sucursal sucursal;
 
     @ManyToMany
-    @JoinTable(
-    name = "servicio_empleado",
-    joinColumns = @JoinColumn(name = "servicio_id"),
-    inverseJoinColumns = @JoinColumn(name = "empleado_id")
-   )
+    @JoinTable(name = "servicio_empleado", joinColumns = @JoinColumn(name = "servicio_id"), inverseJoinColumns = @JoinColumn(name = "empleado_id"))
     private Set<Empleado> empleados;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "servicio_id") 
+    @JoinColumn(name = "servicio_id")
     private List<Disponibilidad> disponibilidades;
-
 
     public Servicio(String nombre, int duracion) {
         this.nombre = nombre;

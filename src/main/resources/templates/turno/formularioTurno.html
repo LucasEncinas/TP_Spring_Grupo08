@@ -81,6 +81,7 @@
 
         <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
             <label for="fecha">Fecha del turno:</label>
+            <input type="hidden" th:field="*{dia.id}" id="id" />
             <input type="date" th:field="*{dia.fecha}" id="fecha" required />
 
             <label for="hora">Hora del turno:</label>

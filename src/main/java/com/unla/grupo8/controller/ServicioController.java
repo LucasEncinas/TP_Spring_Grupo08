@@ -32,22 +32,23 @@ public class ServicioController {
         // Obtenemos la lista de todas las sucursales
         List<Sucursal> sucursales = sucursalService.obtenerTodas();
 
-        // Agregamos la lista de sucursales al modelo para que esté disponible en la vista
+        // Agregamos la lista de sucursales al modelo para que esté disponible en la
+        // vista
         model.addAttribute("sucursales", sucursales);
         return "servicios/formularioServicio";
 
     }
 
-     @PostMapping("/guardar")
+    @PostMapping("/guardar")
     public String guardarServicio(@RequestParam("nombre") String nombre,
-                                    @RequestParam("duracion") String duracion,
-                                     @RequestParam("sucursal") String idSucursal,
-                                   RedirectAttributes redirectAttributes) {
+            @RequestParam("duracion") String duracion,
+            @RequestParam("sucursal") String idSucursal,
+            RedirectAttributes redirectAttributes) {
 
-        //Casteo de duracion Y idSucursal
+        // Casteo de duracion Y idSucursal
         int duracionInt = Integer.parseInt(duracion);
-        Long idSucursalAux = Long.valueOf(idSucursal); 
-                       
+        Long idSucursalAux = Long.valueOf(idSucursal);
+
         Sucursal sucursal = sucursalService.obtenerPorId(idSucursalAux);
         if (sucursal == null) {
             redirectAttributes.addFlashAttribute("error", "Sucursal no encontrada");

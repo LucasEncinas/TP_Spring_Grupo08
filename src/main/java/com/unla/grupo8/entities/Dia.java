@@ -29,8 +29,19 @@ public class Dia {
         this.fecha = fecha;
     }
 
+
+    
+    public String toString() {
+        return "Dia{" +
+                "id=" + id +
+                ", fecha=" + fecha +
+                ", sucursal=" + sucursal.getIdSucursal();
+    }
+
+
+
     public String getIdDia() {
         return getIdDia();
     }
-    
+
 }

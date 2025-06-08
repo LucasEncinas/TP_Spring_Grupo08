@@ -93,9 +93,14 @@
 
 <body>
     <h2>Turnos Asignados</h2>
+    <a type="button" class="btn btn-outline-dark" href="/turno/formularioTurno">Nuevo Turno</a>
+    <a type="button" class="btn btn-outline-dark" href="/servicios/formularioServicio">Nuevo Servicio</a>
+    <a type="button" class="btn btn-outline-dark" href="/sucursal/formularioSucursal">Nueva Sucursal</a>
+
     <table>
         <tr>
-            <th>Fecha y Hora</th>
+            <th>Fecha</th>
+            <th>Hora</th>
             <th>Cliente</th>
             <th>Servicio</th>
             <th>Empleado</th>
@@ -105,6 +110,7 @@
         </tr>
         <tbody>
             <tr th:each="turno : ${turnos}">
+                <td th:if="${turno.dia != null}" th:text="${turno.dia.fecha}">Sin fecha</td>
                 <td th:if="${turno.hora != null}" th:text="${turno.hora}">Sin hora</td>
                 <td th:if="${turno.cliente != null}" th:text="${turno.cliente.nombre}">Sin cliente</td>
                 <td th:if="${turno.servicio != null}" th:text="${turno.servicio.nombre}">Sin servicio</td>

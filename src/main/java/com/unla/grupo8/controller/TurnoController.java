@@ -35,7 +35,6 @@ public class TurnoController {
     @Autowired
     private DiaService diaService;
 
-
     public TurnoController(TurnoService turnoService, ClienteService clienteService,
             EmpleadoService empleadoService,
             ServicioService servicioService) {
@@ -73,26 +72,32 @@ public class TurnoController {
         return turnoService.obtenerTurnosPorEstado(estado);
     }
 
-    @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute Turno turno, Dia dia) {
-        // Obtener el servicio desde el repositorio
-        Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
-
-        // Asignar la sucursal si el servicio tiene una asociada
-        if (servicio != null && servicio.getSucursal() != null) {
-            turno.setSucursal(servicio.getSucursal());
-            dia.setSucursal(servicio.getSucursal());
-        } else {
-            System.out.println("El servicio no tiene una sucursal asociada.");
-        }
-
-        dia = diaService.guardarDiaR(dia); // Guardar primero Dia
-        turno.setDia(dia);
-        turnoService.guardar(turno);
-
-     
-
-        return "redirect:/empleado/index"; // Redirigir después de guardar
+@PostMapping("/guardar")
+public String guardarTurno(@ModelAttribute Turno turno) {
+    // Inicializar Dia si es nulo
+    if (turno.getDia() == null) {
+        turno.setDia(new Dia());
     }
+
+    // Obtener el servicio desde el repositorio
+    Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
+
+    // Asignar sucursal si el servicio tiene una asociada
+    if (servicio != null && servicio.getSucursal() != null) {
+        turno.setSucursal(servicio.getSucursal());
+        turno.getDia().setSucursal(servicio.getSucursal());
+    } else {
+        System.out.println("El servicio no tiene una sucursal asociada.");
+    }
+
+    // Guardar primero Dia para garantizar que tenga ID
+    Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
+    turno.setDia(diaGuardado); // Asignar el Dia guardado al Turno
+
+    // Guardar el turno en la base de datos
+    turnoService.guardar(turno);
+    
+    return "redirect:/empleado/index";
+}
 
 }
