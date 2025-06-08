@@ -15,6 +15,10 @@ public class DisponibilidadService {
     public DisponibilidadService(DisponibilidadRepository disponibilidadRepository) {
         this.disponibilidadRepository = disponibilidadRepository;
     }
+
+     public void guardarDisponibilidad(Disponibilidad disponibilidad) {
+        disponibilidadRepository.save(disponibilidad); // Guarda la disponibilidad en la BD
+    }
     
     public List<Disponibilidad> obtenerDisponibilidadesPorDia(Disponibilidad.Dia dia) {
         return disponibilidadRepository.findByDia(dia);

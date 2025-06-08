@@ -41,6 +41,7 @@ public class SecurityConfiguration {
 							auth.requestMatchers("/formularios/formularioRegistro", "/formularios/guardar").permitAll();
 							auth.requestMatchers( "/servicios/formularioServicio").permitAll();
 							auth.requestMatchers( "/sucursal/formularioSucursal").permitAll();
+							auth.requestMatchers( "/disponibilidad/nuevaDisponibilidad").permitAll();
 					auth.anyRequest().authenticated();
 				})
 				.formLogin(login -> {

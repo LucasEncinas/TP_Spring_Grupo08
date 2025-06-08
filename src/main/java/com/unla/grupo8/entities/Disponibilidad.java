@@ -19,10 +19,10 @@ public class Disponibilidad {
     private Long id;
     
     @Column(name = "horaDesde", unique = false, nullable = false)
-    private LocalTime horaHasta; // Hora hasta la que está disponible
+    private LocalTime horaDesde; // Hora hasta la que está disponible
     
     @Column(name = "horaHasta", unique = false, nullable = false)
-    private LocalTime horaDesde; // Hora hasta la que está disponible
+    private LocalTime horaHasta; // Hora hasta la que está disponible
 
     public enum Dia { //es necesario que sea un enum para poder usarlo en la base de datos
     LUNES,            //no podemos llamarlo directo como enum 
@@ -38,7 +38,10 @@ public class Disponibilidad {
     @Column(name = "dia", unique = false, nullable = false)
     private Dia dia; // Día de la semana (Lunes, Martes, etc.)
 
-    @ManyToOne
-    @JoinColumn(name = "servicio_id")
-    private Servicio servicio;
+    public Disponibilidad(LocalTime horaDesde, LocalTime horaHasta, Dia dia) {
+        this.horaDesde = horaDesde;
+        this.horaHasta = horaHasta;
+        this.dia = dia;
+    }
+
 }

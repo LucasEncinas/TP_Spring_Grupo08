@@ -37,8 +37,9 @@ public class Servicio {
    )
     private Set<Empleado> empleados;
 
-    @OneToMany(mappedBy = "servicio")
-    private List<Disponibilidad> diasDisponibles;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "servicio_id") 
+    private List<Disponibilidad> disponibilidades;
 
 
     public Servicio(String nombre, int duracion) {
