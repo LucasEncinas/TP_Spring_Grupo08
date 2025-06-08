@@ -22,7 +22,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Controller
-@RequestMapping("/turnos")
+@RequestMapping("/turno")
 public class TurnoController {
 
     private final TurnoService turnoService;
@@ -41,12 +41,7 @@ public class TurnoController {
         this.servicioService = servicioService;
     }
 
-    @GetMapping("/test")
-    public String testView() {
-        return "test";
-    }
-
-    @GetMapping("/nuevo")
+    @GetMapping("/formularioTurno")
     public String mostrarFormularioTurno(Model model) {
         model.addAttribute("turno", new Turno());
         List<Cliente> clientes = clienteService.traerTodosLosClientes();
@@ -61,7 +56,7 @@ public class TurnoController {
         model.addAttribute("clientes", clientes);
         model.addAttribute("empleados", empleados);
         model.addAttribute("servicios", servicios);
-        return "formularios/formularioTurno";
+        return "turno/formularioTurno";
     }
 
     @GetMapping("/hora/{hora}")

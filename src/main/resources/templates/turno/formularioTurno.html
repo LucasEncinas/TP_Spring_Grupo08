@@ -76,7 +76,7 @@
             ⚠ No hay servicios disponibles. Agregue servicios antes de crear un turno.
         </div>
 
-        <form th:action="@{/turnos/guardar}" th:object="${turno}" method="post">
+        <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
             <label for="hora">Hora del turno:</label>
             <input type="datetime-local" th:field="*{hora}" id="hora" required />
 

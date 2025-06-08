@@ -20,9 +20,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if ("cliente".equalsIgnoreCase(userType)) {
             response.sendRedirect("cliente/index");
         } else if ("empleado".equalsIgnoreCase(userType)) {
-            response.sendRedirect("/empleado/index");
+            response.sendRedirect("empleado/index");
         } else {
-            response.sendRedirect("/empleado/index");
+            response.sendRedirect("empleado/index");
         }
 
     }
