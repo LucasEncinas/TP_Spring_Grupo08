@@ -59,7 +59,7 @@ public class Turno {
                 ", estado='" + estado + '\'' +
                 ", cliente=" + (cliente != null ? cliente.getIdPersona() : null) +
                 ", empleado=" + (empleado != null ? empleado.getIdPersona() : null) +
-                ", dia=" + (dia != null ? dia.getIdDia() : null) +
+                //", dia=" + (dia != null ? dia.getIdDia() : null) +
                 ", servicio=" + (servicio != null ? servicio.getIdServicio() : null) +
                 '}';
     }

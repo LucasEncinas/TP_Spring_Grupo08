@@ -19,7 +19,10 @@ public class ServicioService {
     servicioRepository.save(servicio);
     }
 
-    
+    //obtener por id
+    public Servicio obtenerPorId(Long id) {
+        return servicioRepository.findById(id).orElse(null);
+    }
     public List<Servicio> obtenerServiciosPorNombre(String nombre) {
         return servicioRepository.findByNombre(nombre);
     }

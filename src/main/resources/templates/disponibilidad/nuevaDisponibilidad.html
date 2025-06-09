@@ -13,6 +13,7 @@
         <h2 class="text-center">Nueva Disponibilidad</h2>
 
         <form action="/disponibilidad/guardar" method="post" class="row g-3">
+            <input type="hidden" name="servicioId" th:value="${servicio.idServicio}" />
 
             <!-- Selección de día -->
             <div class="col-md-6">

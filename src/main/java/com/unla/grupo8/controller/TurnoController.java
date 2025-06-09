@@ -77,44 +77,30 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-public String guardarTurno(@ModelAttribute Turno turno) {
-    // Asegurar que el estado tenga un valor por defecto
-    if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
-        turno.setEstado("Confirmado");
-    }
-
-    // Obtener el servicio y su sucursal asociada
-    Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
-
-    if (servicio != null && servicio.getSucursal() != null) {
-        Sucursal sucursal = servicio.getSucursal();
-        turno.setSucursal(sucursal);
-
-        LocalDate fecha = turno.getDia().getFecha();
-
-        // Buscar si ya existe un día con esa fecha y sucursal
-        Dia diaExistente = diaService.buscarPorFechaYSucursal(fecha, sucursal);
-        Dia diaFinal;
-
-        if (diaExistente != null) {
-            diaFinal = diaExistente;
-        } else {
-            Dia nuevoDia = new Dia();
-            nuevoDia.setFecha(fecha);
-            nuevoDia.setSucursal(sucursal);
-            diaFinal = diaService.guardarDiaR(nuevoDia);
+    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
+        // Asignar estado por defecto si está vacío
+        if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
+            turno.setEstado("Confirmado");
         }
-
-        turno.setDia(diaFinal);
-    } else {
-        System.out.println("⚠ El servicio no tiene una sucursal asociada.");
+        // Validar que la fecha no sea nula
+        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
+            throw new IllegalArgumentException("La fecha del turno no puede ser nula.");
+        }
+        // Obtener el servicio y asociar la sucursal si existe
+        Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
+        if (servicio != null && servicio.getSucursal() != null) {
+            turno.setSucursal(servicio.getSucursal());
+            turno.getDia().setSucursal(servicio.getSucursal());
+        } else {
+            System.out.println("⚠ El servicio no tiene una sucursal asociada.");
+        }
+        // Guardar el día primero
+        Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
+        turno.setDia(diaGuardado);
+        // Guardar el turno
+        turnoService.guardar(turno);
+        return "redirect:/send-email?idTurno=" + turno.getIdTurno(); // Redirigir al envío de email
     }
-
-    // Guardar el turno en la base de datos
-    turnoService.guardar(turno);
-
-    return "redirect:/empleado/index";
-}
 
     @GetMapping("/eliminar/{id}")
     public String eliminarTurno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
