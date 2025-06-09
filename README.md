@@ -17,7 +17,7 @@ claves para la eficiencia.</p>
 <p>Configurar las variables de entorno con el usuario y contraseña de su base de datos local.</p>
 <p>Crear una base de datos con el nombre "tp_spring_grupo8"</p>
 <p>Iniciar el proyecto y dejar compilar para la creacion de las tablas. </p>
-<p>Una vez creada la DB utilizar el script para cargar con datos de prueba <a href="">script para los datos</a></p>
+<p>Una vez creada la DB utilizar el script para cargar con datos de prueba <a href="https://drive.google.com/file/d/1g9Q9vN2GfOtWsuJcB8gvnL7aJIkuDPw_/view?usp=sharing">script para los datos</a></p>
 <p>Al finalizar ya tendría la base cargada con los datos de pruebas.</p>
 <h3>Definición de los casos de uso / funcionalidades:</h3>
 <h3>Empleado,Administrador:</h3>
