@@ -101,6 +101,15 @@
     </nav>
 
     <h2>Turnos Asignados</h2>
+    <form th:action="@{/turno/filtrar}" method="get" style="margin-bottom: 20px;">
+    <label for="fecha">Filtrar por fecha:</label>
+    <input type="date" name="fecha" id="fecha" required />
+    <button type="submit">Filtrar</button>
+    </form>
+    <form th:action="@{/empleado/index}" method="get" style="margin-bottom: 20px;">
+    <label for="fecha">Ver Todos</label>
+    <button type="submit">Filtrar</button>
+    </form>
 
     <table>
         <tr>

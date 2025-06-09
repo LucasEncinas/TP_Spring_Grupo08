@@ -1,6 +1,7 @@
 package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
 
 import com.unla.grupo8.repositories.ServicioRepository;
@@ -19,6 +21,7 @@ import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -74,30 +77,44 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
-        // Asignar estado por defecto si está vacío
-        if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
-            turno.setEstado("Confirmado");
-        }
-        // Validar que la fecha no sea nula
-        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
-            throw new IllegalArgumentException("La fecha del turno no puede ser nula.");
-        }
-        // Obtener el servicio y asociar la sucursal si existe
-        Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
-        if (servicio != null && servicio.getSucursal() != null) {
-            turno.setSucursal(servicio.getSucursal());
-            turno.getDia().setSucursal(servicio.getSucursal());
-        } else {
-            System.out.println("⚠ El servicio no tiene una sucursal asociada.");
-        }
-        // Guardar el día primero
-        Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
-        turno.setDia(diaGuardado);
-        // Guardar el turno
-        turnoService.guardar(turno);
-        return "redirect:/empleado/index";
+public String guardarTurno(@ModelAttribute Turno turno) {
+    // Asegurar que el estado tenga un valor por defecto
+    if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
+        turno.setEstado("Confirmado");
     }
+
+    // Obtener el servicio y su sucursal asociada
+    Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
+
+    if (servicio != null && servicio.getSucursal() != null) {
+        Sucursal sucursal = servicio.getSucursal();
+        turno.setSucursal(sucursal);
+
+        LocalDate fecha = turno.getDia().getFecha();
+
+        // Buscar si ya existe un día con esa fecha y sucursal
+        Dia diaExistente = diaService.buscarPorFechaYSucursal(fecha, sucursal);
+        Dia diaFinal;
+
+        if (diaExistente != null) {
+            diaFinal = diaExistente;
+        } else {
+            Dia nuevoDia = new Dia();
+            nuevoDia.setFecha(fecha);
+            nuevoDia.setSucursal(sucursal);
+            diaFinal = diaService.guardarDiaR(nuevoDia);
+        }
+
+        turno.setDia(diaFinal);
+    } else {
+        System.out.println("⚠ El servicio no tiene una sucursal asociada.");
+    }
+
+    // Guardar el turno en la base de datos
+    turnoService.guardar(turno);
+
+    return "redirect:/empleado/index";
+}
 
     @GetMapping("/eliminar/{id}")
     public String eliminarTurno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -108,16 +125,22 @@ public class TurnoController {
     }
 
     @GetMapping("/editar/{id}")
-public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
-    Turno turno = turnoService.buscarPorId(id);
-    model.addAttribute("turno", turno);
+    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
+        Turno turno = turnoService.buscarPorId(id);
+        model.addAttribute("turno", turno);
 
-    model.addAttribute("clientes", clienteService.traerTodosLosClientes());
-    model.addAttribute("empleados", empleadoService.obtenerTodos());
-    model.addAttribute("servicios", servicioService.obtenerTodos());
+        model.addAttribute("clientes", clienteService.traerTodosLosClientes());
+        model.addAttribute("empleados", empleadoService.obtenerTodos());
+        model.addAttribute("servicios", servicioService.obtenerTodos());
 
-    return "turno/formularioTurno"; // el mismo HTML que ya usás
-}
+        return "turno/formularioTurno"; // el mismo HTML que ya usás
+    }
 
-
+    @GetMapping("/filtrar")
+    public String filtrarPorFecha(@RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Model model) {
+        List<Turno> turnosFiltrados = turnoService.obtenerPorFecha(fecha);
+        model.addAttribute("turnos", turnosFiltrados);
+        return "empleado/index"; // o el nombre de tu vista
+    }
 }
