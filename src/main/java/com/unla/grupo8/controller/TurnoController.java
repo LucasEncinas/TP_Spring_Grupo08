@@ -96,7 +96,7 @@ public class TurnoController {
         turno.setDia(diaGuardado);
         // Guardar el turno
         turnoService.guardar(turno);
-        return "redirect:/empleado/index";
+        return "redirect:/send-email?idTurno=" + turno.getIdTurno(); // Redirigir al envío de email
     }
 
     @GetMapping("/eliminar/{id}")
