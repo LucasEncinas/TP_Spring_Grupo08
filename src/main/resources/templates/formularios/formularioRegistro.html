@@ -76,6 +76,22 @@
                                 th:text="${sucursal.nombre}"></option>
                         </select>
                     </div>
+                    <!-- Selector de contacto (opcional) -->
+                    <!-- a mejorar para que no aparezcan las opciones -->
+                    <div class="mb-3">
+                        <label for="contacto" class="form-label">¿Quieres asociar un contacto?</label>
+                        <select id="contacto" name="contacto" class="form-select">
+                            <option value="">-- No asociar contacto --</option>
+                            <option th:each="contacto : ${contactos}" th:value="${contacto.id}"
+                                th:text="${contacto.email + ' - ' + contacto.telefono}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">¿No tienes un contacto registrado?</label>
+                        <a href="/contacto/index" class="btn btn-outline-primary">Agregar Contacto</a>
+                    </div>
+
 
 
                     <!-- Botón de envío -->

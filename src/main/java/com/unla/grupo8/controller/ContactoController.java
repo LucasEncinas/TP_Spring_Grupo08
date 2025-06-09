@@ -1,6 +1,5 @@
 package com.unla.grupo8.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +32,18 @@ public class ContactoController {
             @RequestParam("email") String email,
             @RequestParam("telefono") String telefono,
             @RequestParam("direccion") String direccion,
+            @RequestParam(value = "redirect", required = false) String redirect, 
             RedirectAttributes redirectAttributes) {
         Contacto nuevoContacto = new Contacto(email, telefono, direccion);
-        contactoService.guardarContacto(nuevoContacto); 
+        contactoService.guardarContacto(nuevoContacto);
 
         redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente");
+
+       if ("registro".equals(redirect)) {
+        return "redirect:/formularios/formularioRegistro";
+    }
+
+        // Si no viene del formulario de registro, se mantiene en la página de contacto
         return "redirect:/contacto/index";
     }
 }

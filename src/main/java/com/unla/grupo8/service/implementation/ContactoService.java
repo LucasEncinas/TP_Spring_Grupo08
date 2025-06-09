@@ -1,8 +1,10 @@
 package com.unla.grupo8.service.implementation;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.unla.grupo8.entities.Contacto;
 import com.unla.grupo8.repositories.ContactoRepository;
-import java.util.List;
 
 @Service
 public class ContactoService {
@@ -16,9 +18,13 @@ public class ContactoService {
     public void guardarContacto(Contacto contacto) {
         contactoRepository.save(contacto); // Guarda el contacto en la base de datos
     }
-    
-    public List<Contacto> obtenerContactoPorDireccion(String direccion) {
-        return contactoRepository.findByDireccion(direccion);  
-    }
-}
 
+    public List<Contacto> obtenerTodos() {
+        return contactoRepository.findAll();
+    }
+
+    public Contacto obtenerPorId(Long id) {
+        return contactoRepository.findById(id).orElse(null);
+    }
+
+}
