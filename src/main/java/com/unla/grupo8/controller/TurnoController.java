@@ -19,6 +19,8 @@ import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.time.LocalTime;
 import java.util.List;
 
@@ -74,7 +76,9 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
+    public String guardarTurno(@ModelAttribute("turno") Turno turno,  HttpSession session) {
+        String rolUsuario = (String) session.getAttribute("rolUsuario");
+
         // Asignar estado por defecto si está vacío
         if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
             turno.setEstado("Confirmado");
@@ -96,7 +100,14 @@ public class TurnoController {
         turno.setDia(diaGuardado);
         // Guardar el turno
         turnoService.guardar(turno);
-        return "redirect:/empleado/index";
+        
+        if ("cliente".equals(rolUsuario)) {
+        return "redirect:/cliente/index"; // Si el usuario es cliente, va a su lista de turnos
+    } else {
+        return "redirect:/empleado/index"; // Si es empleado, lo manda a la lista de empleado
+    }
+
+        
     }
 
     @GetMapping("/eliminar/{id}")

@@ -1,113 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-	<meta charset="utf-8" />
-	<title>Home</title>
-	<!-- Bootstrap core CSS -->
-	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<!-- Custom styles for this template -->
-	<link href="/css/modern-business.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Turnos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #d1e7fd;
+            transition: 0.3s;
+        }
+
+        .btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            text-align: center;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-	<!-- Navigation -->
-	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="/index">HOME</a>
-			<button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"
-				class="navbar-toggler navbar-toggler-right" data-target="#navbarResponsive" data-toggle="collapse"
-				type="button"></button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a class="nav-link" href="/degrees/">Degrees</a>
-					</li>
-					<li class="nav-item dropdown"><a aria-expanded="false" aria-haspopup="true"
-							class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownBlog">
-							User
-							<span th:text="${username}">
-						</a>
-						<div aria-labelledby="navbarDropdownBlog" class="dropdown-menu dropdown-menu-right">
-							<form th:action="@{/logout}" method="post">
-								<input class="dropdown-item" style="cursor: pointer" type="submit" value="Logout" />
-							</form>
-							<a class="dropdown-item" href="/person">CRUD Person</a>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<header>
-		<div class="carousel slide" data-ride="carousel" id="carouselExampleIndicators">
-			<ol class="carousel-indicators">
-				<li class="active" data-slide-to="0" data-target="#carouselExampleIndicators">&nbsp;</li>
-				<li data-slide-to="1" data-target="#carouselExampleIndicators">&nbsp;</li>
-				<li data-slide-to="2" data-target="#carouselExampleIndicators">&nbsp;</li>
-			</ol>
-			<div class="container">
-				<h1>Clientes</h1>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Fecha y Hora</th>
-							<th>Cliente</th>
-							<th>Servicio</th>
-							<th>Empleado</th>
-							<th>Sucursal</th>
-							<th>Estado</th>
-							<th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="turno : ${turnos}">
-							<td th:text="${turno.hora}"></td>
-							<td th:text="${turno.cliente.nombre}"></td>
-							<td th:text="${turno.servicio.nombre}"></td>
-							<td th:text="${turno.empleado.nombre}"></td>
-							<td th:text="${turno.sucursal.nombre}"></td>
-							<td th:text="${turno.estado}"></td>
-							<td>
-								<a th:href="@{/empleado/turnos/{id}(id=${turno.idTurno})}"
-									class="btn btn-primary">Modificar</a>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<a class="carousel-control-prev" data-slide="prev" href="#carouselExampleIndicators" role="button"><span
-					class="sr-only">Previous</span> </a> <a class="carousel-control-next" data-slide="next"
-				href="#carouselExampleIndicators" role="button">
-				<span class="sr-only">Next</span>
-			</a>
-		</div>
-	</header>
-	
-	<footer class="py-5 bg-dark">
-		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2018</p>
-		</div>
-	</footer>
-	<!-- Bootstrap core JavaScript -->
-	<script src="/vendor/jquery/jquery.min.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript">
-		$("#select-person").change(function () {
-			var personId = $("#select-person").val();
-			if ($.isNumeric(personId)) {
-				$.ajax({ //https://api.jquery.com/jquery.ajax/ => Examples:
-					method: "GET",
-					url: "/person/partial/" + personId,
-				})
-					.done(function (result) {
-						$("#div-select-person").html(result);
-					})
-					.fail(function () {
-						alert("error");
-					});
-			} else $("#div-select-person").html("");
-		});
-	</script>
+   
+    <h1>Lista de Turnos</h1>
+
+    <a href="/turno/formularioTurno" class="btn">Solicitar Turno</a>
+    <a href="/servicios" class="btn">Lista de servicios</a>
+
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Cliente</th>
+            <th>Servicio</th>
+            <th>Empleado</th>
+            <th>Sucursal</th>
+            <th>Estado</th>
+        </tr>
+        <tbody>
+            <tr th:each="turno : ${turnos}">
+                <td th:if="${turno.dia != null}" th:text="${turno.dia.fecha}">Sin fecha</td>
+                <td th:if="${turno.hora != null}" th:text="${turno.hora}">Sin hora</td>
+                <td th:if="${turno.cliente != null}" th:text="${turno.cliente.nombre}">Sin cliente</td>
+                <td th:if="${turno.servicio != null}" th:text="${turno.servicio.nombre}">Sin servicio</td>
+                <td th:if="${turno.empleado != null}" th:text="${turno.empleado.nombre}">Sin empleado</td>
+                <td th:if="${turno.sucursal != null}" th:text="${turno.sucursal.nombre}">Sin sucursal</td>
+                <td th:if="${turno.estado != null}" th:text="${turno.estado}">Sin estado</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 
 </html>

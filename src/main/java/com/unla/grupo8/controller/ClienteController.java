@@ -28,6 +28,8 @@ public class ClienteController {
         return "cliente/index"; // ✅ Verifica que esté en `templates/cliente/index.html`
     }
 
+    
+
     // traer todos los clientes
     // @GetMapping
     // public ResponseEntity<List<Cliente>> traerTodosLosClientes() {
