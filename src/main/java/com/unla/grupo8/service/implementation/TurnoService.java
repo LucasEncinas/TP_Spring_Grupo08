@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.repositories.TurnoRepository;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -49,4 +50,8 @@ public class TurnoService {
     public Turno buscarPorId(Long id){
         return turnoRepository.findById(id).orElse(null);
     }
+
+    public List<Turno> obtenerPorFecha(LocalDate fecha) {
+    return turnoRepository.buscarPorFecha(fecha);
+}
 }

@@ -1,6 +1,7 @@
 package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
 
 import com.unla.grupo8.repositories.ServicioRepository;
@@ -19,7 +21,12 @@ import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
+
+
 import jakarta.servlet.http.HttpSession;
+
+
+import java.time.LocalDate;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -76,8 +83,8 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute("turno") Turno turno,  HttpSession session) {
-        String rolUsuario = (String) session.getAttribute("rolUsuario");
+    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
+       
 
         // Asignar estado por defecto si está vacío
         if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
@@ -100,12 +107,8 @@ public class TurnoController {
         turno.setDia(diaGuardado);
         // Guardar el turno
         turnoService.guardar(turno);
-        
-        if ("cliente".equals(rolUsuario)) {
-        return "redirect:/cliente/index"; // Si el usuario es cliente, va a su lista de turnos
-    } else {
-        return "redirect:/empleado/index"; // Si es empleado, lo manda a la lista de empleado
-    }
+
+        return "redirect:/send-email?idTurno=" + turno.getIdTurno(); // Redirigir al envío de email
 
         
     }
@@ -119,16 +122,22 @@ public class TurnoController {
     }
 
     @GetMapping("/editar/{id}")
-public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
-    Turno turno = turnoService.buscarPorId(id);
-    model.addAttribute("turno", turno);
+    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
+        Turno turno = turnoService.buscarPorId(id);
+        model.addAttribute("turno", turno);
 
-    model.addAttribute("clientes", clienteService.traerTodosLosClientes());
-    model.addAttribute("empleados", empleadoService.obtenerTodos());
-    model.addAttribute("servicios", servicioService.obtenerTodos());
+        model.addAttribute("clientes", clienteService.traerTodosLosClientes());
+        model.addAttribute("empleados", empleadoService.obtenerTodos());
+        model.addAttribute("servicios", servicioService.obtenerTodos());
 
-    return "turno/formularioTurno"; // el mismo HTML que ya usás
-}
+        return "turno/formularioTurno"; // el mismo HTML que ya usás
+    }
 
-
+    @GetMapping("/filtrar")
+    public String filtrarPorFecha(@RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Model model) {
+        List<Turno> turnosFiltrados = turnoService.obtenerPorFecha(fecha);
+        model.addAttribute("turnos", turnosFiltrados);
+        return "empleado/index"; // o el nombre de tu vista
+    }
 }
