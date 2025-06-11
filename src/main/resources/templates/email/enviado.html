@@ -23,15 +23,7 @@
 
         <!-- Botones -->
         <div style="display: flex; justify-content: center; gap: 15px;">
-            <a th:href="@{/turno/formularioTurno}"
-                style="padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px;">
-                Sacar otro turno
-            </a>
-
-            <a th:href="@{/cliente/index}"
-                style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
-                Volver al inicio
-            </a>
+          <button type="button" style="padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px;" onclick="history.back()">Volver</button>
         </div>
     </div>
 </body>

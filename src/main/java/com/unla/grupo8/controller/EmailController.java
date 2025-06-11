@@ -11,6 +11,9 @@ import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.service.IEmailService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class EmailController {
 
