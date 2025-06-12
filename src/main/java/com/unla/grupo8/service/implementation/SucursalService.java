@@ -17,7 +17,7 @@ public class SucursalService {
     }
 
     public void guardar(Sucursal sucursal) {
-    sucursalRepository.save(sucursal);
+        sucursalRepository.save(sucursal);
     }
 
     public List<Sucursal> obtenerSucursalPorNombre(String nombre) {
@@ -30,6 +30,10 @@ public class SucursalService {
 
     public Sucursal obtenerPorId(Long id) {
         return sucursalRepository.findById(id).orElse(null);
+    }
+
+    public void eliminarPorId(Long id) {
+        sucursalRepository.deleteById(id);
     }
 
 }

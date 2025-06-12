@@ -30,13 +30,13 @@ public class Sucursal {
     @Column(name="mail", unique=true, nullable=false, length=45)
     private String mail;
 
-    @OneToMany(mappedBy = "sucursal")
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Empleado> empleados;
 
     @OneToMany(mappedBy = "sucursal")
     private List<Turno> turnos;
 
-    @OneToMany(mappedBy = "sucursal")
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Servicio> servicios;
 
     public Sucursal(String nombre, String direccion, String telefono, String mail) {
