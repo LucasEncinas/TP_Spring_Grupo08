@@ -44,4 +44,9 @@ public class Persona {
         this.fechaNacimiento = fechaNacimiento;
         this.contacto = contacto;
     }
+
+    //getter 
+    public Long getId() {
+        return idPersona;
+    }
 }

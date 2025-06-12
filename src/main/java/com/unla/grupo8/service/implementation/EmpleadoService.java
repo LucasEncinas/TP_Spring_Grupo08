@@ -3,6 +3,7 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Empleado;
+import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.repositories.EmpleadoRepository;
 
 import java.util.List;
@@ -17,14 +18,15 @@ public class EmpleadoService {
         this.empleadoRepository = empleadoRepository;
     }
 
-    public void guardarEmpleado(Empleado empleado) {
-        empleadoRepository.save(empleado);
+    public Empleado guardarEmpleado(Empleado empleado) {
+       return empleadoRepository.save(empleado);
     }
+    
     public long contarEmpleados() {
         return empleadoRepository.count(); // Cuenta el total de clientes en la BD
     }
 
-     // Traer un empleado por su ID
+      // Traer un empleado por su ID
     public Optional<Empleado> traerEmpleadoPorId(Long id) {
         return empleadoRepository.findById(id);
     }

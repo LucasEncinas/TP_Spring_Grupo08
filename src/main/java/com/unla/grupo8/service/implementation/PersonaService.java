@@ -64,4 +64,9 @@ public class PersonaService implements IPersonService {
         throw new UnsupportedOperationException("Unimplemented method 'findByDegreeName'");
     }
 
+    // Método para obtener una persona por su ID
+    public Persona obtenerPorId(Long id) {
+        return personaRepository.findById(id).orElse(null);
+    }
+
 }

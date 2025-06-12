@@ -3,6 +3,7 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Cliente;
+import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.repositories.ClienteRepository;
 
 import java.util.List;
@@ -17,15 +18,18 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public void guardarCliente(Cliente cliente) {
-        clienteRepository.save(cliente);
-    }
+   public Cliente guardarCliente(Cliente cliente) {
+    return clienteRepository.save(cliente);
+   }
+
+
 
     public long contarClientes() {
         return clienteRepository.count(); // Cuenta el total de clientes en la BD
     }
 
-    // Traer un cliente por su ID
+    
+
     public Optional<Cliente> traerClientePorId(Long id) {
         return clienteRepository.findById(id);
     }
