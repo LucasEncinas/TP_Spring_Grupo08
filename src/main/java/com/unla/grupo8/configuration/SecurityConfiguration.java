@@ -38,7 +38,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/", "/vendor/bootstrap/js/", "/api/v1/**").permitAll();
-					auth.requestMatchers("/contacto/index", "contacto/guardar").permitAll();
+					auth.requestMatchers("/contacto/index", "/contacto/guardar").permitAll();
 					auth.requestMatchers("/formularios/formularioRegistro", "/formularios/guardar").permitAll();
 					auth.requestMatchers("/turno/formularioTurno").permitAll();
 					auth.requestMatchers("/servicios/formularioServicio").permitAll();

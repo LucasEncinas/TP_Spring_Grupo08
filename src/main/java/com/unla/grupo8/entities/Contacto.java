@@ -31,5 +31,10 @@ public class Contacto {
         this.telefono = telefono;
         this.direccion = direccion;
     }
+
+    public Object getPersona() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPersona'");
+    }
 }
 

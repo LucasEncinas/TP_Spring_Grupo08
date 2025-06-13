@@ -15,12 +15,11 @@ import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Contacto;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Persona;
+import com.unla.grupo8.exception.ExcepcionContacto;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.ContactoService;
-import com.unla.grupo8.service.implementation.DisponibilidadService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.PersonaService;
-import com.unla.grupo8.service.implementation.ServicioService;
 
 @Controller
 @RequestMapping("/contacto")
@@ -39,9 +38,8 @@ public class ContactoController {
         this.contactoService = contactoService;
     }
 
-     @GetMapping("/index")
-    
-public String mostrarFormularioContacto(@RequestParam("personaId") Long personaId, Model model) {
+   @GetMapping("/index")    
+  public String mostrarFormularioContacto(@RequestParam("personaId") Long personaId, Model model) {
     Persona persona = personaService.obtenerPorId(personaId);
 
     if (persona == null) {
@@ -52,7 +50,7 @@ public String mostrarFormularioContacto(@RequestParam("personaId") Long personaI
     model.addAttribute("persona", persona);
     model.addAttribute("personaId", personaId);
     return "contacto/index"; 
-}
+   }
 
 
 
@@ -61,21 +59,26 @@ public String guardarContacto(@RequestParam("personaId") Long personaId,
                               @RequestParam("email") String email,
                               @RequestParam("telefono") String telefono,
                               @RequestParam("direccion") String direccion,
+                              Model model,
                               RedirectAttributes redirectAttributes) {
-    Persona persona = personaService.obtenerPorId(personaId);
-    Contacto contacto = new Contacto(email, telefono, direccion);
-    contactoService.guardarContacto(contacto);
+    try{
+       Persona persona = personaService.obtenerPorId(personaId);
+       Contacto contacto = new Contacto(email, telefono, direccion);
+       contactoService.guardarContacto(contacto);
 
-    if (persona instanceof Cliente cliente) {
+       if (persona instanceof Cliente cliente) {
         cliente.setContacto(contacto);
         clienteService.guardarCliente(cliente);
-    } else if (persona instanceof Empleado empleado) {
+       } else if (persona instanceof Empleado empleado) {
         empleado.setContacto(contacto);
         empleadoService.guardarEmpleado(empleado);
+       }
+
+       redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente.");
+       return "redirect:/formularios/formularioRegistro";
+    }  catch (ExcepcionContacto e) { //Captura la excepción si el contacto ya existe
+        model.addAttribute("error", e.getMessage());
+        model.addAttribute("personaId", personaId);
+        return "contacto/index"; }
     }
-
-    redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente.");
-    return "redirect:/formularios/formularioRegistro";
-}
-
 }
