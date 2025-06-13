@@ -39,6 +39,9 @@ public class Sucursal {
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Servicio> servicios;
 
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dia> dias;
+
     public Sucursal(String nombre, String direccion, String telefono, String mail) {
         this.nombre = nombre;
         this.direccion = direccion;

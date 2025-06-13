@@ -11,14 +11,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "dia")
+@Table(name = "dia", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "fecha", "sucursal_id" })
+})
 public class Dia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fecha", unique = true, nullable = false)
+    @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
     @ManyToOne
@@ -29,19 +31,11 @@ public class Dia {
         this.fecha = fecha;
     }
 
-
-    
     public String toString() {
         return "Dia{" +
                 "id=" + id +
                 ", fecha=" + fecha +
                 ", sucursal=" + sucursal.getIdSucursal();
-    }
-
-
-
-    public String getIdDia() {
-        return getIdDia();
     }
 
 }
