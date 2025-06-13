@@ -12,8 +12,10 @@ import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Turno;
-
+import com.unla.grupo8.repositories.ClienteRepository;
+import com.unla.grupo8.repositories.EmpleadoRepository;
 import com.unla.grupo8.repositories.ServicioRepository;
+import com.unla.grupo8.service.IEmailService;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
@@ -23,7 +25,10 @@ import com.unla.grupo8.service.implementation.TurnoService;
 import java.time.LocalDate;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/turno")
@@ -33,19 +38,30 @@ public class TurnoController {
     private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final ServicioService servicioService;
+
     @Autowired
     private ServicioRepository servicioRepository;
 
     @Autowired
+    private EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private DiaService diaService;
+
+    private final IEmailService emailService;
 
     public TurnoController(TurnoService turnoService, ClienteService clienteService,
             EmpleadoService empleadoService,
-            ServicioService servicioService) {
+            ServicioService servicioService,
+            IEmailService emailService) {
         this.turnoService = turnoService;
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.servicioService = servicioService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/formularioTurno")
@@ -77,8 +93,7 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@ModelAttribute("turno") Turno turno) {
-       
+    public String guardarTurno(@ModelAttribute("turno") Turno turno, Model model) {
 
         // Asignar estado por defecto si está vacío
         if (turno.getEstado() == null || turno.getEstado().isEmpty()) {
@@ -102,9 +117,45 @@ public class TurnoController {
         // Guardar el turno
         turnoService.guardar(turno);
 
-        return "redirect:/send-email?idTurno=" + turno.getIdTurno(); // Redirigir al envío de email
+        // Recuperamos versiones completas de servicio, empleado y cliente desde la base
+        // de datos, ya que los objetos recibidos pueden estar incompletos (solo con el
+        // ID cargado).
+        Servicio servicioCompleto = servicioRepository.findById(turno.getServicio().getIdServicio())
+                .orElseThrow(() -> new IllegalArgumentException("Servicio no encontrado"));
+        turno.setServicio(servicioCompleto);
 
-        
+        Empleado empleadoCompleto = empleadoRepository.findById(turno.getEmpleado().getIdPersona())
+                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
+        turno.setEmpleado(empleadoCompleto);
+
+        Cliente clienteCompleto = clienteRepository.findById(turno.getCliente().getIdPersona())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+        turno.setCliente(clienteCompleto);
+
+        // Accedemos al email del cliente desde el objeto Contacto, que ya fue cargado
+        // al recuperar el cliente completo
+        String emailCliente = clienteCompleto.getContacto().getEmail();
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("nombreCliente", clienteCompleto.getNombre());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaFormateada = diaGuardado.getFecha().format(formatter);
+        variables.put("fecha", fechaFormateada);
+        variables.put("hora", turno.getHora());
+        variables.put("servicio", turno.getServicio().getNombre());
+        variables.put("empleado", turno.getEmpleado().getNombre());
+        variables.put("sucursal", turno.getSucursal().getNombre());
+
+        emailService.sendHtmlMessage(
+                emailCliente,
+                "¡Turno confirmado!",
+                "email/turno-confirmado",
+                variables);
+
+        model.addAttribute("emailDestino", emailCliente);
+
+        return "email/enviado";
+
     }
 
     @GetMapping("/eliminar/{id}")
@@ -112,7 +163,7 @@ public class TurnoController {
         System.out.println("ID a eliminar: " + id);
         turnoService.eliminarPorId(id);
         redirectAttributes.addFlashAttribute("mensajeExito", "✅ Turno eliminado correctamente.");
-        return "redirect:/empleado/index"; // o donde quieras redirigir
+        return "redirect:/empleado/index";
     }
 
     @GetMapping("/editar/{id}")
@@ -124,7 +175,7 @@ public class TurnoController {
         model.addAttribute("empleados", empleadoService.obtenerTodos());
         model.addAttribute("servicios", servicioService.obtenerTodos());
 
-        return "turno/formularioTurno"; // el mismo HTML que ya usás
+        return "turno/formularioTurno";
     }
 
     @GetMapping("/filtrar")
@@ -132,6 +183,6 @@ public class TurnoController {
             Model model) {
         List<Turno> turnosFiltrados = turnoService.obtenerPorFecha(fecha);
         model.addAttribute("turnos", turnosFiltrados);
-        return "empleado/index"; // o el nombre de tu vista
+        return "empleado/index";
     }
 }

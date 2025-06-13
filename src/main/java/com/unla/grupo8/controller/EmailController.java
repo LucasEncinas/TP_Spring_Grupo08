@@ -1,5 +1,8 @@
 package com.unla.grupo8.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,7 +35,9 @@ public class EmailController {
     public String sendEmail(@RequestParam("idTurno") Long idTurno, Model model) {
         Turno turno = turnoService.buscarPorId(idTurno);
 
-        // Generación del cuerpo del correo
+        String emailCliente = turno.getCliente().getContacto().getEmail();
+
+        // Cuerpo del correo
         String cuerpo = "Tu turno fue reservado con éxito.\n\n"
                 + "Fecha: " + turno.getDia().getFecha() + "\n"
                 + "Hora: " + turno.getHora() + "\n"
@@ -41,13 +46,37 @@ public class EmailController {
                 + "Sucursal: " + turno.getSucursal().getNombre() + "\n\n"
                 + "Gracias por elegirnos.";
 
-        // Envío del correo
-        emailService.sendSimpleMessage(fromEmail, "¡Turno reservado con éxito!", cuerpo);
+        // Enviamos del correo
+        emailService.sendSimpleMessage(emailCliente, "¡Turno reservado con éxito!",
+                cuerpo);
 
         // Agregamos el correo al modelo para mostrarlo en la vista
-        model.addAttribute("emailDestino", fromEmail);
+        model.addAttribute("emailDestino", emailCliente);
 
-        return "email/enviado"; // Devuelve la vista donde se muestra el mensaje de éxito
+        return "email/enviado";
+    }
+
+    @GetMapping("/send-html-email")
+    public String sendHtmlEmail(@RequestParam("idTurno") Long idTurno, Model model) {
+        Turno turno = turnoService.buscarPorId(idTurno);
+
+        String emailCliente = turno.getCliente().getContacto().getEmail();
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("fecha", turno.getDia().getFecha());
+        variables.put("hora", turno.getHora());
+        variables.put("servicio", turno.getServicio().getNombre());
+        variables.put("empleado", turno.getEmpleado().getNombre());
+        variables.put("sucursal", turno.getSucursal().getNombre());
+
+        emailService.sendHtmlMessage(
+                emailCliente,
+                "¡Turno confirmado!",
+                "email/turno-confirmado",
+                variables);
+
+        model.addAttribute("emailDestino", emailCliente);
+        return "email/enviado";
     }
 
 }

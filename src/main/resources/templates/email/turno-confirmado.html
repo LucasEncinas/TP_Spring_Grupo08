@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Turno confirmado</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0;">
+    <div
+        style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+
+        <!-- Encabezado -->
+        <div style="background-color: #556df5; padding: 20px; text-align: center;">
+            <h1 style="color: white; margin: 0;">¡Turno confirmado!</h1>
+        </div>
+
+        <!-- Cuerpo del mensaje -->
+        <div style="padding: 30px; color: #333;">
+            <p style="font-size: 16px;">¡Hola <span th:text="${nombreCliente}"/>!</p>
+            <p style="font-size: 16px;">Tu turno fue reservado con éxito. A continuación te dejamos los detalles:</p>
+
+            <table style="width: 100%; margin-top: 20px; font-size: 15px; text-align: center;">
+                <tr>
+                    <td style="padding: 4px 0;"><strong>📅 Fecha:</strong></td>
+                    <td th:text="${fecha}"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;"><strong>⏰ Hora:</strong></td>
+                    <td th:text="${hora + ' hs'}"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;"><strong>🛠️ Servicio:</strong></td>
+                    <td th:text="${servicio != null ? servicio : 'No especificado'}"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;"><strong>👤 Empleado:</strong></td>
+                    <td th:text="${empleado != null ? empleado : 'No asignado'}"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;"><strong>📍 Sucursal:</strong></td>
+                    <td th:text="${sucursal}"></td>
+                </tr>
+            </table>
+
+            <p style="margin-top: 30px; font-size: 15px; text-align: center;">Gracias por confiar en nosotros</p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f0f0f0; text-align: center; padding: 15px; font-size: 13px; color: #888;">
+            Siempre a tu servicio | © 2025 UNLa
+        </div>
+    </div>
+</body>
+
+</html>
