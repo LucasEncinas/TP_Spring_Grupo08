@@ -53,7 +53,7 @@ public class SecurityConfiguration {
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.defaultSuccessUrl("/empleado/index", true); 
+					login.defaultSuccessUrl("/inicio", true); 
 					
 					login.permitAll();
 				})
