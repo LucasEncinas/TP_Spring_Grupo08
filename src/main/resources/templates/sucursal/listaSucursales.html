@@ -35,7 +35,7 @@
         }
 
         th {
-            background-color: #007bff;
+            background-color: #556df5;
             color: white;
         }
 
@@ -143,6 +143,18 @@
             background-color: #6c757d;
             color: white;
         }
+
+        .btn-outline-custom-lightblue {
+            color: #289ec9;
+            border: 2px solid #289ec9;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(40, 158, 201, 0.3);
+        }
+
+        .btn-outline-custom-lightblue:hover {
+            background-color: #289ec9;
+            color: white;
+        }
     </style>
 </head>
 
@@ -184,6 +196,7 @@
             <th>Dirección</th>
             <th>Teléfono</th>
             <th>Mail</th>
+            <th>Días de atención</th>
             <th>Gestión</th>
         </tr>
         <tbody>
@@ -192,6 +205,12 @@
                 <td th:if="${sucursal.direccion != null}" th:text="${sucursal.direccion}">Sin dirección</td>
                 <td th:if="${sucursal.telefono != null}" th:text="${sucursal.telefono}">Sin teléfono</td>
                 <td th:if="${sucursal.mail != null}" th:text="${sucursal.mail}">Sin mail</td>
+                <td>
+                    <div class="vstack gap-3 col-md-8 mx-auto">
+                        <a type="button" class="btn btn-outline-custom-lightblue"
+                            th:href="null">Ver días</a>
+                    </div>
+                </td>
                 <td>
                     <div class="vstack gap-3 col-md-8 mx-auto">
                         <a type="button" class="btn btn-outline-danger"
