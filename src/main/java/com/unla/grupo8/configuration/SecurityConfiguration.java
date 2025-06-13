@@ -45,7 +45,6 @@ public class SecurityConfiguration {
 					auth.requestMatchers("/sucursal/formularioSucursal").permitAll();
 					auth.requestMatchers("/contacto/index").permitAll();
 					auth.requestMatchers("/disponibilidad/nuevaDisponibilidad").permitAll();
-					auth.requestMatchers("/rol").permitAll();
 
 					auth.anyRequest().authenticated();
 				})
@@ -54,7 +53,7 @@ public class SecurityConfiguration {
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.defaultSuccessUrl("/rol", true);
+					login.defaultSuccessUrl("/empleado/index", true); 
 					
 					login.permitAll();
 				})

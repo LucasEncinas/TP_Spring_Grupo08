@@ -44,9 +44,7 @@ public class DisponibilidadController {
 
     return "disponibilidad/nuevaDisponibilidad"; 
     }
-
-
-    
+   
      // Guardar la nueva disponibilidad
     @PostMapping("/guardar")
     public String guardarDisponibilidad(@RequestParam("servicioId") Long servicioId,
@@ -64,16 +62,13 @@ public class DisponibilidadController {
         }
         LocalTime horaInicio = LocalTime.parse(horaDesde);
         LocalTime horaFin = LocalTime.parse(horaHasta);
-         
-         // 🔹 **Obtener el servicio asociado**
+              
     Servicio servicio = servicioService.obtenerPorId(servicioId);
     if (servicio == null) {
         attributes.addFlashAttribute("error", "El servicio no existe.");
         return "redirect:/disponibilidad/nuevaDisponibilidad";
     }
 
-
-        // 🔹 **Crear Disponibilidad vinculada al servicio**
     Disponibilidad nuevaDisponibilidad = new Disponibilidad(horaInicio, horaFin, diaSeleccionado);
     servicio.getDisponibilidades().add(nuevaDisponibilidad); // Asociar disponibilidad al servicio
     servicioService.guardar(servicio);

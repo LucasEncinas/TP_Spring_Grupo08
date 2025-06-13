@@ -3,10 +3,7 @@ package com.unla.grupo8.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.unla.grupo8.entities.Persona;
 import com.unla.grupo8.helpers.ViewRouteHelper;
 
 @Controller
@@ -31,13 +28,9 @@ public class UserController {
 		return "redirect:/index";
 	}
 
-	// @GetMapping("/loginprocess")
-	public String login(@RequestParam String username, @RequestParam String password, @RequestParam String userType) {
-		if (userType.equals("cliente")) {
-			return "redirect:/cliente";
-		} else {
-			return "redirect:/empleado";
-		}
+	@GetMapping("/loginprocess")
+	public String login(@RequestParam String username, @RequestParam String password) {
+		return "redirect:/empleado/index";
 	}
 
 }

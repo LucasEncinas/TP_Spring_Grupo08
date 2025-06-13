@@ -25,7 +25,7 @@ public class ClienteController {
 
     @GetMapping("/index")
     public String mostrarVistaCliente() {
-        return "cliente/index"; // ✅ Verifica que esté en `templates/cliente/index.html`
+        return "cliente/index"; 
     }
 
     

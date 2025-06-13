@@ -3,7 +3,6 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Cliente;
-import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.repositories.ClienteRepository;
 
 import java.util.List;
