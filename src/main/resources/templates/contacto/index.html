@@ -12,6 +12,11 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Ingresar Nuevo Contacto</h2>
+        <!-- para capturar errores -->
+        <div th:if="${error}">
+            <p th:text="${error}" class="alert alert-danger"></p>
+        </div>
+
 
         <form action="/contacto/guardar" method="post" class="row g-3">
               <!-- Campo oculto para enviar el ID correctamente -->
