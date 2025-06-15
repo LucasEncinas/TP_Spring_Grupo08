@@ -1,109 +1,69 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sucursales</title>
+    <meta charset="UTF-8" />
+    <title>Listado de Sucursales</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 20px;
-            padding: 20px;
+            background: linear-gradient(to right, #e4e9ff, #f0f3ff);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
+        .topbar {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
         }
 
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #556df5;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #d1e7fd;
-            transition: 0.3s;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 8px 14px;
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            text-decoration: none;
-        }
-
-        .btn-outline-danger {
-            color: #dc3545;
-            border: 2px solid #dc3545;
-            background-color: transparent;
-            box-shadow: 0px 2px 6px rgba(220, 53, 69, 0.3);
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-outline-dark {
+        .topbar .topbar-link {
             color: #343a40;
-            border: 2px solid #343a40;
-            background-color: transparent;
-            box-shadow: 0px 2px 6px rgba(52, 58, 64, 0.3);
+            font-weight: 500;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s ease;
         }
 
-        .btn-outline-dark:hover {
-            background-color: #343a40;
+        .topbar .topbar-link:hover {
+            color: #556df5;
+        }
+
+        header {
+            background-color: #556df5;
+            padding: 50px 20px;
+            text-align: center;
             color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin-bottom: 25px;
+            font-size: 2.4rem;
+            font-weight: bold;
+        }
+
+        .btn-servicio {
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding-bottom: 70px;
         }
 
         .alert {
-            position: absolute;
-            top: 50%;
-            right: 2%;
-            transform: translateY(-50%);
-            padding: 4px 12px;
-            font-size: 13px;
+            width: 80%;
+            margin: 20px auto;
+            padding: 12px;
             border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 550px;
-            min-height: 25px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            z-index: 1;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
-
 
         .alert-success {
             background-color: #d1f7d6;
@@ -117,132 +77,150 @@
             border: 1px solid #ffbaba;
         }
 
-        .top-buttons {
-            width: 80%;
-            margin: 0 auto 20px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        table {
+            width: 90%;
+            margin: 40px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
-        .btn-outline-secondary {
-            color: #6c757d;
-            border: 2px solid #6c757d;
-            background-color: transparent;
-            box-shadow: 0px 2px 6px rgba(108, 117, 125, 0.3);
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-            padding: 8px 14px;
+        th {
+            background-color: #556df5;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        td {
+            font-size: 15px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f5f7ff;
+        }
+
+        tr:hover {
+            background-color: #e1e7ff;
+            transition: 0.3s;
+        }
+
+        .btn-eliminar,
+        .btn-modificar,
+        .btn-servicio {
+            border: none;
+            padding: 10px 16px;
             border-radius: 6px;
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
         }
 
-        .btn-outline-secondary:hover {
-            background-color: #6c757d;
+        .btn-eliminar {
+            background-color: #dc3545;
             color: white;
         }
 
-        .btn-outline-custom-lightblue {
-            color: #289ec9;
-            border: 2px solid #289ec9;
-            background-color: transparent;
-            box-shadow: 0px 2px 6px rgba(40, 158, 201, 0.3);
+        .btn-eliminar:hover {
+            background-color: #b02a37;
         }
 
-        .btn-outline-custom-lightblue:hover {
-            background-color: #289ec9;
+        .btn-modificar {
+            background-color: #343a40;
             color: white;
+        }
+
+        .btn-modificar:hover {
+            background-color: #1d1f21;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f1f3f6;
+            text-align: center;
+            padding: 16px 10px;
+            font-size: 14px;
+            color: #666;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
+            z-index: 20;
         }
     </style>
 </head>
 
 <body>
+    <div class="main-content">
 
-    <div class="top-buttons">
-        <a href="/empleado/index" class="btn btn-outline-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
-                style="vertical-align: middle; margin-right: 6px;">
-                <path
-                    d="M8.354 1.146a.5.5 0 0 0-.708 0l-6.5 6.5A.5.5 0 0 0 1.5 8.5H2v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V11h2v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-6h.5a.5.5 0 0 0 .354-.854l-6.5-6.5z" />
-            </svg>
-            Inicio
-        </a>
-        <a href="/sucursal/formularioSucursal" class="btn btn-outline-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
-                style="vertical-align: middle; margin-right: 6px;">
-                <path
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg>
-            Agregar Sucursal
-        </a>
-    </div>
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="container d-flex justify-content-between align-items-center">
+                <a href="/inicio" class="topbar-link">Inicio</a>
+                <a href="/logout" class="topbar-link">Cerrar sesión</a>
+            </div>
+        </div>
 
-    <div style="position: relative; width: 100%; text-align: center; margin-bottom: 20px;">
-        <h2>Sucursales</h2>
+        <!-- Encabezado -->
+        <header>
+            <h1>Listado de Sucursales</h1>
+            <a href="/sucursal/formularioSucursal" class="btn btn-light fw-bold btn-servicio">
+                ➕ Agregar Sucursal
+            </a>
+        </header>
+
         <!-- Mensajes -->
-        <div id="mensajeExito" th:if="${mensajeExito}" class="alert alert-success" role="alert">
+        <div th:if="${mensajeExito}" class="alert alert-success text-center">
             <p th:text="${mensajeExito}"></p>
         </div>
-        <div th:if="${mensajeError}" id="mensajeError" class="alert alert-danger">
+        <div th:if="${mensajeError}" class="alert alert-danger text-center">
             <p th:text="${mensajeError}"></p>
         </div>
+
+        <!-- Tabla de sucursales -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Mail</th>
+                    <th>Días de atención</th>
+                    <th>Gestión</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="sucursal : ${sucursales}">
+                    <td th:if="${sucursal.nombre != null}" th:text="${sucursal.nombre}">Sin nombre</td>
+                    <td th:if="${sucursal.direccion != null}" th:text="${sucursal.direccion}">Sin dirección</td>
+                    <td th:if="${sucursal.telefono != null}" th:text="${sucursal.telefono}">Sin teléfono</td>
+                    <td th:if="${sucursal.mail != null}" th:text="${sucursal.mail}">Sin mail</td>
+                    <td>
+                        <a class="btn-servicio btn btn-light" th:href="null">Ver días</a>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column align-items-center gap-2">
+                            <a class="btn-eliminar" th:href="@{'/sucursal/eliminar/' + ${sucursal.idSucursal}}"
+                                onclick="return confirm('¿Desea eliminar la sucursal?')">Eliminar</a>
+                            <a class="btn-modificar"
+                                th:href="@{'/sucursal/editar/' + ${sucursal.idSucursal}}">Modificar</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Mail</th>
-            <th>Días de atención</th>
-            <th>Gestión</th>
-        </tr>
-        <tbody>
-            <tr th:each="sucursal : ${sucursales}">
-                <td th:if="${sucursal.nombre != null}" th:text="${sucursal.nombre}">Sin nombre</td>
-                <td th:if="${sucursal.direccion != null}" th:text="${sucursal.direccion}">Sin dirección</td>
-                <td th:if="${sucursal.telefono != null}" th:text="${sucursal.telefono}">Sin teléfono</td>
-                <td th:if="${sucursal.mail != null}" th:text="${sucursal.mail}">Sin mail</td>
-                <td>
-                    <div class="vstack gap-3 col-md-8 mx-auto">
-                        <a type="button" class="btn btn-outline-custom-lightblue"
-                            th:href="null">Ver días</a>
-                    </div>
-                </td>
-                <td>
-                    <div class="vstack gap-3 col-md-8 mx-auto">
-                        <a type="button" class="btn btn-outline-danger"
-                            th:href="@{'/sucursal/eliminar/' + ${sucursal.idSucursal}}"
-                            onclick="return confirm('¿Desea eliminar la sucursal?')">Eliminar</a>
-                        <a type="button" class="btn btn-outline-dark"
-                            th:href="@{'/sucursal/editar/' + ${sucursal.idSucursal}}">Modificar</a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-
-    </table>
-
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const mensajeExito = document.getElementById('mensajeExito');
-            const mensajeError = document.getElementById('mensajeError');
-
-            [mensajeExito, mensajeError].forEach(mensaje => {
-                if (mensaje) {
-                    setTimeout(() => {
-                        mensaje.style.transition = 'opacity 0.5s ease';
-                        mensaje.style.opacity = '0';
-                        setTimeout(() => mensaje.remove(), 500);
-                    }, 4000); // 4 segundos visible
-                }
-            });
-        });
-    </script>
-
+    <footer>
+        © 2024 Sistema de Turnos. Todos los derechos reservados.
+    </footer>
 </body>
-
 
 </html>
