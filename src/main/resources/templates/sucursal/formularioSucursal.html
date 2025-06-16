@@ -6,12 +6,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${tituloFormulario}">Formulario Sucursal</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+        @keyframes floatAwayRight {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+        }
+
+        .alert.fade-out {
+            animation: floatAwayRight 0.8s forwards;
+        }
+
+        body {
+            background: linear-gradient(to right, #e4e9ff, #f0f3ff);
+        }
+
+        .card {
+            border: 1px solid #d9e0f2;
+            border-radius: 12px;
+            padding: 32px 28px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.4s ease;
+            max-width: 600px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #c7d1ea;
+            padding: 12px;
+            box-shadow: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .form-label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .form-control:focus {
+            border-color: #3b4cca;
+            box-shadow: 0 0 5px rgba(59, 76, 202, 0.4);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus-visible {
+            outline: 2px solid rgba(59, 76, 202, 0.4);
+            outline-offset: 2px;
+        }
+
+        .form-control:hover {
+            background-color: #f7f9ff;
+            box-shadow: 0 0 8px rgba(59, 76, 202, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #4a69bd;
+            text-align: center;
+            border-bottom: 2px solid #dee2f7;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .card h2::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #6a72d6;
+            border-radius: 2px;
+        }
+
+
+        .btn-primary {
+            background: linear-gradient(90deg, #556df5, #6a72d6);
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(85, 109, 245, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #3c5aa6, #4a69bd);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 12px rgba(85, 109, 245, 0.2);
+        }
+
+
+        .d-grid {
+            margin-top: 20px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .container {
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .row>div {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
         .alert {
             padding: 10px 16px;
             position: fixed;
             top: 120px;
-            right: 20px;
+            right: 40px;
             z-index: 9999;
             min-width: 220px;
             border-radius: 6px;
@@ -34,6 +186,10 @@
             border: 1px solid #ffbaba;
         }
 
+        .btn {
+            font-weight: bold;
+        }
+
         .top-buttons {
             width: 80%;
             margin: 40px auto 20px auto;
@@ -42,22 +198,50 @@
             align-items: center;
         }
 
-        .btn-outline-secondary {
-            color: #6c757d;
-            border: 2px solid #6c757d;
-            background-color: transparent;
-            box-shadow: 0px 2px 6px rgba(108, 117, 125, 0.3);
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
+        .top-buttons .btn:hover {
+            transform: translateY(-1px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(85, 109, 245, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .btn-outline-secondary:hover {
-            background-color: #6c757d;
+        .top-buttons .btn:active {
+            transform: scale(1.02);
+        }
+
+        .btn-outline-start {
+            color: #4a69bd;
+            border: 2px solid #4a69bd;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(74, 105, 189, 0.3);
+        }
+
+        .btn-outline-start:hover {
+            background-color: #4a69bd;
+            color: white;
+        }
+
+        .btn-outline-view {
+            color: #6a72d6;
+            border: 2px solid #6a72d6;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(106, 114, 214, 0.3);
+            margin-left: 55px;
+        }
+
+        .btn-outline-view:hover {
+            background-color: #6a72d6;
+            color: white;
+        }
+
+        .btn-outline-logout {
+            color: #a52222;
+            border: 2px solid #a52222;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(165, 34, 34, 0.3);
+        }
+
+        .btn-outline-logout:hover {
+            background-color: #a52222;
             color: white;
         }
     </style>
@@ -66,7 +250,7 @@
 <body>
 
     <div class="top-buttons">
-        <a href="/empleado/index" class="btn btn-outline-secondary">
+        <a href="/inicio" class="btn btn-outline-start">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
                 style="vertical-align: middle; margin-right: 6px;">
                 <path
@@ -74,61 +258,86 @@
             </svg>
             Inicio
         </a>
-        <a href="/sucursal/listaSucursales" class="btn btn-outline-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
-                style="vertical-align: middle; margin-right: 6px;">
+        <a href="/sucursal/listaSucursales" class="btn btn-outline-view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building"
+                viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
                 <path fill-rule="evenodd"
-                    d="M15 8a.5.5 0 0 1-.5.5H4.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L4.707 7.5H14.5a.5.5 0 0 1 .5.5z" />
+                    d="M14 13.5V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11.5H.5a.5.5 0 0 0 0 1H2v.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-.5h1.5a.5.5 0 0 0 0-1H14Zm-1 0H3V2h10v11.5ZM4 4h1v1H4V4Zm0 2h1v1H4V6Zm0 2h1v1H4V8Zm0 2h1v1H4v-1Zm3-6h1v1H7V4Zm0 2h1v1H7V6Zm0 2h1v1H7V8Zm0 2h1v1H7v-1Zm3-6h1v1h-1V4Zm0 2h1v1h-1V6Zm0 2h1v1h-1V8Zm0 2h1v1h-1v-1Z" />
             </svg>
             Ver Sucursales
         </a>
+
+        <a href="/logout" class="btn btn-outline-logout">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
+                <path fill-rule="evenodd"
+                    d="M10 12.5a.5.5 0 0 1 .5-.5h2.793L9.146 8.354a.5.5 0 1 1 .708-.708L13.5 11.293V8.5a.5.5 0 0 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5z" />
+                <path fill-rule="evenodd"
+                    d="M4.5 15A1.5 1.5 0 0 1 3 13.5v-11A1.5 1.5 0 0 1 4.5 1h5A1.5 1.5 0 0 1 11 2.5V5a.5.5 0 0 1-1 0V2.5A.5.5 0 0 0 9.5 2h-5a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V11a.5.5 0 0 1 1 0v2.5A1.5 1.5 0 0 1 9.5 15h-5z" />
+            </svg>
+            Cerrar Sesión
+        </a>
+
     </div>
 
     <div class="container d-flex justify-content-center mt-4">
-        <div class="col-md-6 mx-auto">
+        <div class="mx-auto">
             <div class="card shadow p-4">
                 <h2 class="text-center mb-4" th:text="${tituloFormulario}">Formulario Sucursal</h2>
 
                 <form th:object="${sucursal}" action="/sucursal/guardar" method="post">
                     <input type="hidden" th:field="*{idSucursal}" />
 
-                    <!-- Nombre -->
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required />
-                    </div>
+                    <div class="row">
+                        <!-- Nombre -->
+                        <div class="col-md-6 mb-4">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required
+                                    placeholder="Ejemplo: Sucursal Central" />
+                            </div>
+                        </div>
 
-                    <!-- Dirección -->
-                    <div class="mb-3">
-                        <label for="direccion" class="form-label">Dirección:</label>
-                        <input type="text" th:field="*{direccion}" id="direccion" class="form-control" required />
-                    </div>
+                        <!-- Teléfono -->
+                        <div class="col-md-6 mb-4">
+                            <label for="telefono" class="form-label">Teléfono:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" oninput="this.value = this.value.replace(/[^0-9\- ]/g, '')"
+                                    th:field="*{telefono}" id="telefono" class="form-control" required
+                                    placeholder="Ejemplo: 11 2345-6789" />
+                            </div>
+                        </div>
 
-                    <!-- Teléfono -->
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono:</label>
-                        <input type="text" th:field="*{telefono}" id="telefono" class="form-control" required />
-                    </div>
+                        <!-- Dirección -->
+                        <div class="col-md-6 mb-4">
+                            <label for="direccion" class="form-label">Dirección:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" th:field="*{direccion}" id="direccion" class="form-control" required
+                                    placeholder="Ejemplo: Av. Siempre Viva 123" />
+                            </div>
+                        </div>
 
-                    <!-- Mail -->
-                    <div class="mb-3">
-                        <label for="mail" class="form-label">Mail:</label>
-                        <input type="text" th:field="*{mail}" id="mail" class="form-control" required />
+                        <!-- Email -->
+                        <div class="col-md-6 mb-4">
+                            <label for="mail" class="form-label">Email:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" th:field="*{mail}" id="mail" class="form-control" required
+                                    placeholder="Ejemplo: sucu@gmail.com" />
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Botón de envío -->
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-2"></i> Guardar
+                        </button>
                     </div>
-
                 </form>
-                <!-- Mensajes de éxito -->
-                <div th:if="${mensajeCrear}" id="mensajeExito" class="alert alert-success" role="alert">
-                    <p th:text="${mensajeCrear}"></p>
-                </div>
-                <div th:if="${mensajeModificar}" id="mensajeExito" class="alert alert-success" role="alert">
-                    <p th:text="${mensajeModificar}"></p>
-                </div>
             </div>
         </div>
 
@@ -140,14 +349,23 @@
                 const mensajes = document.querySelectorAll('.alert');
                 mensajes.forEach(msg => {
                     setTimeout(() => {
-                        msg.style.transition = 'opacity 0.5s ease';
-                        msg.style.opacity = '0';
-                        setTimeout(() => msg.remove(), 500);
-                    }, 4000); // 4 segundos visibles
+                        msg.classList.add('fade-out');
+                        msg.addEventListener('animationend', () => {
+                            msg.remove();
+                        });
+                    }, 4000); // Se mantiene 4 segundos antes de empezar a desaparecer
                 });
             });
-        </script>
 
+        </script>
+    </div>
+    <!-- Mensajes de éxito -->
+    <div th:if="${mensajeCrear}" id="mensajeExitoCrear" class="alert alert-success" role="alert">
+        <p th:text="${mensajeCrear}"></p>
+    </div>
+    <div th:if="${mensajeModificar}" id="mensajeExitoModificar" class="alert alert-success" role="alert">
+        <p th:text="${mensajeModificar}"></p>
+    </div>
 </body>
 
 </html>
