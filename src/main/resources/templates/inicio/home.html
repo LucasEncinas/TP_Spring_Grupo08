@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <title>Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <style>
         body {
             background: linear-gradient(to right, #e4e9ff, #f0f3ff);
@@ -113,7 +114,6 @@
 
         .main-content {
             padding-bottom: 70px;
-            /* Espacio para que no tape el footer */
         }
 
         footer {
@@ -134,7 +134,6 @@
 
 <body>
     <div class="main-content">
-        <!-- Mini barra superior -->
         <div class="topbar">
             <div class="container d-flex justify-content-between align-items-center">
                 <a href="/inicio" class="topbar-link">Inicio</a>
@@ -155,51 +154,41 @@
                 <!-- Servicios -->
                 <a href="/servicios" class="card-link">
                     <div class="card-option">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M4 1a1 1 0 0 0-1 1v1h10V2a1 1 0 0 0-1-1H4zm10 2H2v9a2 2 0 0 0 2 2h8a2 2 0 0 0 
-                                     2-2V3zM4.5 8a.5.5 0 0 1 .5-.5H7v1H5a.5.5 0 0 1-.5-.5z" />
-                        </svg>
+                        <i class="bi bi-gear-fill" style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
                         <h5>Servicios</h5>
-                        <p class="card-description">Visualizá y gestioná los servicios ofrecidos</p>
+                        <p class="card-description">Creá, editá y organizá los servicios que ofrecés</p>
                     </div>
                 </a>
 
                 <!-- Turnos -->
                 <a href="/empleado/index" class="card-link">
                     <div class="card-option">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 3.293l5 5V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.293l5-5z" />
-                            <path d="M7 13h2v-2H7v2zm0-4h2V7H7v2z" />
-                        </svg>
+                        <i class="bi bi-calendar-check-fill"
+                            style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
                         <h5>Turnos</h5>
-                        <p class="card-description">Accedé al listado de turnos programados</p>
+                        <p class="card-description">Asigná y supervisá turnos desde una vista centralizada</p>
                     </div>
                 </a>
 
                 <!-- Sucursales -->
                 <a href="/sucursal/listaSucursales" class="card-link">
                     <div class="card-option">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M2 2v12h12V2H2zm11 11H3V3h10v10z" />
-                        </svg>
+                        <i class="bi bi-geo-alt-fill" style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
                         <h5>Sucursales</h5>
-                        <p class="card-description">Consultá las sucursales habilitadas</p>
+                        <p class="card-description">Administrá los puntos de atención disponibles</p>
                     </div>
                 </a>
 
                 <!-- Usuarios -->
                 <a href="/formularios/formularioRegistro" class="card-link">
                     <div class="card-option">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-6a6 6 0 0 0-4.472 
-                                  10.157c.415-.603 1.168-1.157 2.197-1.157h4.55c1.029 
-                                  0 1.782.554 2.197 1.157A6 6 0 0 0 8 2z" />
-                        </svg>
+                        <i class="bi bi-person-plus-fill"
+                            style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
                         <h5>Usuarios</h5>
-                        <p class="card-description">Registrá nuevos usuarios en el sistema</p>
+                        <p class="card-description">Registrá nuevos usuarios y gestioná sus datos</p>
                     </div>
                 </a>
+
 
             </div>
         </div>
