@@ -12,6 +12,7 @@ import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Turno;
+import com.unla.grupo8.exception.ExcepcionTurno;
 import com.unla.grupo8.repositories.ClienteRepository;
 import com.unla.grupo8.repositories.EmpleadoRepository;
 import com.unla.grupo8.repositories.ServicioRepository;
@@ -101,7 +102,7 @@ public class TurnoController {
         }
         // Validar que la fecha no sea nula
         if (turno.getDia() == null || turno.getDia().getFecha() == null) {
-            throw new IllegalArgumentException("La fecha del turno no puede ser nula.");
+            throw new ExcepcionTurno("La fecha del turno no puede ser nula.");
         }
         // Obtener el servicio y asociar la sucursal si existe
         Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
@@ -121,15 +122,15 @@ public class TurnoController {
         // de datos, ya que los objetos recibidos pueden estar incompletos (solo con el
         // ID cargado).
         Servicio servicioCompleto = servicioRepository.findById(turno.getServicio().getIdServicio())
-                .orElseThrow(() -> new IllegalArgumentException("Servicio no encontrado"));
+                .orElseThrow(() -> new ExcepcionTurno("Servicio no encontrado"));
         turno.setServicio(servicioCompleto);
 
         Empleado empleadoCompleto = empleadoRepository.findById(turno.getEmpleado().getIdPersona())
-                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
+                .orElseThrow(() -> new ExcepcionTurno("Empleado no encontrado"));
         turno.setEmpleado(empleadoCompleto);
 
         Cliente clienteCompleto = clienteRepository.findById(turno.getCliente().getIdPersona())
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+                .orElseThrow(() -> new ExcepcionTurno("Cliente no encontrado"));
         turno.setCliente(clienteCompleto);
 
         // Accedemos al email del cliente desde el objeto Contacto, que ya fue cargado
