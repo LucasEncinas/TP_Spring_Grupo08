@@ -14,20 +14,26 @@ public class ServicioService {
     public ServicioService(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
     }
-    
+
     public void guardar(Servicio servicio) {
-    servicioRepository.save(servicio);
+        servicioRepository.save(servicio);
     }
 
-    //obtener por id
+    // obtener por id
     public Servicio obtenerPorId(Long id) {
         return servicioRepository.findById(id).orElse(null);
     }
+
     public List<Servicio> obtenerServiciosPorNombre(String nombre) {
         return servicioRepository.findByNombre(nombre);
     }
+
     public List<Servicio> obtenerTodos() {
         return servicioRepository.findAll();
     }
-    
+
+    public void eliminarPorId(Long id) {
+        servicioRepository.deleteById(id);
+    }
+
 }

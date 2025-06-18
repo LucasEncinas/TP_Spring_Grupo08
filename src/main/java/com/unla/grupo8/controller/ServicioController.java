@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Servicio;
@@ -27,51 +27,80 @@ public class ServicioController {
     @Autowired
     private SucursalService sucursalService;
 
-    @GetMapping("/formularioServicio")
-    public String mostrarFormularioNuevo(Model model) {
-        // Obtenemos la lista de todas las sucursales
-        List<Sucursal> sucursales = sucursalService.obtenerTodas();
+    @GetMapping({ "/formularioServicio", "/editar/{id}" })
+    public String mostrarFormularioServicio(@PathVariable(required = false) Long id, Model model) {
 
-        // Agregamos la lista de sucursales al modelo para que esté disponible en la
-        // vista
-        model.addAttribute("sucursales", sucursales);
-        model.addAttribute("servicio", new Servicio()); 
-        return "servicios/formularioServicio";
+        Servicio servicio;
 
-    }
-
-    @PostMapping("/guardar")
-    public String guardarServicio(@RequestParam("nombre") String nombre,
-            @RequestParam("duracion") String duracion,
-            @RequestParam("sucursal") String idSucursal,
-            RedirectAttributes redirectAttributes) {
-
-        // Casteo de duracion Y idSucursal
-        int duracionInt = Integer.parseInt(duracion);
-        Long idSucursalAux = Long.valueOf(idSucursal);
-
-        Sucursal sucursal = sucursalService.obtenerPorId(idSucursalAux);
-        if (sucursal == null) {
-            redirectAttributes.addFlashAttribute("error", "Sucursal no encontrada");
-            return "redirect:/servicios/formularioServicio";
+        if (id != null) {
+            servicio = servicioService.obtenerPorId(id);
+            if (servicio == null) {
+                return "redirect:/servicios/listaServicios";
+            }
+            model.addAttribute("tituloFormulario", "Editar Servicio");
+        } else {
+            servicio = new Servicio();
+            model.addAttribute("tituloFormulario", "Nuevo Servicio");
         }
 
-        Servicio nuevoServicio = new Servicio(nombre, duracionInt);
-        nuevoServicio.setSucursal(sucursal);
-        servicioService.guardar(nuevoServicio);
+        List<Sucursal> sucursales = sucursalService.obtenerTodas();
+        model.addAttribute("sucursales", sucursales);
+        model.addAttribute("servicio", servicio);
 
-        redirectAttributes.addFlashAttribute("servicioId", nuevoServicio.getIdServicio()); 
-
-        redirectAttributes.addFlashAttribute("mensaje", "Servicio guardado correctamente, agregue disponibilidad");
-        return "redirect:/disponibilidad/nuevaDisponibilidad?servicioId=" + nuevoServicio.getIdServicio();
+        return "servicios/formularioServicio";
     }
 
-    @GetMapping
+    @GetMapping("/listaServicios")
     public String listarServicios(Model model) {
         List<Servicio> servicios = servicioService.obtenerTodos();
         model.addAttribute("servicios", servicios);
 
         return "servicios/listaServicios";
+    }
+
+    @PostMapping("/guardar")
+    public String guardarServicio(
+            @ModelAttribute("servicio") Servicio servicio,
+            RedirectAttributes redirectAttributes) {
+
+        Long idSucursal = servicio.getSucursal().getIdSucursal();
+        Sucursal sucursal = sucursalService.obtenerPorId(idSucursal);
+
+        if (sucursal == null) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Sucursal no encontrada");
+            return servicio.getIdServicio() != null
+                    ? "redirect:/servicios/editar/" + servicio.getIdServicio()
+                    : "redirect:/servicios/formularioServicio";
+        }
+
+        boolean esNuevo = (servicio.getIdServicio() == null);
+
+        servicio.setSucursal(sucursal);
+        servicioService.guardar(servicio);
+
+        if (esNuevo) {
+            redirectAttributes.addFlashAttribute("mensaje", "Servicio guardado correctamente, agregue disponibilidad");
+            redirectAttributes.addFlashAttribute("servicioId", servicio.getIdServicio());
+            return "redirect:/disponibilidad/nuevaDisponibilidad?servicioId=" + servicio.getIdServicio();
+        } else {
+            redirectAttributes.addFlashAttribute("mensajeExito", "Servicio modificado correctamente");
+            return "redirect:/servicios/listaServicios";
+        }
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarServicio(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            Servicio servicio = servicioService.obtenerPorId(id);
+            servicioService.eliminarPorId(id);
+            redirectAttributes.addFlashAttribute("mensajeExito",
+                    "✔️ Servicio '" + servicio.getNombre() + "' eliminada correctamente.");
+        } catch (Exception e) {
+            // TODO: handle exception
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "❌ No se pueden eliminar servicios con turnos asignados.");
+        }
+        return "redirect:/servicios/listaServicios";
     }
 
     @GetMapping("/nombre/{nombre}")
