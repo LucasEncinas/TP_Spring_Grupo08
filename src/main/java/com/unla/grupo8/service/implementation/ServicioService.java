@@ -36,4 +36,8 @@ public class ServicioService {
         servicioRepository.deleteById(id);
     }
 
+    public boolean existePorNombre(String nombre) {
+        return !servicioRepository.findByNombre(nombre).isEmpty();
+    }
+
 }

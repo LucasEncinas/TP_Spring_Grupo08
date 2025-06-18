@@ -213,6 +213,15 @@
     </a>
   </div>
 
+  <!-- Mensajes de éxito -->
+  <div th:if="${mensajeCrear}" id="mensajeExitoCrear" class="alert alert-success" role="alert">
+    <p th:text="${mensajeCrear}"></p>
+  </div>
+  <div th:if="${mensajeModificar}" id="mensajeExitoModificar" class="alert alert-success" role="alert">
+    <p th:text="${mensajeModificar}"></p>
+  </div>
+
+
   <!-- Formulario -->
   <div class="container mt-4">
     <div class="card">
@@ -243,17 +252,27 @@
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Guardar Servicio</button>
         </div>
+
+        <!-- Mensajes justo debajo del botón -->
+        <div class="mt-3">
+          <div th:if="${mensaje}" class="alert alert-success text-center fade-msg" role="alert">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="${mensaje}"></span>
+          </div>
+
+          <div th:if="${mensajeError}" class="alert alert-danger text-center fade-msg" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span th:text="${mensajeError}"></span>
+          </div>
+        </div>
       </form>
 
+      <!-- Botón de disponibilidad fuera del form -->
       <a th:if="${servicioId != null}" th:href="@{/disponibilidad/nuevaDisponibilidad(servicioId=${servicioId})}"
         class="btn btn-success mt-3 w-100">Agregar Disponibilidad</a>
 
-      <div th:if="${mensaje}" class="alert alert-success text-center">
-        <span th:text="${mensaje}"></span>
-      </div>
-    </div>
+    </div> 
   </div>
-
   <!-- Footer fijo -->
   <footer>
     © 2025 Sistema de Turnos. Todos los derechos reservados.

@@ -23,5 +23,11 @@ public class GlobalExceptionHandler {
         return "redirect:/turno/formularioTurno"; // 
     }
 
+    @ExceptionHandler(ExcepcionServicioNombre.class)
+    public String manejarNombreRepetido(ExcepcionServicioNombre ex, RedirectAttributes redirect) {
+        redirect.addFlashAttribute("mensajeError", ex.getMessage());
+        return "redirect:/servicios/formularioServicio";
+    }
+
 
 }

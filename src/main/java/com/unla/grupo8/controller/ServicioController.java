@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.exception.ExcepcionServicioNombre;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
@@ -74,6 +75,16 @@ public class ServicioController {
         }
 
         boolean esNuevo = (servicio.getIdServicio() == null);
+
+        //Validación para evitar nombres repetidos (cuando lo creamos o editamos)
+        List<Servicio> existentesConMismoNombre = servicioService.obtenerServiciosPorNombre(servicio.getNombre());
+
+        boolean nombreDuplicado = existentesConMismoNombre.stream()
+                .anyMatch(s -> !s.getIdServicio().equals(servicio.getIdServicio()));
+
+        if (!existentesConMismoNombre.isEmpty() && nombreDuplicado) {
+            throw new ExcepcionServicioNombre("Ya existe un servicio con ese nombre");
+        }
 
         servicio.setSucursal(sucursal);
         servicioService.guardar(servicio);
