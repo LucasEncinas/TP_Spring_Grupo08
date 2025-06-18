@@ -1,7 +1,6 @@
 package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +10,6 @@ import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
 import java.util.List;
-
-
 
 @Controller
 @RequestMapping("/turno")
@@ -27,19 +24,12 @@ public class EmpleadoController {
         this.turnoService = turnoService;
     }
 
-    //@GetMapping("/index")
-    //public String mostrarVistaEmpleado() {
-    //    return "turno/listaTurnos"; // 
-    //}
-
     @GetMapping("/listaTurnos")
     public String verTurnos(Model model) {
         List<Turno> turnos = turnoService.obtenerTodos(); // Obtener desde BD
         model.addAttribute("turnos", turnos);
         return "turno/listaTurnos";
     }
-
-    
 
     // traer todos los empleados
     // @GetMapping

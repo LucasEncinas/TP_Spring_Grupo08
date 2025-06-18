@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExcepcionTurno.class)
     public String manejarExcepcionTurno(ExcepcionTurno ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/turno/formularioTurno"; // 🔹 Redirige a la página de turnos con el mensaje de error
+        return "redirect:/turno/formularioTurno"; // 
     }
 
 

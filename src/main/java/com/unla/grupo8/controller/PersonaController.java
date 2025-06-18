@@ -9,7 +9,6 @@ import com.unla.grupo8.service.implementation.PersonaService;
 
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/personas")
 public class PersonaController {

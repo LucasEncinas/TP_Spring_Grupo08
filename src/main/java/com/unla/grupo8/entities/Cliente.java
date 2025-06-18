@@ -17,10 +17,6 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "idCliente")
 
 public class Cliente extends Persona {
-   // @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
-   // @Column(name = "idCliente") 
-   // private Long idCliente;
 
     @Column(name = "nroCliente", unique = true, nullable = false)
     private String nroCliente;

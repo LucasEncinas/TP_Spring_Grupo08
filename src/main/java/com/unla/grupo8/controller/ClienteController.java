@@ -1,17 +1,11 @@
 package com.unla.grupo8.controller;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.unla.grupo8.entities.Cliente;
-import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.service.implementation.ClienteService;
 
-import ch.qos.logback.core.model.Model;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/cliente")
@@ -27,8 +21,6 @@ public class ClienteController {
     public String mostrarVistaCliente() {
         return "cliente/index"; 
     }
-
-    
 
     // traer todos los clientes
     // @GetMapping

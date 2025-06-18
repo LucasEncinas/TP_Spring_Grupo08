@@ -33,7 +33,6 @@ public class Contacto {
     }
 
     public Object getPersona() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPersona'");
     }
 }
