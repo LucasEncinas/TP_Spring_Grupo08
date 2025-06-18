@@ -22,7 +22,7 @@ public class Contacto {
     @Column(name="telefono", nullable=false)
     private String telefono; 
 
-    @Column(name="direccion", unique=true, nullable=false, length=45)
+    @Column(name="direccion", unique=false, nullable=false, length=45)
     private String direccion;
 
     // Constructor sin referencia a Persona

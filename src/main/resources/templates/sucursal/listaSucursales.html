@@ -203,7 +203,7 @@
                     <td th:if="${sucursal.telefono != null}" th:text="${sucursal.telefono}">Sin teléfono</td>
                     <td th:if="${sucursal.mail != null}" th:text="${sucursal.mail}">Sin mail</td>
                     <td>
-                        <a class="btn-servicio btn btn-light" th:href="null">Ver días</a>
+                        <a class="btn-servicio btn btn-light" th:href="@{'/dia/calendario/' + ${sucursal.idSucursal}}">Ver días</a>
                     </td>
                     <td>
                         <div class="d-flex flex-column align-items-center gap-2">

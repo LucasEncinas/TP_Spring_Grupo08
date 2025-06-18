@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Días</title>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(to right, #e4e9ff, #f0f3ff);
+        }
+
+        #calendarioSucursal {
+            min-height: 500px;
+            max-width: 850px;
+            width: 100%;
+            height: 81vh;
+            margin: 20px auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        #calendarioSucursal h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #3b4e9b;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-bottom: 2px solid #dee2f7;
+            padding-bottom: 12px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        #calendarioSucursal h2::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #6a72d6;
+            border-radius: 2px;
+        }
+
+        .fc-daygrid-event {
+            border: none !important;
+            font-weight: bold;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px 10px;
+            margin-bottom: -15px;
+        }
+
+        .fc-daygrid-day-number {
+            font-size: 1.0rem;
+            color: #2d3436;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 50px;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            transform: translate(-6px, 6px);
+            transition: transform 0.2s ease-in-out;
+            text-decoration: none !important;
+        }
+
+        .fc-daygrid-day-number:hover {
+            transform: scale(1.1);
+        }
+
+        .fc-daygrid-day {
+            height: 50px;
+            width: 50px;
+            font-size: 0.8rem;
+            max-height: 20px;
+        }
+
+        .fc-daygrid-day.fc-day-today {
+            background-color: #d1d7f3 !important;
+            color: white !important;
+            border-radius: 8px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .fc-toolbar-title {
+            text-align: left !important;
+            margin-right: 150px !important;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: none !important;
+            margin-bottom: -8px !important;
+        }
+
+        #calendarioSucursal .fc-toolbar-title {
+            color: #2d3436 !important;
+        }
+
+        .fc-toolbar-title::after {
+            display: none !important;
+        }
+
+        .fc-header-toolbar {
+            margin-bottom: 10px !important;
+        }
+
+        .top-buttons {
+            width: 80%;
+            margin: 40px auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-buttons .btn:hover {
+            transform: translateY(-1px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(85, 109, 245, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .top-buttons .btn:active {
+            transform: scale(1.02);
+        }
+
+        .btn-outline-start {
+            color: #4a69bd;
+            border: 2px solid #4a69bd;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(74, 105, 189, 0.3);
+        }
+
+        .btn-outline-start:hover {
+            background-color: #4a69bd;
+            color: white;
+        }
+
+        .btn-outline-view {
+            color: #6a72d6;
+            border: 2px solid #6a72d6;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(106, 114, 214, 0.3);
+            margin-left: 55px;
+        }
+
+        .btn-outline-view:hover {
+            background-color: #6a72d6;
+            color: white;
+        }
+
+        .btn-outline-logout {
+            color: #a52222;
+            border: 2px solid #a52222;
+            background-color: transparent;
+            box-shadow: 0px 2px 6px rgba(165, 34, 34, 0.3);
+        }
+
+        .btn-outline-logout:hover {
+            background-color: #a52222;
+            color: white;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6a72d6;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .floating-btn:focus {
+            outline: none;
+        }
+
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .modal-content {
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .modal-header {
+            background-color: #6a72d6;
+            color: white;
+            font-weight: bold;
+        }
+
+        .modal-footer .btn {
+            background-color: #6a72d6;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-buttons">
+        <a href="/inicio" class="btn btn-outline-start">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
+                style="vertical-align: middle; margin-right: 6px;">
+                <path
+                    d="M8.354 1.146a.5.5 0 0 0-.708 0l-6.5 6.5A.5.5 0 0 0 1.5 8.5H2v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V11h2v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-6h.5a.5.5 0 0 0 .354-.854l-6.5-6.5z" />
+            </svg>
+            Inicio
+        </a>
+        <a href="/sucursal/listaSucursales" class="btn btn-outline-view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building"
+                viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
+                <path fill-rule="evenodd"
+                    d="M14 13.5V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11.5H.5a.5.5 0 0 0 0 1H2v.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-.5h1.5a.5.5 0 0 0 0-1H14Zm-1 0H3V2h10v11.5ZM4 4h1v1H4V4Zm0 2h1v1H4V6Zm0 2h1v1H4V8Zm0 2h1v1H4v-1Zm3-6h1v1H7V4Zm0 2h1v1H7V6Zm0 2h1v1H7V8Zm0 2h1v1H7v-1Zm3-6h1v1h-1V4Zm0 2h1v1h-1V6Zm0 2h1v1h-1V8Zm0 2h1v1h-1v-1Z" />
+            </svg>
+            Ver Sucursales
+        </a>
+
+        <a href="/logout" class="btn btn-outline-logout">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
+                <path fill-rule="evenodd"
+                    d="M10 12.5a.5.5 0 0 1 .5-.5h2.793L9.146 8.354a.5.5 0 1 1 .708-.708L13.5 11.293V8.5a.5.5 0 0 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5z" />
+                <path fill-rule="evenodd"
+                    d="M4.5 15A1.5 1.5 0 0 1 3 13.5v-11A1.5 1.5 0 0 1 4.5 1h5A1.5 1.5 0 0 1 11 2.5V5a.5.5 0 0 1-1 0V2.5A.5.5 0 0 0 9.5 2h-5a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V11a.5.5 0 0 1 1 0v2.5A1.5 1.5 0 0 1 9.5 15h-5z" />
+            </svg>
+            Cerrar Sesión
+        </a>
+
+    </div>
+
+    <div id='calendarioSucursal'>
+        <div class="text-center">
+            <h2>Días de atención en <span th:text="${nombreSucursal}"></span></h2>
+        </div>
+        <div id="calendarioInner" th:attr="data-id-sucursal=${idSucursal}"></div>
+    </div>
+
+    <!-- Botón Flotante -->
+    <button class="floating-btn" id="btnAddDay">+</button>
+
+    <!-- Modal para agregar día -->
+    <div class="modal" id="addDayModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Día de Atención</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="date" id="dateInput" class="form-control" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="saveDayButton">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar día -->
+    <div class="modal" id="removeDayModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Día de Atención</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de eliminar este día de atención?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmRemoveDayButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendarioInner');
+            const idSucursal = calendarEl.dataset.idSucursal;
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                buttonText: {
+                    today: 'Hoy',
+                },
+                eventColor: '#4CAF50',
+                fixedWeekCount: false,
+                height: 'auto',
+                contentHeight: '70vh',
+                eventClick: function (info) {
+                    var myModal = new bootstrap.Modal(document.getElementById('removeDayModal'));
+                    myModal.show();
+
+                    document.getElementById('confirmRemoveDayButton').addEventListener('click', function () {
+                        let eventId = info.event.id;
+                        let dayId = info.event.extendedProps.id;
+
+                        if (!dayId) {
+                            alert("El ID del día no está definido correctamente.");
+                            return;
+                        }
+
+                        // Realizar la solicitud DELETE para eliminar el día de la base de datos
+                        fetch(`/dia/eliminar?id=${dayId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Eliminar el evento del calendario
+                                    let event = calendar.getEventById(eventId);
+                                    if (event) {
+                                        event.remove(); // Eliminar el evento del calendario
+                                    }
+                                    myModal.hide();
+                                } else {
+                                    alert('Error al eliminar el día.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+                }
+            });
+
+            // Cargar eventos desde el backend y transformarlos
+            fetch('/dia/cargados/' + idSucursal)
+                .then(response => response.json())
+                .then(data => {
+                    const events = data.map(event => ({
+                        id: event.id, // ID del evento
+                        title: event.title,
+                        start: event.start,
+                        color: event.color,
+                        extendedProps: {
+                            id: event.id // ID del día
+                        }
+                    }));
+
+                    calendar.addEventSource(events);
+                });
+
+            calendar.render();
+
+            document.getElementById('btnAddDay').addEventListener('click', function () {
+                var myModal = new bootstrap.Modal(document.getElementById('addDayModal'));
+                myModal.show();
+            });
+
+            document.getElementById('saveDayButton').addEventListener('click', function () {
+                const dateInput = document.getElementById('dateInput').value; // Obtener la fecha ingresada
+
+                if (dateInput) {
+                    const url = `/dia/guardar?fecha=${dateInput}&idSucursal=${idSucursal}`;
+
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Si la respuesta es exitosa, agrega el evento al calendario
+                                calendar.addEvent({
+                                    id: data.id,
+                                    extendedProps: { id: data.id },
+                                    title: 'Día de atención',
+                                    start: dateInput,
+                                    allDay: true
+                                });
+                                window.location.reload();
+                                var myModal = new bootstrap.Modal(document.getElementById('addDayModal'));
+                                myModal.hide();
+                            } else {
+                                alert('Error al guardar el día.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    alert('Por favor, ingresa una fecha válida.');
+                }
+            });
+        });
+
+    </script>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

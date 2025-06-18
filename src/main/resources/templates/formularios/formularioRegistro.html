@@ -175,8 +175,8 @@
             <button type="submit" class="btn-submit">Registrarse</button>
         </form>
 
-        <a th:if="${clienteId != null}" th:href="@{/contacto/index(clienteId=${clienteId})}" class="btn-contacto d-block mt-3 text-center">Agregar contacto</a>
-        <a th:if="${empleadoId != null}" th:href="@{/contacto/index(empleadoId=${empleadoId})}" class="btn-contacto d-block mt-3 text-center">Agregar contacto</a>
+        <a th:if="${clienteId != null}" th:href="@{/contacto/formularioContacto(clienteId=${clienteId})}" class="btn-contacto d-block mt-3 text-center">Agregar contacto</a>
+        <a th:if="${empleadoId != null}" th:href="@{/contacto/formularioContacto(empleadoId=${empleadoId})}" class="btn-contacto d-block mt-3 text-center">Agregar contacto</a>
 
         <div th:if="${mensaje}" class="alert">
             <span th:text="${mensaje}"></span>

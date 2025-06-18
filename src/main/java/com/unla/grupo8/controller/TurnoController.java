@@ -163,7 +163,7 @@ public class TurnoController {
         System.out.println("ID a eliminar: " + id);
         turnoService.eliminarPorId(id);
         redirectAttributes.addFlashAttribute("mensajeExito", "✅ Turno eliminado correctamente.");
-        return "redirect:/empleado/index";
+        return "redirect:/turno/listaTurnos";
     }
 
     @GetMapping("/editar/{id}")
@@ -183,6 +183,6 @@ public class TurnoController {
             Model model) {
         List<Turno> turnosFiltrados = turnoService.obtenerPorFecha(fecha);
         model.addAttribute("turnos", turnosFiltrados);
-        return "empleado/index";
+        return "turno/listaTurnos";
     }
 }

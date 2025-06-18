@@ -1,10 +1,14 @@
 package com.unla.grupo8.service.implementation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.unla.grupo8.entities.Contacto;
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.exception.ExcepcionContacto;
+import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.repositories.SucursalRepository;
 
 @Service
@@ -16,11 +20,23 @@ public class SucursalService {
         this.sucursalRepository = sucursalRepository;
     }
 
+    public void guardarSucursal(Sucursal sucursal) {
+        boolean existe = sucursalRepository.existsByNombre(sucursal.getNombre());
+
+        if (existe) {
+            Optional<Sucursal> sucursalExistente = sucursalRepository.findByNombre(sucursal.getNombre());
+
+            if (sucursalExistente.isPresent())
+                throw new ExcepcionSucursalNombre("La sucursal '" + sucursal.getNombre() + "' ya existe.");
+        }
+        sucursalRepository.save(sucursal);
+    }
+
     public void guardar(Sucursal sucursal) {
         sucursalRepository.save(sucursal);
     }
 
-    public List<Sucursal> obtenerSucursalPorNombre(String nombre) {
+    public Optional<Sucursal> obtenerSucursalPorNombre(String nombre) {
         return sucursalRepository.findByNombre(nombre);
     }
 

@@ -74,7 +74,7 @@ public class RegistroController {
    
     redirectAttributes.addFlashAttribute("personaId", nuevoCliente.getId());
     redirectAttributes.addFlashAttribute("mensaje", "Cliente guardado correctamente, agregue un contacto.");
-    return "redirect:/contacto/index?personaId=" + nuevoCliente.getId();
+    return "redirect:/contacto/formularioContacto?personaId=" + nuevoCliente.getId();
 
         
         } else if (tipo.equals("empleado")) {
@@ -95,7 +95,7 @@ public class RegistroController {
             redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getId());
             redirectAttributes.addFlashAttribute("mensaje", "Empleado guardado correctamente, agregue un contacto");
             
-            return "redirect:/contacto/index?personaId=" + nuevoEmpleado.getId();
+            return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getId();
         }
         // Si no es ni cliente ni empleado, redirigimos con mensaje de error
         redirectAttributes.addFlashAttribute("error", "Tipo de persona no válido");

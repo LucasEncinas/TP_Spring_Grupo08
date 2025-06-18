@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.service.implementation.SucursalService;
 
 @Controller
@@ -69,22 +70,32 @@ public class SucursalController {
             @RequestParam("telefono") String telefono,
             @RequestParam("mail") String mail,
             RedirectAttributes redirectAttributes) {
+        try {
+            Sucursal sucursal;
+            if (id != null) {
+                sucursal = sucursalService.obtenerPorId(id);
+                sucursal.setNombre(nombre);
+                sucursal.setDireccion(direccion);
+                sucursal.setTelefono(telefono);
+                sucursal.setMail(mail);
+            } else {
+                sucursal = new Sucursal(nombre, direccion, telefono, mail);
+            }
 
-        Sucursal sucursal;
-        if (id != null) {
-            sucursal = sucursalService.obtenerPorId(id);
-            sucursal.setNombre(nombre);
-            sucursal.setDireccion(direccion);
-            sucursal.setTelefono(telefono);
-            sucursal.setMail(mail);
-            redirectAttributes.addFlashAttribute("mensajeModificar", "✔️ Sucursal modificada correctamente.");
-        } else {
-            sucursal = new Sucursal(nombre, direccion, telefono, mail);
-            redirectAttributes.addFlashAttribute("mensajeCrear", "✔️ Sucursal creada correctamente.");
+            sucursalService.guardarSucursal(sucursal);
+
+            if (id != null) {
+                redirectAttributes.addFlashAttribute("mensajeModificar", "✔️ Sucursal modificada correctamente.");
+            } else {
+                redirectAttributes.addFlashAttribute("mensajeCrear", "✔️ Sucursal creada correctamente.");
+            }
+
+            return "redirect:/sucursal/formularioSucursal";
+        } catch (ExcepcionSucursalNombre e) {
+            // TODO: handle exception
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/sucursal/formularioSucursal";
         }
-
-        sucursalService.guardar(sucursal);
-        return "redirect:/sucursal/formularioSucursal";
     }
 
 }

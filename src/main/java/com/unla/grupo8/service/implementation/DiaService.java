@@ -25,9 +25,22 @@ public class DiaService {
         diaRepository.save(dia);
         return dia;
     }
-    
+
     public List<Dia> obtenerDiasPorFecha(LocalDate fecha) {
         return diaRepository.findByFecha(fecha);
     }
-    
+
+    public List<Dia> obtenerDiasPorSucursal(Long idSucursal) {
+        return diaRepository.findBySucursalIdSucursal(idSucursal);
+    }
+
+    public void eliminarDia(Long id) {
+        diaRepository.deleteById(id);
+    }
+
+    public Dia obtenerPorId(Long eventoId) {
+        return diaRepository.findById(eventoId)
+                .orElseThrow(() -> new RuntimeException("Día no encontrado con ID: " + eventoId));
+    }
+
 }

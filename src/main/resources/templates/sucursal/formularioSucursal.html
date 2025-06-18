@@ -366,6 +366,10 @@
     <div th:if="${mensajeModificar}" id="mensajeExitoModificar" class="alert alert-success" role="alert">
         <p th:text="${mensajeModificar}"></p>
     </div>
+    <!-- Mensaje de error -->
+    <div th:if="${error}" id="mensajeErrorNombre" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
 </body>
 
 </html>

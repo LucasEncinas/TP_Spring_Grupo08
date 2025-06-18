@@ -1,7 +1,5 @@
 package com.unla.grupo8.controller;
 
-import java.lang.annotation.Repeatable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +22,10 @@ import com.unla.grupo8.service.implementation.PersonaService;
 @Controller
 @RequestMapping("/contacto")
 public class ContactoController {
- 
+
     private final ContactoService contactoService;
 
-     @Autowired
+    @Autowired
     private PersonaService personaService;
     @Autowired
     private ClienteService clienteService;
@@ -38,47 +36,46 @@ public class ContactoController {
         this.contactoService = contactoService;
     }
 
-   @GetMapping("/index")    
-  public String mostrarFormularioContacto(@RequestParam("personaId") Long personaId, Model model) {
-    Persona persona = personaService.obtenerPorId(personaId);
+    @GetMapping("/formularioContacto")
+    public String mostrarFormularioContacto(@RequestParam("personaId") Long personaId, Model model) {
+        Persona persona = personaService.obtenerPorId(personaId);
 
-    if (persona == null) {
-        model.addAttribute("error", "No se encontró la persona con ID: " + personaId);
-        return "redirect:/formularios/formularioRegistro";
+        if (persona == null) {
+            model.addAttribute("error", "No se encontró la persona con ID: " + personaId);
+            return "redirect:/formularios/formularioRegistro";
+        }
+
+        model.addAttribute("persona", persona);
+        model.addAttribute("personaId", personaId);
+        return "contacto/formularioContacto";
     }
 
-    model.addAttribute("persona", persona);
-    model.addAttribute("personaId", personaId);
-    return "contacto/index"; 
-   }
-
-
-
     @PostMapping("/guardar")
-public String guardarContacto(@RequestParam("personaId") Long personaId,
-                              @RequestParam("email") String email,
-                              @RequestParam("telefono") String telefono,
-                              @RequestParam("direccion") String direccion,
-                              Model model,
-                              RedirectAttributes redirectAttributes) {
-    try{
-       Persona persona = personaService.obtenerPorId(personaId);
-       Contacto contacto = new Contacto(email, telefono, direccion);
-       contactoService.guardarContacto(contacto);
+    public String guardarContacto(@RequestParam("personaId") Long personaId,
+            @RequestParam("email") String email,
+            @RequestParam("telefono") String telefono,
+            @RequestParam("direccion") String direccion,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        try {
+            Persona persona = personaService.obtenerPorId(personaId);
+            Contacto contacto = new Contacto(email, telefono, direccion);
+            contactoService.guardarContacto(contacto);
 
-       if (persona instanceof Cliente cliente) {
-        cliente.setContacto(contacto);
-        clienteService.guardarCliente(cliente);
-       } else if (persona instanceof Empleado empleado) {
-        empleado.setContacto(contacto);
-        empleadoService.guardarEmpleado(empleado);
-       }
+            if (persona instanceof Cliente cliente) {
+                cliente.setContacto(contacto);
+                clienteService.guardarCliente(cliente);
+            } else if (persona instanceof Empleado empleado) {
+                empleado.setContacto(contacto);
+                empleadoService.guardarEmpleado(empleado);
+            }
 
-       redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente.");
-       return "redirect:/formularios/formularioRegistro";
-    }  catch (ExcepcionContacto e) { //Captura la excepción si el contacto ya existe
-        model.addAttribute("error", e.getMessage());
-        model.addAttribute("personaId", personaId);
-        return "contacto/index"; }
+            redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente.");
+            return "redirect:/formularios/formularioRegistro";
+        } catch (ExcepcionContacto e) { // Captura la excepción si el contacto ya existe
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("personaId", personaId);
+            return "contacto/formularioContacto";
+        }
     }
 }

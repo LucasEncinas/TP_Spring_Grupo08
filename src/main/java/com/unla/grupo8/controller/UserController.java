@@ -30,7 +30,7 @@ public class UserController {
 
 	@GetMapping("/loginprocess")
 	public String login(@RequestParam String username, @RequestParam String password) {
-		return "redirect:/empleado/index";
+		return "redirect:/turno/listaTurnos";
 	}
 
 }

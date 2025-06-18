@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/empleado")
+@RequestMapping("/turno")
 public class EmpleadoController {
 
     private final EmpleadoService empleadoService;
@@ -29,14 +29,14 @@ public class EmpleadoController {
 
     //@GetMapping("/index")
     //public String mostrarVistaEmpleado() {
-    //    return "empleado/index"; // 
+    //    return "turno/listaTurnos"; // 
     //}
 
-    @GetMapping("/index")
+    @GetMapping("/listaTurnos")
     public String verTurnos(Model model) {
         List<Turno> turnos = turnoService.obtenerTodos(); // Obtener desde BD
         model.addAttribute("turnos", turnos);
-        return "empleado/index";
+        return "turno/listaTurnos";
     }
 
     

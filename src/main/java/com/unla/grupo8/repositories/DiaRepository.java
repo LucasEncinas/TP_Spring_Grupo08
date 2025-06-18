@@ -2,6 +2,7 @@ package com.unla.grupo8.repositories;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,6 +12,8 @@ public interface DiaRepository extends JpaRepository<Dia, Long> {
 
     List<Dia> findByFecha(LocalDate fecha);
 
-    // Puedes agregar más métodos personalizados si es necesario
+    List<Dia> findBySucursalIdSucursal(Long idSucursal);
+
+    Optional<Dia> findById(Long id);
     
 }
