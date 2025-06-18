@@ -1,220 +1,253 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Nuevo Turno</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background: linear-gradient(to right, #e4e9ff, #f0f3ff);
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-        }
+      body {
+        background: linear-gradient(to right, #e4e9ff, #f0f3ff);
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+      }
 
-        .topbar {
-            background-color: #f8f9fa;
-            padding: 10px 0;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            position: relative;
-            z-index: 10;
-        }
+      .topbar {
+        background-color: #f8f9fa;
+        padding: 10px 0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 10;
+      }
 
-        .topbar .topbar-link {
-            color: #343a40;
-            font-weight: 500;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s ease;
-        }
+      .topbar .topbar-link {
+        color: #343a40;
+        font-weight: 500;
+        text-decoration: none;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+      }
 
-        .topbar .topbar-link:hover {
-            color: #556df5;
-        }
+      .topbar .topbar-link:hover {
+        color: #556df5;
+      }
 
-        header {
-            background-color: #556df5;
-            padding: 50px 20px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
+      header {
+        background-color: #556df5;
+        padding: 50px 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        header h1 {
-            margin-bottom: 20px;
-            font-size: 2.4rem;
-            font-weight: bold;
-        }
+      header h1 {
+        margin-bottom: 20px;
+        font-size: 2.4rem;
+        font-weight: bold;
+      }
 
-        .main-content {
-            padding-bottom: 70px;
-        }
+      .main-content {
+        padding-bottom: 70px;
+      }
 
-        .form-container {
-            background-color: white;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-        }
+      .form-container {
+        background-color: white;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      }
 
-        label {
-            font-weight: 600;
-            margin-top: 12px;
-            margin-bottom: 6px;
-            display: block;
-        }
+      label {
+        font-weight: 600;
+        margin-top: 12px;
+        margin-bottom: 6px;
+        display: block;
+      }
 
-        input,
-        select {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            margin-bottom: 12px;
-            transition: border-color 0.3s ease;
-        }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+        transition: border-color 0.3s ease;
+      }
 
-        input:focus,
-        select:focus {
-            border-color: #556df5;
-            outline: none;
-        }
+      input:focus,
+      select:focus {
+        border-color: #556df5;
+        outline: none;
+      }
 
-        .btn-guardar,
-        .btn-volver {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 15px;
-            margin-top: 10px;
-            border: none;
-        }
+      .btn-guardar,
+      .btn-volver {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 15px;
+        margin-top: 10px;
+        border: none;
+      }
 
-        .btn-guardar {
-            background-color: #556df5;
-            color: white;
-        }
+      .btn-guardar {
+        background-color: #556df5;
+        color: white;
+      }
 
-        .btn-guardar:hover {
-            background-color: #3e52c6;
-        }
+      .btn-guardar:hover {
+        background-color: #3e52c6;
+      }
 
-        .btn-volver {
-            background-color: #adb5bd;
-            color: white;
-        }
+      .btn-volver {
+        background-color: #adb5bd;
+        color: white;
+      }
 
-        .btn-volver:hover {
-            background-color: #6c757d;
-        }
+      .btn-volver:hover {
+        background-color: #6c757d;
+      }
 
-        .alert {
-            background-color: #ffe1e1;
-            color: #a52222;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
+      .alert {
+        background-color: #ffe1e1;
+        color: #a52222;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+      }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f1f3f6;
-            text-align: center;
-            padding: 16px 10px;
-            font-size: 14px;
-            color: #666;
-            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
-            z-index: 20;
-        }
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f1f3f6;
+        text-align: center;
+        padding: 16px 10px;
+        font-size: 14px;
+        color: #666;
+        box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
+        z-index: 20;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="main-content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div
+          class="container d-flex justify-content-between align-items-center"
+        >
+          <a href="/inicio" class="topbar-link">Inicio</a>
+          <a href="/logout" class="topbar-link">Cerrar sesión</a>
+        </div>
+      </div>
 
-        <!-- Topbar -->
-        <div class="topbar">
-            <div class="container d-flex justify-content-between align-items-center">
-                <a href="/inicio" class="topbar-link">Inicio</a>
-                <a href="/logout" class="topbar-link">Cerrar sesión</a>
-            </div>
+      <!-- Header -->
+      <header>
+        <h1>Crear Turno</h1>
+      </header>
+
+      <!-- Formulario -->
+      <div class="form-container">
+        <div th:if="${error}" class="alert alert-danger">
+          <p th:text="${error}"></p>
         </div>
 
-        <!-- Header -->
-        <header>
-            <h1>Crear Turno</h1>
-        </header>
-
-        <!-- Formulario -->
-        <div class="form-container">
-            <div th:if="${#lists.isEmpty(clientes)}" class="alert">
-                ⚠ No hay clientes disponibles. Agregue clientes antes de crear un turno.
-            </div>
-            <div th:if="${#lists.isEmpty(empleados)}" class="alert">
-                ⚠ No hay empleados disponibles. Agregue empleados antes de crear un turno.
-            </div>
-            <div th:if="${#lists.isEmpty(servicios)}" class="alert">
-                ⚠ No hay servicios disponibles. Agregue servicios antes de crear un turno.
-            </div>
-
-            <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
-                <input type="hidden" th:field="*{idTurno}" />
-                <input type="hidden" th:field="*{dia.id}" />
-
-                <label for="fecha">Fecha del turno:</label>
-                <input type="date" th:field="*{dia.fecha}" id="fecha" required />
-
-                <label for="hora">Hora del turno:</label>
-                <input type="time" th:field="*{hora}" id="hora" required />
-
-                <label for="cliente">Cliente:</label>
-                <select th:field="*{cliente.idPersona}" id="cliente" required>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option th:each="cliente : ${clientes}" th:value="${cliente.idPersona}"
-                        th:text="${cliente.nombre + ' ' + cliente.apellido}"></option>
-                </select>
-
-                <label for="empleado">Empleado:</label>
-                <select th:field="*{empleado.idPersona}" id="empleado" required>
-                    <option value="" disabled selected>Seleccione un empleado</option>
-                    <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}"
-                        th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
-                </select>
-
-                <label for="servicio">Servicio:</label>
-                <select th:field="*{servicio.idServicio}" id="servicio" required>
-                    <option value="" disabled selected>Seleccione un servicio</option>
-                    <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
-                        th:text="${servicio.nombre}"></option>
-                </select>
-
-                <label for="estado">Estado:</label>
-                <select th:field="*{estado}" id="estado" required>
-                    <option value="Confirmado" th:selected="${turno.estado == 'Confirmado'}">Confirmado</option>
-                    <option value="Pendiente" th:selected="${turno.estado == 'Pendiente'}">Pendiente</option>
-                    <option value="Cancelado" th:selected="${turno.estado == 'Cancelado'}">Cancelado</option>
-                </select>
-
-                <button type="submit" class="btn-guardar">Guardar Turno</button>
-                <button type="button" class="btn-volver" onclick="history.back()">Volver</button>
-            </form>
+        <div th:if="${#lists.isEmpty(clientes)}" class="alert">
+          ⚠ No hay clientes disponibles. Agregue clientes antes de crear un
+          turno.
         </div>
+        <div th:if="${#lists.isEmpty(empleados)}" class="alert">
+          ⚠ No hay empleados disponibles. Agregue empleados antes de crear un
+          turno.
+        </div>
+        <div th:if="${#lists.isEmpty(servicios)}" class="alert">
+          ⚠ No hay servicios disponibles. Agregue servicios antes de crear un
+          turno.
+        </div>
+
+        <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
+          <input type="hidden" th:field="*{idTurno}" />
+          <input type="hidden" th:field="*{dia.id}" />
+
+          <label for="fecha">Fecha del turno:</label>
+          <input type="date" th:field="*{dia.fecha}" id="fecha" required />
+
+          <label for="hora">Hora del turno:</label>
+          <input type="time" th:field="*{hora}" id="hora" required />
+
+          <label for="cliente">Cliente:</label>
+          <select th:field="*{cliente.idPersona}" id="cliente" required>
+            <option value="" disabled selected>Seleccione un cliente</option>
+            <option
+              th:each="cliente : ${clientes}"
+              th:value="${cliente.idPersona}"
+              th:text="${cliente.nombre + ' ' + cliente.apellido}"
+            ></option>
+          </select>
+
+          <label for="empleado">Empleado:</label>
+          <select th:field="*{empleado.idPersona}" id="empleado" required>
+            <option value="" disabled selected>Seleccione un empleado</option>
+            <option
+              th:each="empleado : ${empleados}"
+              th:value="${empleado.idPersona}"
+              th:text="${empleado.nombre + ' ' + empleado.apellido}"
+            ></option>
+          </select>
+
+          <label for="servicio">Servicio:</label>
+          <select th:field="*{servicio.idServicio}" id="servicio" required>
+            <option value="" disabled selected>Seleccione un servicio</option>
+            <option
+              th:each="servicio : ${servicios}"
+              th:value="${servicio.idServicio}"
+              th:text="${servicio.nombre}"
+            ></option>
+          </select>
+
+          <label for="estado">Estado:</label>
+          <select th:field="*{estado}" id="estado" required>
+            <option
+              value="Confirmado"
+              th:selected="${turno.estado == 'Confirmado'}"
+            >
+              Confirmado
+            </option>
+            <option
+              value="Pendiente"
+              th:selected="${turno.estado == 'Pendiente'}"
+            >
+              Pendiente
+            </option>
+            <option
+              value="Cancelado"
+              th:selected="${turno.estado == 'Cancelado'}"
+            >
+              Cancelado
+            </option>
+          </select>
+
+          <button type="submit" class="btn-guardar">Guardar Turno</button>
+          <button type="button" class="btn-volver" onclick="history.back()">
+            Volver
+          </button>
+        </form>
+      </div>
     </div>
 
-    <footer>
-        © 2024 Sistema de Turnos. Todos los derechos reservados.
-    </footer>
-</body>
-
+    <footer>© 2024 Sistema de Turnos. Todos los derechos reservados.</footer>
+  </body>
 </html>

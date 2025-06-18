@@ -16,4 +16,12 @@ public class GlobalExceptionHandler {
     public String manejarNombreSucursalDuplicado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
         return "sucursal/formularioSucursal";
     }
+
+    @ExceptionHandler(ExcepcionTurno.class)
+    public String manejarExcepcionTurno(ExcepcionTurno ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        return "redirect:/turno/formularioTurno"; // 🔹 Redirige a la página de turnos con el mensaje de error
+    }
+
+
 }
