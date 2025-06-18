@@ -12,49 +12,60 @@
             min-height: 100vh;
             margin: 0;
             font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
-
-        .topbar {
-            background-color: #f8f9fa;
-            padding: 10px 0;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            position: relative;
-            z-index: 10;
-        }
-
-        .topbar .topbar-link {
-            color: #343a40;
-            font-weight: 500;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s ease;
-        }
-
-        .topbar .topbar-link:hover {
-            color: #556df5;
-        }
-
 
         header {
-            background-color: #556df5;
-            padding: 50px 20px;
-            text-align: center;
+            background: linear-gradient(to right, #556df5, #7c8dfb);
+            padding: 40px 20px 50px 20px;
             color: white;
+            position: relative;
+            text-align: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            margin-bottom: 25px;
-            font-size: 2.4rem;
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 0.9rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.4s ease, transform 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .dashboard {
-            max-width: 1000px;
+            max-width: 700px;
             margin: auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-            padding: 40px 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px 15px;
         }
 
 
@@ -63,158 +74,156 @@
             color: inherit;
         }
 
-        .card-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 8px;
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card-option {
             background-color: white;
             border-radius: 16px;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+            padding: 25px 20px;
             text-align: center;
-            padding: 40px 30px;
             transition: transform 0.2s ease, box-shadow 0.3s ease;
-            border-top: 6px solid #556df5;
+            border-top: 5px solid #556df5;
             min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
         }
 
+        .dashboard .card-link:nth-child(1) .card-option {
+            animation-delay: 0.1s;
+        }
+
+        .dashboard .card-link:nth-child(2) .card-option {
+            animation-delay: 0.2s;
+        }
+
+        .dashboard .card-link:nth-child(3) .card-option {
+            animation-delay: 0.3s;
+        }
+
+        .dashboard .card-link:nth-child(4) .card-option {
+            animation-delay: 0.4s;
+        }
 
         .card-option:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+            border-top-color: #3345d5;
+            background-color: #f7f8ff;
         }
 
-        .card-option svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 15px;
-            fill: #556df5;
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px auto;
+            border-radius: 50%;
+            background-color: #e4e9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #556df5;
         }
 
         .card-option h5 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #333;
+            margin-bottom: 8px;
         }
 
-        #contenedorTarjetas {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            display: none;
-        }
-
-        #contenedorTarjetas.visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .main-content {
-            padding-bottom: 70px;
+        .card-description {
+            font-size: 0.9rem;
+            color: #666;
         }
 
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
             background-color: #f1f3f6;
             text-align: center;
-            padding: 16px 10px;
+            padding: 14px 10px;
             font-size: 14px;
             color: #666;
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
-            z-index: 20;
+            margin-top: auto;
         }
     </style>
 </head>
 
 <body>
-    <div class="main-content">
-        <div class="topbar">
-            <div class="container d-flex justify-content-between align-items-center">
-                <a href="/inicio" class="topbar-link">Inicio</a>
-                <a href="/logout" class="topbar-link">Cerrar sesión</a>
+
+    <header>
+        <a href="/logout" class="logout-btn">
+            <i class="bi bi-box-arrow-right" style="vertical-align: middle; margin-right: 5px;"></i>
+            Cerrar sesión
+        </a>
+        <h1>Sistema de Turnos</h1>
+        <p>Panel de gestión para el personal autorizado</p>
+    </header>
+
+    <div class="dashboard">
+
+        <!-- Servicios -->
+        <a href="/servicios" class="card-link">
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="bi bi-gear-fill"></i>
+                </div>
+                <h5>Servicios</h5>
+                <p class="card-description">Gestionar servicios</p>
             </div>
-        </div>
+        </a>
 
-        <header>
-            <h1>Sistema de Turnos</h1>
-            <button id="toggleBtn" onclick="toggleOpciones()" class="btn btn-light fw-bold">
-                Mostrar opciones
-            </button>
-        </header>
-
-        <div id="contenedorTarjetas">
-            <div class="dashboard">
-
-                <!-- Servicios -->
-                <a href="/servicios" class="card-link">
-                    <div class="card-option">
-                        <i class="bi bi-gear-fill" style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
-                        <h5>Servicios</h5>
-                        <p class="card-description">Creá, editá y organizá los servicios que ofrecés</p>
-                    </div>
-                </a>
-
-                <!-- Turnos -->
-                <a href="/turno/listaTurnos" class="card-link">
-                    <div class="card-option">
-                        <i class="bi bi-calendar-check-fill"
-                            style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
-                        <h5>Turnos</h5>
-                        <p class="card-description">Asigná y supervisá turnos desde una vista centralizada</p>
-                    </div>
-                </a>
-
-                <!-- Sucursales -->
-                <a href="/sucursal/listaSucursales" class="card-link">
-                    <div class="card-option">
-                        <i class="bi bi-geo-alt-fill" style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
-                        <h5>Sucursales</h5>
-                        <p class="card-description">Administrá los puntos de atención disponibles</p>
-                    </div>
-                </a>
-
-                <!-- Usuarios -->
-                <a href="/formularios/formularioRegistro" class="card-link">
-                    <div class="card-option">
-                        <i class="bi bi-person-plus-fill"
-                            style="font-size: 2rem; color: #556df5; margin-bottom: 15px;"></i>
-                        <h5>Usuarios</h5>
-                        <p class="card-description">Registrá nuevos usuarios y gestioná sus datos</p>
-                    </div>
-                </a>
-
-
+        <!-- Turnos -->
+        <a href="/turno/listaTurnos" class="card-link">
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="bi bi-calendar-check-fill"></i>
+                </div>
+                <h5>Turnos</h5>
+                <p class="card-description">Visualizar y gestionar turnos</p>
             </div>
-        </div>
+        </a>
+
+        <!-- Sucursales -->
+        <a href="/sucursal/listaSucursales" class="card-link">
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h5>Sucursales</h5>
+                <p class="card-description">Gestionar sucursales</p>
+            </div>
+        </a>
+
+        <!-- Usuarios -->
+        <a href="/formularios/formularioRegistro" class="card-link">
+            <div class="card-option">
+                <div class="card-icon">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <h5>Usuarios</h5>
+                <p class="card-description">Registrar nuevos usuarios</p>
+            </div>
+        </a>
+
     </div>
 
     <footer>
-        © 2024 Sistema de Turnos. Todos los derechos reservados.
+        © 2025 Sistema de Turnos. Todos los derechos reservados.
     </footer>
-
-    <script>
-        function toggleOpciones() {
-            const contenedor = document.getElementById("contenedorTarjetas");
-            const boton = document.getElementById("toggleBtn");
-
-            if (contenedor.classList.contains("visible")) {
-                contenedor.classList.remove("visible");
-                setTimeout(() => contenedor.style.display = "none", 300);
-                boton.textContent = "Mostrar opciones";
-            } else {
-                contenedor.style.display = "block";
-                setTimeout(() => contenedor.classList.add("visible"), 10);
-                boton.textContent = "Ocultar opciones";
-            }
-        }
-    </script>
 </body>
-
 
 </html>

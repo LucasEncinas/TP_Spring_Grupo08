@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.unla.grupo8.entities.Contacto;
 import com.unla.grupo8.entities.Sucursal;
-import com.unla.grupo8.exception.ExcepcionContacto;
 import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.repositories.SucursalRepository;
 
@@ -21,15 +19,19 @@ public class SucursalService {
     }
 
     public void guardarSucursal(Sucursal sucursal) {
-        boolean existe = sucursalRepository.existsByNombre(sucursal.getNombre());
+        if (sucursal.getIdSucursal() != null && sucursalRepository.existsById(sucursal.getIdSucursal())) {
+            sucursalRepository.save(sucursal);
+        } else {
+            boolean existe = sucursalRepository.existsByNombre(sucursal.getNombre());
 
-        if (existe) {
-            Optional<Sucursal> sucursalExistente = sucursalRepository.findByNombre(sucursal.getNombre());
+            if (existe) {
+                Optional<Sucursal> sucursalExistente = sucursalRepository.findByNombre(sucursal.getNombre());
 
-            if (sucursalExistente.isPresent())
-                throw new ExcepcionSucursalNombre("La sucursal '" + sucursal.getNombre() + "' ya existe.");
+                if (sucursalExistente.isPresent())
+                    throw new ExcepcionSucursalNombre("La sucursal '" + sucursal.getNombre() + "' ya existe.");
+            }
+            sucursalRepository.save(sucursal);
         }
-        sucursalRepository.save(sucursal);
     }
 
     public void guardar(Sucursal sucursal) {

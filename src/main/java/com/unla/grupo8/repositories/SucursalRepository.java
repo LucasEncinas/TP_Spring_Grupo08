@@ -1,6 +1,5 @@
 package com.unla.grupo8.repositories;
 
-import java.lang.foreign.Linker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +18,7 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
     List<Sucursal> findByTelefono(String telefono);
 
     boolean existsByNombre(String nombre);
+
+    boolean existsById(Long id);
     
 }
