@@ -12,6 +12,11 @@ public class GlobalExceptionHandler {
         return "contacto/formularioContacto";
     }
 
+    @ExceptionHandler(ExcepcionSucursalEliminar.class)
+    public String manejarEliminarSucursal(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
+        return "sucursal/formularioSucursal";
+    }
+
     @ExceptionHandler(ExcepcionSucursalNombre.class)
     public String manejarNombreSucursalDuplicado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
         return "sucursal/formularioSucursal";

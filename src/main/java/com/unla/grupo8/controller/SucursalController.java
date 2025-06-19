@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.exception.ExcepcionSucursalEliminar;
 import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.service.implementation.SucursalService;
 
@@ -46,10 +47,9 @@ public class SucursalController {
             sucursalService.eliminarPorId(id);
             redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
                     "✔️ Sucursal '" + sucursal.getNombre() + "' eliminada correctamente.");
-        } catch (Exception e) {
+        } catch (ExcepcionSucursalEliminar e) {
             // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeErrorEliminar",
-                    "❌ No se pueden eliminar sucursales con turnos asignados.");
+            redirectAttributes.addFlashAttribute("mensajeErrorEliminar", e.getMessage());
         }
         return "redirect:/sucursal/listaSucursales";
     }

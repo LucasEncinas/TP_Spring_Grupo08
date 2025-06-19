@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.exception.ExcepcionSucursalEliminar;
 import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.repositories.SucursalRepository;
 
@@ -48,6 +49,9 @@ public class SucursalService {
     }
 
     public void eliminarPorId(Long id) {
+        Sucursal sucursal = obtenerPorId(id);
+        if (!sucursal.getTurnos().isEmpty())
+            throw new ExcepcionSucursalEliminar("❌ No se pueden eliminar sucursales con turnos asignados.");
         sucursalRepository.deleteById(id);
     }
 
