@@ -3,8 +3,8 @@ package com.unla.grupo8.service;
 import java.util.Map;
 
 public interface IEmailService {
-    void sendSimpleMessage(String to, String subject, String text);
+    void enviarMensajeSimple(String to, String subject, String text);
 
-    void sendHtmlMessage(String to, String subject, String templateName, Map<String, Object> templateModel);
+    void enviarMensajeHtml(String to, String subject, String templateName, Map<String, Object> templateModel);
 
 }

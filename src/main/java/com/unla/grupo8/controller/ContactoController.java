@@ -65,12 +65,15 @@ public class ContactoController {
             if (persona instanceof Cliente cliente) {
                 cliente.setContacto(contacto);
                 clienteService.guardarCliente(cliente);
+                redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Cliente guardado correctamente.");
+                return "redirect:/cliente/listaClientes";
             } else if (persona instanceof Empleado empleado) {
                 empleado.setContacto(contacto);
                 empleadoService.guardarEmpleado(empleado);
+                redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Empleado guardado correctamente.");
+                return "redirect:/empleado/listaEmpleados";
             }
 
-            redirectAttributes.addFlashAttribute("mensaje", "Contacto guardado correctamente.");
             return "redirect:/formularios/formularioRegistro";
         } catch (ExcepcionContacto e) { // Captura la excepción si el contacto ya existe
             model.addAttribute("error", e.getMessage());

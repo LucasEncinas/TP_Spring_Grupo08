@@ -33,7 +33,7 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void enviarMensajeSimple(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(to);
@@ -43,7 +43,7 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void sendHtmlMessage(String to, String subject, String templateName, Map<String, Object> templateModel) {
+    public void enviarMensajeHtml(String to, String subject, String templateName, Map<String, Object> templateModel) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
         try {

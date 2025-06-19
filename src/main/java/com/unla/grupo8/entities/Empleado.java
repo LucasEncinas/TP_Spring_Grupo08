@@ -24,7 +24,6 @@ public class Empleado extends Persona {
     @Column(name = "Nro_legajo", unique = true, nullable = false, length = 15)
     private String legajo;
 
-    //relacion con Turno
     @OneToMany(mappedBy = "empleado")
     private List<Turno> turnos = new ArrayList<>();
 

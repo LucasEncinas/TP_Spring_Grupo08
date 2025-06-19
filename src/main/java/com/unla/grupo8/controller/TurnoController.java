@@ -65,6 +65,13 @@ public class TurnoController {
         this.emailService = emailService;
     }
 
+    @GetMapping("/listaTurnos")
+    public String verTurnos(Model model) {
+        List<Turno> turnos = turnoService.obtenerTodos();
+        model.addAttribute("turnos", turnos);
+        return "turno/listaTurnos";
+    }
+
     @GetMapping("/formularioTurno")
     public String mostrarFormularioTurno(Model model) {
         model.addAttribute("turno", new Turno());
@@ -147,7 +154,7 @@ public class TurnoController {
         variables.put("empleado", turno.getEmpleado().getNombre());
         variables.put("sucursal", turno.getSucursal().getNombre());
 
-        emailService.sendHtmlMessage(
+        emailService.enviarMensajeHtml(
                 emailCliente,
                 "¡Turno confirmado!",
                 "email/turno-confirmado",

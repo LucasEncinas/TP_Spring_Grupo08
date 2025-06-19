@@ -31,8 +31,8 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @GetMapping("/send-email")
-    public String sendEmail(@RequestParam("idTurno") Long idTurno, Model model) {
+    @GetMapping("/enviar-email")
+    public String enviarEmail(@RequestParam("idTurno") Long idTurno, Model model) {
         Turno turno = turnoService.buscarPorId(idTurno);
 
         String emailCliente = turno.getCliente().getContacto().getEmail();
@@ -47,7 +47,7 @@ public class EmailController {
                 + "Gracias por elegirnos.";
 
         // Enviamos del correo
-        emailService.sendSimpleMessage(emailCliente, "¡Turno reservado con éxito!",
+        emailService.enviarMensajeSimple(emailCliente, "¡Turno reservado con éxito!",
                 cuerpo);
 
         // Agregamos el correo al modelo para mostrarlo en la vista
@@ -56,8 +56,8 @@ public class EmailController {
         return "email/enviado";
     }
 
-    @GetMapping("/send-html-email")
-    public String sendHtmlEmail(@RequestParam("idTurno") Long idTurno, Model model) {
+    @GetMapping("/enviar-html-email")
+    public String enviarEmailHtml(@RequestParam("idTurno") Long idTurno, Model model) {
         Turno turno = turnoService.buscarPorId(idTurno);
 
         String emailCliente = turno.getCliente().getContacto().getEmail();
@@ -69,7 +69,7 @@ public class EmailController {
         variables.put("empleado", turno.getEmpleado().getNombre());
         variables.put("sucursal", turno.getSucursal().getNombre());
 
-        emailService.sendHtmlMessage(
+        emailService.enviarMensajeHtml(
                 emailCliente,
                 "¡Turno confirmado!",
                 "email/turno-confirmado",

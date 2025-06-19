@@ -1,34 +1,29 @@
 package com.unla.grupo8.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.unla.grupo8.entities.Turno;
+import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.service.implementation.EmpleadoService;
-import com.unla.grupo8.service.implementation.TurnoService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/turno")
+@RequestMapping("/empleado")
 public class EmpleadoController {
 
     private final EmpleadoService empleadoService;
-    @Autowired
-    private final TurnoService turnoService;
 
-    public EmpleadoController(EmpleadoService empleadoService, TurnoService turnoService) {
+    public EmpleadoController(EmpleadoService empleadoService) {
         this.empleadoService = empleadoService;
-        this.turnoService = turnoService;
     }
 
-    @GetMapping("/listaTurnos")
-    public String verTurnos(Model model) {
-        List<Turno> turnos = turnoService.obtenerTodos(); // Obtener desde BD
-        model.addAttribute("turnos", turnos);
-        return "turno/listaTurnos";
+    @GetMapping("/listaEmpleados")
+    public String mostrarListaEmpleados(Model model) {
+        List<Empleado> empleados = empleadoService.obtenerTodos();
+        model.addAttribute("empleados", empleados);
+        return "empleado/listaEmpleados";
     }
 
     // traer todos los empleados
