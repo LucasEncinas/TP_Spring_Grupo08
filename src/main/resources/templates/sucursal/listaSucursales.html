@@ -306,12 +306,24 @@
             </a>
         </div>
 
-        <!-- Mensajes -->
-        <div th:if="${mensajeExito}" class="alert alert-success text-center" role="alert">
-            <p th:text="${mensajeExito}"></p>
+        <!-- Mensajes de éxito -->
+        <div th:if="${mensajeExitoCrear}" id="mensajeExitoCrear" class="alert alert-success" role="alert">
+            <p th:text="${mensajeExitoCrear}"></p>
         </div>
-        <div th:if="${mensajeError}" class="alert alert-danger text-center" role="alert">
-            <p th:text="${mensajeError}"></p>
+        <div th:if="${mensajeExitoModificar}" id="mensajeExitoModificar" class="alert alert-success" role="alert">
+            <p th:text="${mensajeExitoModificar}"></p>
+        </div>
+        <div th:if="${mensajeExitoEliminar}" id="mensajeExitoEliminar" class="alert alert-success text-center"
+            role="alert">
+            <p th:text="${mensajeExitoEliminar}"></p>
+        </div>
+        <!-- Mensajes de error -->
+        <div th:if="${mensajeErrorNombre}" id="mensajeErrorNombre" class="alert alert-danger" role="alert">
+            <p th:text="${mensajeErrorNombre}"></p>
+        </div>
+        <div th:if="${mensajeErrorEliminar}" id="mensajeErrorEliminar" class="alert alert-danger text-center"
+            role="alert">
+            <p th:text="${mensajeErrorEliminar}"></p>
         </div>
 
         <!-- Tabla de sucursales -->

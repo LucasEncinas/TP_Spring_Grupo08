@@ -19,19 +19,16 @@ public class SucursalService {
     }
 
     public void guardarSucursal(Sucursal sucursal) {
-        if (sucursal.getIdSucursal() != null && sucursalRepository.existsById(sucursal.getIdSucursal())) {
-            sucursalRepository.save(sucursal);
-        } else {
-            boolean existe = sucursalRepository.existsByNombre(sucursal.getNombre());
-
-            if (existe) {
-                Optional<Sucursal> sucursalExistente = sucursalRepository.findByNombre(sucursal.getNombre());
-
-                if (sucursalExistente.isPresent())
-                    throw new ExcepcionSucursalNombre("La sucursal '" + sucursal.getNombre() + "' ya existe.");
+        Optional<Sucursal> sucursalExistente = sucursalRepository.findByNombre(sucursal.getNombre());
+        if (sucursalExistente.isPresent()) {
+            boolean esMismaSucursal = sucursal.getIdSucursal() != null
+                    && sucursal.getIdSucursal().equals(sucursalExistente.get().getIdSucursal());
+            if (!esMismaSucursal) {
+                throw new ExcepcionSucursalNombre(
+                        "❌ Ya existe una sucursal con el nombre '" + sucursal.getNombre() + "'.");
             }
-            sucursalRepository.save(sucursal);
         }
+        sucursalRepository.save(sucursal);
     }
 
     public void guardar(Sucursal sucursal) {

@@ -44,11 +44,11 @@ public class SucursalController {
         try {
             Sucursal sucursal = sucursalService.obtenerPorId(id);
             sucursalService.eliminarPorId(id);
-            redirectAttributes.addFlashAttribute("mensajeExito",
+            redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
                     "✔️ Sucursal '" + sucursal.getNombre() + "' eliminada correctamente.");
         } catch (Exception e) {
             // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeError",
+            redirectAttributes.addFlashAttribute("mensajeErrorEliminar",
                     "❌ No se pueden eliminar sucursales con turnos asignados.");
         }
         return "redirect:/sucursal/listaSucursales";
@@ -85,16 +85,18 @@ public class SucursalController {
             sucursalService.guardarSucursal(sucursal);
 
             if (id != null) {
-                redirectAttributes.addFlashAttribute("mensajeModificar", "✔️ Sucursal modificada correctamente.");
+                redirectAttributes.addFlashAttribute("mensajeExitoModificar",
+                        "✔️ Sucursal '" + sucursal.getNombre() + "' modificada correctamente.");
             } else {
-                redirectAttributes.addFlashAttribute("mensajeCrear", "✔️ Sucursal creada correctamente.");
+                redirectAttributes.addFlashAttribute("mensajeExitoCrear",
+                        "✔️ Sucursal '" + sucursal.getNombre() + "' creada correctamente.");
             }
 
-            return "redirect:/sucursal/formularioSucursal";
+            return "redirect:/sucursal/listaSucursales";
         } catch (ExcepcionSucursalNombre e) {
             // TODO: handle exception
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/sucursal/formularioSucursal";
+            redirectAttributes.addFlashAttribute("mensajeErrorNombre", e.getMessage());
+            return "redirect:/sucursal/listaSucursales";
         }
     }
 
