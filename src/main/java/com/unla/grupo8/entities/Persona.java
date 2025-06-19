@@ -32,7 +32,7 @@ public class Persona {
     @Column(name="fecha_nacimiento", unique = true, nullable=false)
     private LocalDate fechaNacimiento;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contacto_id")
     private Contacto contacto;
 
@@ -45,8 +45,4 @@ public class Persona {
         this.contacto = contacto;
     }
 
-    //getter 
-    public Long getId() {
-        return idPersona;
-    }
 }

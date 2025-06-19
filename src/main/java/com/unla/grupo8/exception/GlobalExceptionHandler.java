@@ -7,6 +7,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ExcepcionClienteEliminar.class)
+    public String manejarEliminarCliente(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
+        return "cliente/listaClientes";
+    }
+
     @ExceptionHandler(ExcepcionContacto.class)
     public String manejarContactoDuplicado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
         return "contacto/formularioContacto";
