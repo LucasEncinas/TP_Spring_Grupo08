@@ -2,6 +2,9 @@ package com.unla.grupo8.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,16 +21,16 @@ public class Sucursal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSucursal;
 
-    @Column(name="nombre", unique=true, nullable=false, length=45)
+    @Column(name = "nombre", unique = true, nullable = false, length = 45)
     private String nombre;
 
-    @Column(name="direccion", nullable=false)
-    private String direccion; 
+    @Column(name = "direccion", nullable = false)
+    private String direccion;
 
-    @Column(name="telefono", unique=true, nullable=false, length=45)
+    @Column(name = "telefono", unique = true, nullable = false, length = 45)
     private String telefono;
 
-    @Column(name="mail", unique=true, nullable=false, length=45)
+    @Column(name = "mail", unique = true, nullable = false, length = 45)
     private String mail;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -36,10 +39,12 @@ public class Sucursal {
     @OneToMany(mappedBy = "sucursal")
     private List<Turno> turnos;
 
-    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "sucursales")
+    @JsonBackReference
     private List<Servicio> servicios;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Dia> dias;
 
     public Sucursal(String nombre, String direccion, String telefono, String mail) {

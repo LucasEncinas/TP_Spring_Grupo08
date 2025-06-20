@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTurno;
 
-    @Column(name = "hora", unique = true, nullable = false, length = 45)
+    @Column(name = "hora", nullable = false, length = 45)
     private LocalTime hora;
 
     @Column(name = "estado", nullable = false)
@@ -27,11 +29,13 @@ public class Turno {
     // relacion con cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonManagedReference
     private Cliente cliente;
 
     // relacion con empleado
     @ManyToOne
     @JoinColumn(name = "empleado_id")
+    @JsonManagedReference
     private Empleado empleado;
 
     @ManyToOne

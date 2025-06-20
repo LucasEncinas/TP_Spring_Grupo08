@@ -43,4 +43,8 @@ public class DiaService {
                 .orElseThrow(() -> new RuntimeException("Día no encontrado con ID: " + eventoId));
     }
 
+    public Dia buscarPorId(Long id) {
+    return diaRepository.findById(id).orElse(null);
+}
+
 }

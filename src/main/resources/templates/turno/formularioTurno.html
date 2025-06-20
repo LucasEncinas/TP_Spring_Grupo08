@@ -230,13 +230,29 @@
 
       <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
         <input type="hidden" th:field="*{idTurno}" />
-        <input type="hidden" th:field="*{dia.id}" />
 
-        <label for="fecha">Fecha del turno:</label>
-        <input type="date" th:field="*{dia.fecha}" id="fecha" required />
+            <label for="servicio">Servicio:</label>
+        <select th:field="*{servicio.idServicio}" id="servicio" required>
+            <option value="" disabled selected>Seleccione un servicio</option>
+            <option th:each="servicio : ${servicios}" 
+                    th:value="${servicio.idServicio}" 
+                    th:text="${servicio.nombre}"></option>
+        </select>
 
-        <label for="hora">Hora del turno:</label>
-        <input type="time" th:field="*{hora}" id="hora" required />
+        <label for="sucursal">Sucursal:</label>
+        <select th:field="*{sucursal.idSucursal}" id="sucursal" required>
+            <option value="" disabled selected>Seleccione una sucursal</option>
+        </select>
+
+        <label for="dia">Día:</label>
+        <select th:field="*{dia.id}" id="dia" required>
+            <option value="" disabled selected>Seleccione un día</option>
+        </select>
+
+        <label for="hora">Hora:</label>
+        <select id="hora" name="hora" required>
+            <option value="" disabled selected>Seleccione una hora</option>
+        </select>
 
         <label for="cliente">Cliente:</label>
         <select th:field="*{cliente.idPersona}" id="cliente" required>
@@ -250,13 +266,6 @@
           <option value="" disabled selected>Seleccione un empleado</option>
           <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}"
             th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
-        </select>
-
-        <label for="servicio">Servicio:</label>
-        <select th:field="*{servicio.idServicio}" id="servicio" required>
-          <option value="" disabled selected>Seleccione un servicio</option>
-          <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}" th:text="${servicio.nombre}">
-          </option>
         </select>
 
         <label for="estado">Estado:</label>
@@ -279,7 +288,69 @@
       </form>
     </div>
   </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const servicioSelect = document.getElementById('servicio');
+  const sucursalSelect = document.getElementById('sucursal');
+  const diaSelect = document.getElementById('dia');
+  const horaSelect = document.getElementById('hora');
 
+  if (!servicioSelect.dataset.listenerAttached) {
+    servicioSelect.addEventListener('change', function () {
+    const id = this.value;
+    diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
+    horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+
+    // Cargo sucursales según el servicio
+    fetch(`/api/sucursales/por-servicio/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        sucursalSelect.innerHTML = '<option value="">Seleccione una sucursal</option>';
+        data.forEach(s => {
+          sucursalSelect.innerHTML += `<option value="${s.idSucursal}">${s.nombre}</option>`;
+        });
+
+        // Reseteo día y hora al cambiar servicio
+        
+      });
+
+    // Cargo horarios según el servicio
+    fetch(`/api/horarios/por-servicio/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("Horarios recibidos del servidor:", data);
+        horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+        console.log("👉 Evento change de servicio activado");
+        console.log("📢 Ejecutando fetch de horarios una vez más");
+        data.forEach(h => {
+          console.log("➡ Cargando horarios para servicio:", id);
+          console.log("Agregando opción:", h);
+          horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
+        });
+      });
+  });
+  servicioSelect.dataset.listenerAttached = true; // Marcar que el listener ya está adjunto
+  }
+
+  sucursalSelect.addEventListener('change', function () {
+    const id = this.value;
+
+    // Cargo días según la sucursal
+    fetch(`/api/dias/por-sucursal/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
+        data.forEach(d => {
+          const fecha = new Date(d.fecha).toLocaleDateString();
+          diaSelect.innerHTML += `<option value="${d.id}">${fecha}</option>`;
+        });
+        // NO modifico horas aquí
+      });
+  });
+
+  // No es necesario listener para diaSelect porque horas no dependen del día
+});
+</script>
   <footer>
         © 2025 Sistema de Turnos. Todos los derechos reservados.
     </footer>

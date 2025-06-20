@@ -11,6 +11,7 @@ import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.exception.ExcepcionTurno;
 import com.unla.grupo8.repositories.ClienteRepository;
@@ -21,6 +22,7 @@ import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
+import com.unla.grupo8.service.implementation.SucursalService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
 import java.time.LocalDate;
@@ -39,6 +41,7 @@ public class TurnoController {
     private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final ServicioService servicioService;
+    private final SucursalService sucursalService;
 
     @Autowired
     private ServicioRepository servicioRepository;
@@ -57,11 +60,13 @@ public class TurnoController {
     public TurnoController(TurnoService turnoService, ClienteService clienteService,
             EmpleadoService empleadoService,
             ServicioService servicioService,
+            SucursalService sucursalService,
             IEmailService emailService) {
         this.turnoService = turnoService;
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.servicioService = servicioService;
+        this.sucursalService = sucursalService;
         this.emailService = emailService;
     }
 
@@ -78,6 +83,7 @@ public class TurnoController {
         List<Cliente> clientes = clienteService.traerTodosLosClientes();
         List<Empleado> empleados = empleadoService.obtenerTodos();
         List<Servicio> servicios = servicioService.obtenerTodos();
+        List<Sucursal> sucursales = sucursalService.obtenerTodas();
 
         if (clientes.isEmpty() || empleados.isEmpty() || servicios.isEmpty()) {
             model.addAttribute("error", "No hay datos suficientes para crear un turno.");
@@ -87,6 +93,7 @@ public class TurnoController {
         model.addAttribute("clientes", clientes);
         model.addAttribute("empleados", empleados);
         model.addAttribute("servicios", servicios);
+        model.addAttribute("sucursales", sucursales);
         return "turno/formularioTurno";
     }
 
@@ -108,20 +115,17 @@ public class TurnoController {
             turno.setEstado("Confirmado");
         }
         // Validar que la fecha no sea nula
-        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
-            throw new ExcepcionTurno("La fecha del turno no puede ser nula.");
+        if (turno.getDia().getId() == null) {
+            throw new ExcepcionTurno("Debe seleccionar un día.");
         }
-        // Obtener el servicio y asociar la sucursal si existe
-        Servicio servicio = servicioRepository.findById(turno.getServicio().getIdServicio()).orElse(null);
-        if (servicio != null && servicio.getSucursal() != null) {
-            turno.setSucursal(servicio.getSucursal());
-            turno.getDia().setSucursal(servicio.getSucursal());
-        } else {
-            System.out.println("⚠ El servicio no tiene una sucursal asociada.");
+
+        Dia diaCompleto = diaService.buscarPorId(turno.getDia().getId());
+        System.out.println("Dia completo: " + diaCompleto);
+        if (diaCompleto == null) {
+            throw new ExcepcionTurno("El día seleccionado no existe.");
         }
-        // Guardar el día primero
-        Dia diaGuardado = diaService.guardarDiaR(turno.getDia());
-        turno.setDia(diaGuardado);
+
+        turno.setDia(diaCompleto);
         // Guardar el turno
         turnoService.guardar(turno);
 
@@ -147,7 +151,7 @@ public class TurnoController {
         Map<String, Object> variables = new HashMap<>();
         variables.put("nombreCliente", clienteCompleto.getNombre());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String fechaFormateada = diaGuardado.getFecha().format(formatter);
+        String fechaFormateada = diaCompleto.getFecha().format(formatter);
         variables.put("fecha", fechaFormateada);
         variables.put("hora", turno.getHora());
         variables.put("servicio", turno.getServicio().getNombre());

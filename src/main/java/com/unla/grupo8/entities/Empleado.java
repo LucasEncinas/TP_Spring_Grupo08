@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class Empleado extends Persona {
     private String legajo;
 
     @OneToMany(mappedBy = "empleado")
+    @JsonBackReference
     private List<Turno> turnos = new ArrayList<>();
 
     @ManyToOne
@@ -40,13 +43,5 @@ public class Empleado extends Persona {
         super(nombre, apellido, dni, fechaNacimiento, contacto);
         this.legajo = legajo;
     }
-
-
-    public String getIdEmpleado() {
-        return getIdEmpleado();
-    }
-    
-  
-
 
 }

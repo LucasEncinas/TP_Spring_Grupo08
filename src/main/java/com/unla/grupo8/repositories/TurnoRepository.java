@@ -20,4 +20,5 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     @Query("SELECT t FROM Turno t WHERE t.dia.fecha = :fecha")
     List<Turno> buscarPorFecha(@Param("fecha") LocalDate fecha);
+
 }

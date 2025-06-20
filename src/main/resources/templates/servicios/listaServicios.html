@@ -337,7 +337,12 @@
                     <tr th:each="servicio : ${servicios}">
                         <td th:text="${servicio.nombre}">Nombre</td>
                         <td th:text="${servicio.duracion}">Duración</td>
-                        <td th:text="${servicio.sucursal != null ? servicio.sucursal.nombre : '-'}">Sucursal</td>
+                        <td>
+                        <span th:each="sucursal, iterStat : ${servicio.sucursales}">
+                            <span th:text="${sucursal.nombre}"></span><span th:if="${!iterStat.last}">, </span>
+                        </span>
+                        </td>
+
                         <td>
                             <div class="gestion-group">
                                 <a class="btn-gest btn-eliminar"

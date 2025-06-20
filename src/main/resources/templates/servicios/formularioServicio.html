@@ -240,14 +240,12 @@
           <input type="number" id="duracion" th:field="*{duracion}" class="form-control" required />
         </div>
 
-        <div class="mb-3">
-          <label for="sucursal" class="form-label">Sucursal:</label>
-          <select id="sucursal" th:field="*{sucursal.idSucursal}" class="form-select" required>
+        <select id="sucursal" name="idSucursal" class="form-select" required>
             <option value="">-- Seleccione una sucursal --</option>
-            <option th:each="sucursal : ${sucursales}" th:value="${sucursal.idSucursal}" th:text="${sucursal.nombre}">
-            </option>
-          </select>
-        </div>
+            <option th:each="sucursal : ${sucursales}" th:value="${sucursal.idSucursal}" th:text="${sucursal.nombre}"></option>
+        </select>
+
+
 
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Guardar Servicio</button>

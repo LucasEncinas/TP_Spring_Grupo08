@@ -32,8 +32,5 @@ public class Contacto {
         this.direccion = direccion;
     }
 
-    public Object getPersona() {
-        throw new UnsupportedOperationException("Unimplemented method 'getPersona'");
-    }
 }
 

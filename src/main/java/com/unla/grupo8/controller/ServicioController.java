@@ -1,5 +1,6 @@
 package com.unla.grupo8.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +63,10 @@ public class ServicioController {
     @PostMapping("/guardar")
     public String guardarServicio(
             @ModelAttribute("servicio") Servicio servicio,
+            @ModelAttribute("idSucursal") Long idSucursal,
             RedirectAttributes redirectAttributes) {
 
-        Long idSucursal = servicio.getSucursal().getIdSucursal();
         Sucursal sucursal = sucursalService.obtenerPorId(idSucursal);
-
         if (sucursal == null) {
             redirectAttributes.addFlashAttribute("mensajeError", "Sucursal no encontrada");
             return servicio.getIdServicio() != null
@@ -86,7 +86,8 @@ public class ServicioController {
             throw new ExcepcionServicioNombre("Ya existe un servicio con ese nombre");
         }
 
-        servicio.setSucursal(sucursal);
+        servicio.setSucursales(new ArrayList<>());
+        servicio.getSucursales().add(sucursal); // Asignar la sucursal al servicio
         servicioService.guardar(servicio);
 
         if (esNuevo) {

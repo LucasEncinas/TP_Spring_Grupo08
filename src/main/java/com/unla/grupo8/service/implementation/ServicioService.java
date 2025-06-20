@@ -21,15 +21,16 @@ public class ServicioService {
 
     // obtener por id
     public Servicio obtenerPorId(Long id) {
-        return servicioRepository.findById(id).orElse(null);
-    }
+    return servicioRepository.findByIdConSucursales(id);
+}
+
 
     public List<Servicio> obtenerServiciosPorNombre(String nombre) {
         return servicioRepository.findByNombre(nombre);
     }
 
     public List<Servicio> obtenerTodos() {
-        return servicioRepository.findAll();
+        return servicioRepository.findAllWithSucursales();
     }
 
     public void eliminarPorId(Long id) {

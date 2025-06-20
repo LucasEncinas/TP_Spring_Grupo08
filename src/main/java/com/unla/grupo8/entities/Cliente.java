@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ public class Cliente extends Persona {
     private String nroCliente;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonBackReference
     private List<Turno> turnos = new ArrayList<>();
 
     // Constructor que hereda de Persona

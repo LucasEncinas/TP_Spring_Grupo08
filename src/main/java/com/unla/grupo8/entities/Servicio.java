@@ -3,6 +3,8 @@ package com.unla.grupo8.entities;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,10 @@ public class Servicio {
     @Column(name = "duracion", unique = false, nullable = false)
     private int duracion; // Duración en minutos
 
-    @ManyToOne
-    @JoinColumn(name = "sucursal_id")
-    private Sucursal sucursal;
+    @ManyToMany
+    @JoinTable(name = "servicio_sucursal", joinColumns = @JoinColumn(name = "servicio_id"), inverseJoinColumns = @JoinColumn(name = "sucursal_id"))
+    @JsonManagedReference
+    private List<Sucursal> sucursales;
 
     @ManyToMany
     @JoinTable(name = "servicio_empleado", joinColumns = @JoinColumn(name = "servicio_id"), inverseJoinColumns = @JoinColumn(name = "empleado_id"))

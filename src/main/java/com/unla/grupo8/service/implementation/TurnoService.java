@@ -42,16 +42,17 @@ public class TurnoService {
     public List<Turno> obtenerTurnosConfirmados() {
         return turnoRepository.findByEstado("confirmado"); // Filtra solo los asignados
     }
-    
+
     public void eliminarPorId(Long id) {
         turnoRepository.deleteById(id);
     }
 
-    public Turno buscarPorId(Long id){
+    public Turno buscarPorId(Long id) {
         return turnoRepository.findById(id).orElse(null);
     }
 
     public List<Turno> obtenerPorFecha(LocalDate fecha) {
-    return turnoRepository.buscarPorFecha(fecha);
-}
+        return turnoRepository.buscarPorFecha(fecha);
+    }
+
 }
