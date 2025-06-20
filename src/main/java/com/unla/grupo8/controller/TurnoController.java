@@ -128,6 +128,11 @@ public class TurnoController {
         if (diaCompleto == null) {
             throw new ExcepcionTurno("El día seleccionado no existe.");
         }
+        System.out.println("Turno a guardar: " + turno);
+        if (turnoService.existeTurno(diaCompleto, turno.getHora(), turno.getSucursal())) {
+            throw new ExcepcionTurno("Ya existe un turno para el dia: " + diaCompleto.getFecha() + " a la hora: " + turno.getHora() 
+                    + " en la sucursal: " + diaCompleto.getSucursal().getNombre());
+        }
 
         turno.setDia(diaCompleto);
         // Guardar el turno

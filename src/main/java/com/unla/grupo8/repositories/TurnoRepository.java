@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.unla.grupo8.entities.Dia;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
 
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
@@ -20,5 +22,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     @Query("SELECT t FROM Turno t WHERE t.dia.fecha = :fecha")
     List<Turno> buscarPorFecha(@Param("fecha") LocalDate fecha);
+
+    boolean existsByDiaAndHoraAndSucursal(Dia dia, LocalTime hora, Sucursal sucursal);
 
 }

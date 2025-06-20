@@ -3,6 +3,8 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.unla.grupo8.entities.Dia;
+import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.entities.Turno;
 import com.unla.grupo8.repositories.TurnoRepository;
 
@@ -53,6 +55,10 @@ public class TurnoService {
 
     public List<Turno> obtenerPorFecha(LocalDate fecha) {
         return turnoRepository.buscarPorFecha(fecha);
+    }
+
+    public boolean existeTurno(Dia dia, LocalTime hora, Sucursal sucursal) {
+        return turnoRepository.existsByDiaAndHoraAndSucursal(dia, hora, sucursal);
     }
 
 }
