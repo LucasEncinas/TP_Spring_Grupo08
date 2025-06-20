@@ -17,6 +17,7 @@ import com.unla.grupo8.exception.ExcepcionTurno;
 import com.unla.grupo8.repositories.ClienteRepository;
 import com.unla.grupo8.repositories.EmpleadoRepository;
 import com.unla.grupo8.repositories.ServicioRepository;
+import com.unla.grupo8.repositories.SucursalRepository;
 import com.unla.grupo8.service.IEmailService;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.DiaService;
@@ -51,6 +52,9 @@ public class TurnoController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private SucursalRepository sucursalRepository;
 
     @Autowired
     private DiaService diaService;
@@ -129,9 +133,9 @@ public class TurnoController {
         // Guardar el turno
         turnoService.guardar(turno);
 
-        // Recuperamos versiones completas de servicio, empleado y cliente desde la base
-        // de datos, ya que los objetos recibidos pueden estar incompletos (solo con el
-        // ID cargado).
+        // Recuperamos versiones completas de servicio, empleado, cliente y sucursal
+        // desde la base de datos, ya que los objetos recibidos pueden estar incompletos
+        // (solo con el ID cargado).
         Servicio servicioCompleto = servicioRepository.findById(turno.getServicio().getIdServicio())
                 .orElseThrow(() -> new ExcepcionTurno("Servicio no encontrado"));
         turno.setServicio(servicioCompleto);
@@ -143,6 +147,10 @@ public class TurnoController {
         Cliente clienteCompleto = clienteRepository.findById(turno.getCliente().getIdPersona())
                 .orElseThrow(() -> new ExcepcionTurno("Cliente no encontrado"));
         turno.setCliente(clienteCompleto);
+
+        Sucursal sucursalCompleta = sucursalRepository.findById(turno.getSucursal().getIdSucursal())
+                .orElseThrow(() -> new ExcepcionTurno("Sucursal no encontrada"));
+        turno.setSucursal(sucursalCompleta);
 
         // Accedemos al email del cliente desde el objeto Contacto, que ya fue cargado
         // al recuperar el cliente completo
