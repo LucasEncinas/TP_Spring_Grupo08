@@ -66,8 +66,8 @@ public class RegistroController {
                 cliente.setFechaNacimiento(fechaNac);
                 clienteService.guardarCliente(cliente);
                 redirectAttributes.addFlashAttribute("mensajeExitoModificar",
-                        "✔️ Cliente nro '" + cliente.getNroCliente() + "' modificado correctamente.");
-                        return "redirect:/cliente/listaClientes";
+                        "✔️ Cliente 'nro " + cliente.getNroCliente() + "' modificado correctamente.");
+                return "redirect:/cliente/listaClientes";
             } else {
                 long totalClientes = clienteService.contarClientes();
                 // Creamos y guardamos cliente
@@ -77,33 +77,47 @@ public class RegistroController {
                 Cliente nuevoCliente = clienteService.guardarCliente(cliente);
 
                 redirectAttributes.addFlashAttribute("personaId", nuevoCliente.getIdPersona());
-                redirectAttributes.addFlashAttribute("mensaje", "✔️ Cliente guardado correctamente, agregue un contacto.");
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "✔️ Cliente guardado correctamente, agregue un contacto.");
                 return "redirect:/contacto/formularioContacto?personaId=" + nuevoCliente.getIdPersona();
             }
         } else {
-            long totalEmpleados = empleadoService.contarEmpleados();
             if (tipo.equals("empleado")) {
                 Long idSucursalAux = Long.valueOf(idSucursal); // Casteo de idSucursal a Long
                 Sucursal sucursal = sucursalService.obtenerPorId(idSucursalAux);
-                // Verificamos si existe la sucursal
-                if (sucursal == null) {
-                    redirectAttributes.addFlashAttribute("error", "El campo sucursal es obligatorio para un empleado");
-                    return "redirect:/formularios/formularioRegistro"; // Redirige al formulario con el error
+                if (id != null) {
+                    Empleado empleado = empleadoService.traerEmpleadoPorId(id);
+                    empleado.setNombre(nombre);
+                    empleado.setApellido(apellido);
+                    empleado.setDni(dni);
+                    empleado.setFechaNacimiento(fechaNac);
+                    empleado.setSucursal(sucursal);
+                    empleadoService.guardarEmpleado(empleado);
+                    redirectAttributes.addFlashAttribute("mensajeExitoModificar",
+                            "✔️ Empleado '" + empleado.getLegajo() + "' modificado correctamente.");
+                    return "redirect:/empleado/listaEmpleados";
+                } else {
+                    long totalEmpleados = empleadoService.contarEmpleados();
+                    // Verificamos si existe la sucursal
+                    if (sucursal == null) {
+                        redirectAttributes.addFlashAttribute("error",
+                                "El campo sucursal es obligatorio para un empleado");
+                        return "redirect:/formularios/formularioRegistro"; // Redirige al formulario con el error
+                    }
+
+                    // Creamos y guardamos empleado
+                    String nroLegajo = String.valueOf(totalEmpleados + 1);
+                    Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "EM-" + nroLegajo);
+                    nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
+                    empleadoService.guardarEmpleado(nuevoEmpleado);
+
+                    redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getIdPersona());
+                    redirectAttributes.addFlashAttribute("mensaje",
+                            "Empleado guardado correctamente, agregue un contacto");
+                    return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getIdPersona();
                 }
-
-                // Creamos y guardamos empleado
-                String nroLegajo = String.valueOf(totalEmpleados + 1);
-                Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "EM-" + nroLegajo);
-                nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
-                empleadoService.guardarEmpleado(nuevoEmpleado);
-
-                redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getIdPersona());
-                redirectAttributes.addFlashAttribute("mensaje", "Empleado guardado correctamente, agregue un contacto");
-
-                return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getIdPersona();
             }
         }
-
         // Si no es ni cliente ni empleado, redirigimos con mensaje de error
         redirectAttributes.addFlashAttribute("error", "Tipo de persona no válido");
         return "redirect:/formularios/formularioRegistro";

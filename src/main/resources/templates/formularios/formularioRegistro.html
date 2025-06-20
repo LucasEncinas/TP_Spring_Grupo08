@@ -243,7 +243,7 @@
 
                         <!-- Tipo oculto cuando es edición -->
                         <input type="hidden" name="tipo" th:if="${persona != null}"
-                            th:value="${persona.nroCliente != null ? 'cliente' : 'empleado'}" />
+                            th:value="${persona instanceof T(com.unla.grupo8.entities.Cliente) ? 'cliente' : 'empleado'}" />
 
                         <!-- Sucursal (Se muestra solo si es empleado) -->
                         <div id="selectorSucursal" class="col-md-6 mb-4" style="display: none;">
@@ -251,7 +251,9 @@
                             <select id="sucursalId" name="sucursal" class="form-control">
                                 <option value="">-- Selecciona una sucursal --</option>
                                 <option th:each="sucursal : ${sucursales}" th:value="${sucursal.idSucursal}"
-                                    th:text="${sucursal.nombre}"></option>
+                                    th:text="${sucursal.nombre}"
+                                    th:selected="${persona != null and sucursal.idSucursal == persona.sucursal.idSucursal}">
+                                </option>
                             </select>
                         </div>
 
@@ -276,15 +278,31 @@
             const rolSelect = document.getElementById("tipo");
             const sucursalDiv = document.getElementById("selectorSucursal");
 
-            rolSelect.addEventListener("change", function () {
-                if (rolSelect.value === "empleado") {
+            // Modo edición: Si estamos editando
+            const tipoHidden = document.querySelector('input[name="tipo"]');
+
+            if (tipoHidden) {
+                if (tipoHidden.value === "empleado") {
                     sucursalDiv.style.display = "block";
                     document.getElementById("sucursalId").setAttribute("required", "required");
                 } else {
                     sucursalDiv.style.display = "none";
                     document.getElementById("sucursalId").removeAttribute("required");
                 }
-            });
+            }
+
+            // Solo en modo creación (cuando existe el select), escuchamos cambios
+            if (rolSelect) {
+                rolSelect.addEventListener("change", function () {
+                    if (rolSelect.value === "empleado") {
+                        sucursalDiv.style.display = "block";
+                        document.getElementById("sucursalId").setAttribute("required", "required");
+                    } else {
+                        sucursalDiv.style.display = "none";
+                        document.getElementById("sucursalId").removeAttribute("required");
+                    }
+                });
+            }
         });
     </script>
 
