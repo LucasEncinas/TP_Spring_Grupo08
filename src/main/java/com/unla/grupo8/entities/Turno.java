@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -29,13 +30,13 @@ public class Turno {
     // relacion con cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonManagedReference
+    @JsonManagedReference("turno-cliente")
     private Cliente cliente;
 
     // relacion con empleado
     @ManyToOne
     @JoinColumn(name = "empleado_id")
-    @JsonManagedReference
+    @JsonManagedReference("turno-empleado")
     private Empleado empleado;
 
     @ManyToOne
@@ -44,6 +45,7 @@ public class Turno {
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
+    @JsonBackReference("sucursal-turnos")
     private Sucursal sucursal;
 
     @ManyToOne

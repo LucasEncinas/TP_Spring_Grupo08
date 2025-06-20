@@ -27,7 +27,7 @@ public class Dia {
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
-    @JsonBackReference
+    @JsonBackReference("sucursal-dia")
     private Sucursal sucursal;
 
     public Dia(LocalDate fecha) {

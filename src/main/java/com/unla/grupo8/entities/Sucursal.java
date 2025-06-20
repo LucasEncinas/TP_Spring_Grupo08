@@ -3,6 +3,7 @@ package com.unla.grupo8.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -34,17 +35,19 @@ public class Sucursal {
     private String mail;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Empleado> empleados;
 
     @OneToMany(mappedBy = "sucursal")
+    @JsonIgnore
     private List<Turno> turnos;
 
     @ManyToMany(mappedBy = "sucursales")
-    @JsonBackReference
+    @JsonIgnore
     private List<Servicio> servicios;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("sucursal-dia")
     private List<Dia> dias;
 
     public Sucursal(String nombre, String direccion, String telefono, String mail) {

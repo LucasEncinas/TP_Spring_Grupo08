@@ -27,14 +27,16 @@ public class Empleado extends Persona {
     private String legajo;
 
     @OneToMany(mappedBy = "empleado")
-    @JsonBackReference
+    @JsonBackReference("turno-empleado")
     private List<Turno> turnos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
+    @JsonBackReference("sucursal-empleados")
     private Sucursal sucursal;
 
    @ManyToMany(mappedBy = "empleados")
+   @JsonBackReference("empleado-servicio")
    private Set<Servicio> servicios;
 
 

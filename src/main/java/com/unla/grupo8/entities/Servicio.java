@@ -3,6 +3,7 @@ package com.unla.grupo8.entities;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -29,11 +30,12 @@ public class Servicio {
 
     @ManyToMany
     @JoinTable(name = "servicio_sucursal", joinColumns = @JoinColumn(name = "servicio_id"), inverseJoinColumns = @JoinColumn(name = "sucursal_id"))
-    @JsonManagedReference
+    @JsonManagedReference("servicio-sucursal")
     private List<Sucursal> sucursales;
 
     @ManyToMany
     @JoinTable(name = "servicio_empleado", joinColumns = @JoinColumn(name = "servicio_id"), inverseJoinColumns = @JoinColumn(name = "empleado_id"))
+    @JsonIgnore
     private Set<Empleado> empleados;
 
     @OneToMany(cascade = CascadeType.ALL)

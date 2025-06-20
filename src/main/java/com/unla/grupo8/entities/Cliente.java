@@ -24,7 +24,7 @@ public class Cliente extends Persona {
     private String nroCliente;
 
     @OneToMany(mappedBy = "cliente")
-    @JsonBackReference
+    @JsonBackReference("turno-cliente")
     private List<Turno> turnos = new ArrayList<>();
 
     // Constructor que hereda de Persona
