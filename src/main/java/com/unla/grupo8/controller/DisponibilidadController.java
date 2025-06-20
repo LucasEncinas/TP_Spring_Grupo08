@@ -73,7 +73,7 @@ public class DisponibilidadController {
     servicioService.guardar(servicio);
         // Mensaje de éxito 
        attributes.addFlashAttribute("mensaje", "Servicio y disponibilidad guardada correctamente");
-        return "redirect:/servicios/formularioServicio";
+        return "redirect:/servicios/listaServicios";
     }
 
     

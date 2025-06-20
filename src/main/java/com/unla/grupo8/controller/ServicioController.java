@@ -76,7 +76,7 @@ public class ServicioController {
 
         boolean esNuevo = (servicio.getIdServicio() == null);
 
-        //Validación para evitar nombres repetidos (cuando lo creamos o editamos)
+        // Validación para evitar nombres repetidos (cuando lo creamos o editamos)
         List<Servicio> existentesConMismoNombre = servicioService.obtenerServiciosPorNombre(servicio.getNombre());
 
         boolean nombreDuplicado = existentesConMismoNombre.stream()
@@ -92,12 +92,11 @@ public class ServicioController {
 
         if (esNuevo) {
             redirectAttributes.addFlashAttribute("mensaje", "Servicio guardado correctamente, agregue disponibilidad");
-            redirectAttributes.addFlashAttribute("servicioId", servicio.getIdServicio());
-            return "redirect:/disponibilidad/nuevaDisponibilidad?servicioId=" + servicio.getIdServicio();
         } else {
-            redirectAttributes.addFlashAttribute("mensajeExito", "Servicio modificado correctamente");
-            return "redirect:/servicios/listaServicios";
+            redirectAttributes.addFlashAttribute("mensaje", "Servicio modificado correctamente, revise disponibilidad");
         }
+        redirectAttributes.addFlashAttribute("servicioId", servicio.getIdServicio());
+        return "redirect:/disponibilidad/nuevaDisponibilidad?servicioId=" + servicio.getIdServicio();
     }
 
     @GetMapping("/eliminar/{id}")

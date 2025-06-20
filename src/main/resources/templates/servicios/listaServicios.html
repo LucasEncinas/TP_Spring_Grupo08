@@ -288,6 +288,44 @@
             flex-direction: column;
             align-items: center;
         }
+
+        .toast-mensaje {
+            position: fixed;
+            top: 90px;
+            right: 32px;
+            background-color: #d1f7d6;
+            color: #207d3a;
+            border: 1px solid #a5e2af;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease, fadeOut 0.8s 3.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+        }
     </style>
 </head>
 
@@ -304,6 +342,12 @@
                 <i class="bi bi-box-arrow-right"></i> Cerrar sesión
             </a>
         </header>
+
+        <!-- Mensaje de confirmación general -->
+        <div th:if="${mensaje}" class="alert alert-success alert-general fade-msg" role="alert">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="${mensaje}"></span>
+        </div>
 
         <!-- Mensajes -->
         <div th:if="${mensajeExito}" class="alert alert-success" role="alert">
@@ -338,9 +382,9 @@
                         <td th:text="${servicio.nombre}">Nombre</td>
                         <td th:text="${servicio.duracion}">Duración</td>
                         <td>
-                        <span th:each="sucursal, iterStat : ${servicio.sucursales}">
-                            <span th:text="${sucursal.nombre}"></span><span th:if="${!iterStat.last}">, </span>
-                        </span>
+                            <span th:each="sucursal, iterStat : ${servicio.sucursales}">
+                                <span th:text="${sucursal.nombre}"></span><span th:if="${!iterStat.last}">, </span>
+                            </span>
                         </td>
 
                         <td>
