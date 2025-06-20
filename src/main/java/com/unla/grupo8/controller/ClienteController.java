@@ -39,7 +39,7 @@ public class ClienteController {
             Cliente cliente = clienteService.traerClientePorId(id);
             clienteService.eliminarCliente(cliente);
             redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
-                    "✔️ Cliente '" + cliente.getNombre() + "' eliminado correctamente.");
+                    "✔️ Cliente '" + cliente.getNombre() + " " + cliente.getApellido() + "' eliminado correctamente.");
         } catch (ExcepcionClienteEliminar e) {
             // TODO: handle exception
             redirectAttributes.addFlashAttribute("mensajeErrorEliminar", e.getMessage());

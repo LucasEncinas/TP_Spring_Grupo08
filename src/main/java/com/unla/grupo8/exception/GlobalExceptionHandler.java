@@ -17,6 +17,11 @@ public class GlobalExceptionHandler {
         return "contacto/formularioContacto";
     }
 
+    @ExceptionHandler(ExcepcionEmpleadoEliminar.class)
+    public String manejarEliminarEmpleado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
+        return "empleado/listaEmpleados";
+    }
+
     @ExceptionHandler(ExcepcionSucursalEliminar.class)
     public String manejarEliminarSucursal(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
         return "sucursal/formularioSucursal";
@@ -30,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExcepcionTurno.class)
     public String manejarExcepcionTurno(ExcepcionTurno ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/turno/formularioTurno"; // 
+        return "redirect:/turno/formularioTurno"; //
     }
 
     @ExceptionHandler(ExcepcionServicioNombre.class)
@@ -38,6 +43,5 @@ public class GlobalExceptionHandler {
         redirect.addFlashAttribute("mensajeError", ex.getMessage());
         return "redirect:/servicios/formularioServicio";
     }
-
 
 }
