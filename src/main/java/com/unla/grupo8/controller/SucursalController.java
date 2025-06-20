@@ -27,7 +27,7 @@ public class SucursalController {
     }
 
     @GetMapping("/formularioSucursal")
-    public String mostrarFormularioNuevo(Model model) {
+    public String mostrarFormularioSucursal(Model model) {
         model.addAttribute("sucursal", new Sucursal());
         model.addAttribute("tituloFormulario", "Agregar Sucursal");
         return "sucursal/formularioSucursal";

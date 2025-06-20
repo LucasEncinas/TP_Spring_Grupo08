@@ -349,7 +349,8 @@
                                 onclick="return confirm('¿Desea eliminar el cliente?')" title="Eliminar">
                                 <i class="bi bi-trash3-fill"></i>
                             </a>
-                            <a class="btn-gest btn-modificar" th:href="@{#}" title="Modificar">
+                            <a class="btn-gest btn-modificar" th:href="@{'/cliente/editar/' + ${cliente.idPersona}}"
+                                title="Modificar">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
                         </div>

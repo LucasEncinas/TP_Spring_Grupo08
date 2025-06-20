@@ -47,6 +47,14 @@ public class ClienteController {
         return "redirect:/cliente/listaClientes";
     }
 
+    @GetMapping("/editar/{id}")
+    public String modificarCliente(@PathVariable Long id, Model model) {
+        Cliente cliente = clienteService.traerClientePorId(id);
+        model.addAttribute("persona", cliente);
+        model.addAttribute("tituloFormulario", "Modificar Cliente");
+        return "formularios/formularioRegistro";
+    }
+
     // traer todos los clientes
     // @GetMapping
     // public ResponseEntity<List<Cliente>> traerTodosLosClientes() {
