@@ -17,9 +17,9 @@ claves para la eficiencia.</p>
 <p>Crear una base de datos nueva con el siguiente nombre: <strong>tp_spring_grupo8</strong></p>
 <p>En el archivo 'application.yml' reemplazar:</p>
 <h3>En el bloque datasource:</h3>
-<p>url: ${DB_URL} -> Cambiar por la URL de su base de datos local.</p>
-<p>username: ${USERNAME} -> Cambiar por el nombre de usuario de su base de datos local.</p>
-<p>password: ${PASSWORD} -> Cambiar por la contraseña del usuario ingresado anteriormente</p>
+<p>url: ${DB_URL} -> url: (URL de su base de datos local)</p>
+<p>username: ${USERNAME} -> username: (nombre de usuario de su base de datos local)</p>
+<p>password: ${PASSWORD} -> password: (contraseña del usuario ingresado anteriormente)</p>
 <h3>En el bloque security:</h3>
 <p>name: ${MAIL_USERNAME} -> name: clienteregistrado8@gmail.com</p>
 <h3>En el bloque mail:</h3>
@@ -29,6 +29,7 @@ claves para la eficiencia.</p>
 <p>Iniciar el proyecto y dejar compilar para la creacion de las tablas. </p>
 <p>Una vez creada la DB utilizar el script para cargar con datos de prueba <a href="https://drive.google.com/file/d/1sOx3dZqHdf0mpWoP2r6ZTcNgId8BYw70/view?usp=sharing">script para los datos</a></p>
 <p>Al finalizar ya tendría la base de datos cargada con los datos de prueba.</p>
+<p>El proyecto corre con la siguiente URL: localhost:8080</p>
 <h3>Definición de los casos de uso / funcionalidades:</h3>
 <h3>Empleado,Administrador:</h3>
 <p>Alta, baja y modificación de Turno</p>
