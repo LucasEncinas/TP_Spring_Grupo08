@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Empleado;
-import com.unla.grupo8.exception.ExcepcionEmpleadoEliminar;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
@@ -34,16 +33,11 @@ public class EmpleadoController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarEmpleado(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            Empleado empleado = empleadoService.traerEmpleadoPorId(id);
-            empleadoService.eliminarEmpleado(empleado);
-            redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
-                    "✔️ Empleado '" + empleado.getNombre() + " " + empleado.getApellido()
-                            + "' eliminado correctamente.");
-        } catch (ExcepcionEmpleadoEliminar e) {
-            // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeErrorEliminar", e.getMessage());
-        }
+        Empleado empleado = empleadoService.traerEmpleadoPorId(id);
+        empleadoService.eliminarEmpleado(empleado);
+        redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
+                "✔️ Empleado '" + empleado.getNombre() + " " + empleado.getApellido()
+                        + "' eliminado correctamente.");
         return "redirect:/empleado/listaEmpleados";
     }
 

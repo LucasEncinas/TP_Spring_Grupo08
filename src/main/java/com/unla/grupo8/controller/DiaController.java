@@ -89,7 +89,7 @@ public class DiaController {
     @GetMapping("/cargados/{idSucursal}")
     @ResponseBody
     public ResponseEntity<List<Map<String, Object>>> obtenerDiasCargados(@PathVariable("idSucursal") Long idSucursal) {
-        List<Dia> dias = diaService.obtenerDiasPorSucursal(idSucursal); // Implementalo si no existe
+        List<Dia> dias = diaService.obtenerDiasPorSucursal(idSucursal);
         List<Map<String, Object>> eventos = new ArrayList<>();
 
         for (Dia dia : dias) {

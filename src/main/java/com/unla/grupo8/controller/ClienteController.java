@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Cliente;
-import com.unla.grupo8.exception.ExcepcionClienteEliminar;
 import com.unla.grupo8.service.implementation.ClienteService;
 
 @Controller
@@ -35,15 +34,10 @@ public class ClienteController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarCliente(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            Cliente cliente = clienteService.traerClientePorId(id);
-            clienteService.eliminarCliente(cliente);
-            redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
-                    "✔️ Cliente '" + cliente.getNombre() + " " + cliente.getApellido() + "' eliminado correctamente.");
-        } catch (ExcepcionClienteEliminar e) {
-            // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeErrorEliminar", e.getMessage());
-        }
+        Cliente cliente = clienteService.traerClientePorId(id);
+        clienteService.eliminarCliente(cliente);
+        redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
+                "✔️ Cliente '" + cliente.getNombre() + " " + cliente.getApellido() + "' eliminado correctamente.");
         return "redirect:/cliente/listaClientes";
     }
 

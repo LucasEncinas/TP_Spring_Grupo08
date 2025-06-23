@@ -32,7 +32,7 @@ public class HomeController {
 
 	@GetMapping("/inicio")
 	public String vistaHome() {
-		return "inicio/home"; // Suponiendo que tu archivo es inicio.html
+		return "inicio/home";
 	}
 
 	// GET Example: SERVER/hello?name=someName

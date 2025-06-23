@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.unla.grupo8.entities.Sucursal;
-import com.unla.grupo8.exception.ExcepcionSucursalEliminar;
-import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.service.implementation.SucursalService;
 
 @Controller
@@ -42,15 +40,10 @@ public class SucursalController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarSucursal(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            Sucursal sucursal = sucursalService.obtenerPorId(id);
-            sucursalService.eliminarPorId(id);
-            redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
-                    "✔️ Sucursal '" + sucursal.getNombre() + "' eliminada correctamente.");
-        } catch (ExcepcionSucursalEliminar e) {
-            // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeErrorEliminar", e.getMessage());
-        }
+        Sucursal sucursal = sucursalService.obtenerPorId(id);
+        sucursalService.eliminarPorId(id);
+        redirectAttributes.addFlashAttribute("mensajeExitoEliminar",
+                "✔️ Sucursal '" + sucursal.getNombre() + "' eliminada correctamente.");
         return "redirect:/sucursal/listaSucursales";
     }
 
@@ -70,34 +63,28 @@ public class SucursalController {
             @RequestParam("telefono") String telefono,
             @RequestParam("mail") String mail,
             RedirectAttributes redirectAttributes) {
-        try {
-            Sucursal sucursal;
-            if (id != null) {
-                sucursal = sucursalService.obtenerPorId(id);
-                sucursal.setNombre(nombre);
-                sucursal.setDireccion(direccion);
-                sucursal.setTelefono(telefono);
-                sucursal.setMail(mail);
-            } else {
-                sucursal = new Sucursal(nombre, direccion, telefono, mail);
-            }
-
-            sucursalService.guardarSucursal(sucursal);
-
-            if (id != null) {
-                redirectAttributes.addFlashAttribute("mensajeExitoModificar",
-                        "✔️ Sucursal '" + sucursal.getNombre() + "' modificada correctamente.");
-            } else {
-                redirectAttributes.addFlashAttribute("mensajeExitoCrear",
-                        "✔️ Sucursal '" + sucursal.getNombre() + "' creada correctamente.");
-            }
-
-            return "redirect:/sucursal/listaSucursales";
-        } catch (ExcepcionSucursalNombre e) {
-            // TODO: handle exception
-            redirectAttributes.addFlashAttribute("mensajeErrorNombre", e.getMessage());
-            return "redirect:/sucursal/listaSucursales";
+        Sucursal sucursal;
+        if (id != null) {
+            sucursal = sucursalService.obtenerPorId(id);
+            sucursal.setNombre(nombre);
+            sucursal.setDireccion(direccion);
+            sucursal.setTelefono(telefono);
+            sucursal.setMail(mail);
+        } else {
+            sucursal = new Sucursal(nombre, direccion, telefono, mail);
         }
+
+        sucursalService.guardarSucursal(sucursal);
+
+        if (id != null) {
+            redirectAttributes.addFlashAttribute("mensajeExitoModificar",
+                    "✔️ Sucursal '" + sucursal.getNombre() + "' modificada correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensajeExitoCrear",
+                    "✔️ Sucursal '" + sucursal.getNombre() + "' creada correctamente.");
+        }
+
+        return "redirect:/sucursal/listaSucursales";
     }
 
 }

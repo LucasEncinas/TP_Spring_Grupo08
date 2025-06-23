@@ -3,6 +3,7 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Empleado;
+import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.exception.ExcepcionEmpleadoEliminar;
 import com.unla.grupo8.repositories.EmpleadoRepository;
 
@@ -39,6 +40,12 @@ public class EmpleadoService {
         Empleado empleadoAux = traerEmpleadoPorId(empleado.getIdPersona());
         if (!empleadoAux.getTurnos().isEmpty())
             throw new ExcepcionEmpleadoEliminar("❌ No se pueden eliminar empleados con turnos asignados.");
+        // Eliminamos la relación con los servicios antes de borrar al empleado.
+        for (Servicio servicio : empleadoAux.getServicios()) {
+            servicio.getEmpleados().remove(empleadoAux);
+        }
+        empleadoAux.getServicios().clear();
+        empleadoRepository.save(empleadoAux);
         empleadoRepository.delete(empleado);
     }
 

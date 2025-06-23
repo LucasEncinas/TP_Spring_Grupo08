@@ -8,8 +8,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExcepcionClienteEliminar.class)
-    public String manejarEliminarCliente(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
-        return "cliente/listaClientes";
+    public String manejarEliminarCliente(ExcepcionClienteEliminar ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensajeErrorEliminar", ex.getMessage());
+        return "redirect:/cliente/listaClientes";
     }
 
     @ExceptionHandler(ExcepcionContacto.class)
@@ -18,18 +19,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ExcepcionEmpleadoEliminar.class)
-    public String manejarEliminarEmpleado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
-        return "empleado/listaEmpleados";
+    public String manejarEliminarEmpleado(ExcepcionEmpleadoEliminar ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensajeErrorEliminar", ex.getMessage());
+        return "redirect:/empleado/listaEmpleados";
     }
 
     @ExceptionHandler(ExcepcionSucursalEliminar.class)
-    public String manejarEliminarSucursal(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
-        return "sucursal/formularioSucursal";
+    public String manejarEliminarSucursal(ExcepcionSucursalEliminar ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensajeErrorEliminar", ex.getMessage());
+        return "redirect:/sucursal/listaSucursales";
     }
 
     @ExceptionHandler(ExcepcionSucursalNombre.class)
-    public String manejarNombreSucursalDuplicado(ExcepcionContacto ex, RedirectAttributes redirectAttributes) {
-        return "sucursal/formularioSucursal";
+    public String manejarNombreSucursalDuplicado(ExcepcionSucursalNombre ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensajeErrorNombre", ex.getMessage());
+        return "redirect:/sucursal/listaSucursales";
     }
 
     @ExceptionHandler(ExcepcionTurno.class)

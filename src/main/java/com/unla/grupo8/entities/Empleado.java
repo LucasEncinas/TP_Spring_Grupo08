@@ -21,7 +21,6 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "idEmpleado")
 
 public class Empleado extends Persona {
-   
 
     @Column(name = "Nro_legajo", unique = true, nullable = false, length = 15)
     private String legajo;
@@ -35,13 +34,13 @@ public class Empleado extends Persona {
     @JsonBackReference("sucursal-empleados")
     private Sucursal sucursal;
 
-   @ManyToMany(mappedBy = "empleados")
-   @JsonBackReference("empleado-servicio")
-   private Set<Servicio> servicios;
+    @ManyToMany(mappedBy = "empleados", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference("empleado-servicio")
+    private Set<Servicio> servicios;
 
-
-    //CONSTRUCTOR que hereda de Persona
-    public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto, String legajo) {
+    // CONSTRUCTOR que hereda de Persona
+    public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto,
+            String legajo) {
         super(nombre, apellido, dni, fechaNacimiento, contacto);
         this.legajo = legajo;
     }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.exception.ExcepcionSucursalEliminar;
 import com.unla.grupo8.exception.ExcepcionSucursalNombre;
@@ -52,6 +53,12 @@ public class SucursalService {
         Sucursal sucursal = obtenerPorId(id);
         if (!sucursal.getTurnos().isEmpty())
             throw new ExcepcionSucursalEliminar("❌ No se pueden eliminar sucursales con turnos asignados.");
+        // Eliminamos la relación con los servicios antes de borrar la sucursal.
+        for (Servicio servicio : sucursal.getServicios()) {
+            servicio.getSucursales().remove(sucursal);
+        }
+        sucursal.getServicios().clear();
+        sucursalRepository.save(sucursal);
         sucursalRepository.deleteById(id);
     }
 
