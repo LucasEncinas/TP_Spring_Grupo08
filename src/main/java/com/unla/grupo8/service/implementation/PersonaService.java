@@ -69,4 +69,8 @@ public class PersonaService implements IPersonService {
         return personaRepository.findById(id).orElse(null);
     }
 
+    public Persona obtenerPorContactoId(Long contactoId) {
+        return personaRepository.findByContactoId(contactoId)
+            .orElseThrow(() -> new RuntimeException("Persona no encontrada para el contacto ID: " + contactoId));
+    }
 }

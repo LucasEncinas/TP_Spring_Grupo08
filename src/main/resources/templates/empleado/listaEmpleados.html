@@ -342,9 +342,11 @@
                     <td th:text="${#temporals.format(empleado.fechaNacimiento, 'dd/MM/yyyy')}"></td>
                     <td th:text="${empleado.getSucursal().getNombre() ?: 'Sin sucursal'}"></td>
                     <td>
-                        <a class="btn-ver-contacto" th:href="@{#}" title="Ver contacto">
-                            <i class="bi bi-telephone"></i>
-                        </a>
+                        <a class="btn-ver-contacto"
+                        th:href="@{/contacto/verContactoEmpleado/{id}(id=${empleado.idPersona})}"
+                        title="Ver contacto">
+                        <i class="bi bi-telephone"></i>
+                     </a>
                     </td>
                     <td>
                         <div class="gestion-group">

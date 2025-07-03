@@ -27,7 +27,7 @@ public class EmpleadoService {
     }
 
     // Traer un empleado por su ID
-    public Empleado traerEmpleadoPorId(Long id) {
+    public Empleado traerEmpleadoPorId(Long id){
         return empleadoRepository.findById(id).orElse(null);
     }
 

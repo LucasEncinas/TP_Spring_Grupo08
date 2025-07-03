@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>Listado de Clientes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -71,29 +71,7 @@
             text-align: left;
         }
 
-        .btn-agregar {
-            background-color: #3345d5;
-            border: none;
-            color: white;
-            margin-bottom: 15px;
-            font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(51, 69, 213, 0.2);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-
-        .btn-agregar:hover {
-            background-color: #556df5;
-            box-shadow: 0 8px 18px rgba(85, 109, 245, 0.5);
-            text-decoration: none;
-            animation: bounce 0.35s;
-        }
+        
 
         @keyframes bounce {
 
@@ -221,47 +199,7 @@
             user-select: none;
         }
 
-        .btn-ver-contacto {
-            background-color: #7c8dfb;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
-        }
-
-        .btn-ver-contacto:hover {
-            background-color: #556df5;
-            box-shadow: 0 6px 14px rgba(85, 109, 245, 0.4);
-        }
-
-        .btn-modificar {
-            background-color: #343a40;
-            color: white;
-            border: none;
-        }
-
-        .btn-modificar:hover {
-            background-color: #1d1f21;
-            box-shadow: 0 6px 14px rgba(29, 31, 33, 0.6);
-        }
-
-        .btn-eliminar {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-        }
-
-        .btn-eliminar:hover {
-            background-color: #b02a37;
-            box-shadow: 0 6px 14px rgba(176, 42, 55, 0.5);
-        }
-
+        
         .gestion-group {
             display: flex;
             justify-content: center;
@@ -286,99 +224,62 @@
             <i class="bi bi-house-door-fill"></i>
             Inicio
         </a>
-        <h1>Clientes</h1>
+        <div class="mt-4">
+            <a href="/cliente/listaClientes" class="btn-volver btn btn-primary">
+              <i class="bi bi-arrow-left-circle"></i> Volver a la lista
+            </a>
+
+            <a th:href="@{/contacto/formularioContacto/{id}(id=${cliente.contacto.id})}" class="btn btn-warning">
+                <i class="bi bi-pencil-square"></i> Editar contacto
+              </a>
+              
+          </div>
         <a href="/logout" class="header-btn" aria-label="Cerrar sesión">
             <i class="bi bi-box-arrow-right"></i>
             Cerrar sesión
         </a>
     </header>
 
-    <main class="container-main">
+  
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card sombra-card p-4" style="width: 100%; max-width: 500px;">
+          <div class="card-header text-center bg-light mb-3 border-0">
+            <i class="bi bi-person-circle fs-1 text-primary mb-2"></i>
+            <h2>
+              <span th:text="${cliente.nombre}">Nombre</span>
+              <span th:text="${cliente.apellido}">Apellido</span>
+            </h2>
+          </div>
+          <div class="card-body text-start">
+  <div class="mb-3">
+    <label for="email" class="form-label">
+      <i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong>
+    </label>
+    <input type="email" class="form-control" id="email" name="contacto.email"
+           th:value="${cliente.contacto.email}" placeholder="Sin email" />
+  </div>
 
-        <div class="btn-container">
-            <a href="/formularios/formularioRegistro" class="btn-agregar">
-                <i class="bi bi-plus-circle"></i> Agregar Cliente
-            </a>
-        </div>
+  <div class="mb-3">
+    <label for="direccion" class="form-label">
+      <i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Dirección:</strong>
+    </label>
+    <input type="text" class="form-control" id="direccion" name="contacto.direccion"
+           th:value="${cliente.contacto.direccion}" placeholder="Sin dirección" />
+  </div>
 
-        <!-- Mensajes de éxito -->
-        <div th:if="${mensajeExitoCrear}" id="mensajeExitoCrear" class="alert alert-success" role="alert">
-            <p th:text="${mensajeExitoCrear}"></p>
-        </div>
-        <div th:if="${mensajeExitoModificar}" id="mensajeExitoModificar" class="alert alert-success" role="alert">
-            <p th:text="${mensajeExitoModificar}"></p>
-        </div>
-        <div th:if="${mensajeExitoEliminar}" id="mensajeExitoEliminar" class="alert alert-success text-center"
-            role="alert">
-            <p th:text="${mensajeExitoEliminar}"></p>
-        </div>
-        <!-- Mensaje de error -->
-        <div th:if="${mensajeErrorEliminar}" id="mensajeErrorEliminar" class="alert alert-danger text-center"
-            role="alert">
-            <p th:text="${mensajeErrorEliminar}"></p>
-        </div>
-
-        <!-- Tabla de clientes -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Nro</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>DNI</th>
-                    <th>Fecha de nacimiento</th>
-                    <th>Contacto</th>
-                    <th>Gestión</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="cliente : ${clientes}">
-                    <td th:text="${cliente.nroCliente ?: 'Sin nroCliente'}"></td>
-                    <td th:text="${cliente.nombre ?: 'Sin nombre'}"></td>
-                    <td th:text="${cliente.apellido ?: 'Sin apellido'}"></td>
-                    <td th:text="${cliente.dni ?: 'Sin dni'}"></td>
-                    <td th:text="${#temporals.format(cliente.fechaNacimiento, 'dd/MM/yyyy')}"></td>
-                    <td>
-                         <a class="btn-ver-contacto"
-                        th:href="@{/contacto/verContacto/{id}(id=${cliente.idPersona})}"
-                        title="Ver contacto">
-                        <i class="bi bi-telephone"></i>
-                     </a>
-
-                    </td>
-                    <td>
-                        <div class="gestion-group">
-                            <a class="btn-gest btn-eliminar" th:href="@{'/cliente/eliminar/' + ${cliente.idPersona}}"
-                                onclick="return confirm('¿Desea eliminar el cliente?')" title="Eliminar">
-                                <i class="bi bi-trash3-fill"></i>
-                            </a>
-                            <a class="btn-gest btn-modificar" th:href="@{'/cliente/editar/' + ${cliente.idPersona}}"
-                                title="Modificar">
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                const mensajes = document.querySelectorAll('.alert');
-                mensajes.forEach(msg => {
-                    setTimeout(() => {
-                        msg.classList.add('fade-out');
-                        msg.addEventListener('animationend', () => {
-                            msg.remove();
-                        });
-                    }, 4000);
-                });
-            });
-        </script>
-    </main>
-    <footer>
-        © 2025 Sistema de Turnos. Todos los derechos reservados.
+  <div class="mb-3">
+    <label for="telefono" class="form-label">
+      <i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>Teléfono:</strong>
+    </label>
+    <input type="text" class="form-control" id="telefono" name="contacto.telefono"
+           th:value="${cliente.contacto.telefono}" placeholder="Sin teléfono" />
+  </div>
+</div>
+    <!-- Footer fijo -->
+    <footer class="footer">
+      © 2025 Sistema de Turnos. Todos los derechos reservados.
     </footer>
-
-</body>
-
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

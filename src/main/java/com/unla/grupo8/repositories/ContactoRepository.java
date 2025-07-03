@@ -11,10 +11,8 @@ public interface ContactoRepository extends JpaRepository<Contacto, Long> {
 
     List<Contacto> findByDireccion(String direecion);
 
-    List<Contacto> findByEmail(String email);
-
     List<Contacto> findByTelefono(String telefono);
-    boolean existsByEmailAndTelefonoAndDireccion(String email, String telefono, String direccion);
+    boolean existsByEmail(String email);
 
-    Optional <Contacto> findByEmailAndTelefonoAndDireccion(String email, String telefono, String direccion);
+    Optional <Contacto> findByEmail(String email);
 }

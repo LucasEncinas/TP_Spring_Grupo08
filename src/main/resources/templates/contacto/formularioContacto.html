@@ -153,29 +153,30 @@
         <span th:text="${error}"></span>
       </div>
 
-      <form action="/contacto/guardar" method="post" class="row g-3">
-        <input type="hidden" name="personaId" th:value="${personaId}" />
+      <form th:action="@{/contacto/guardar}" th:object="${contacto}" method="post" class="row g-3">
+  <input type="hidden" name="personaId" th:value="${personaId}" />
+  <input type="hidden" th:field="*{id}" />
 
-        <div class="col-md-6">
-          <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" class="form-control" required />
-        </div>
+  <div class="col-md-6">
+    <label for="email" class="form-label">Email:</label>
+    <input type="email" id="email" th:field="*{email}" class="form-control" required />
+  </div>
 
-        <div class="col-md-6">
-          <label for="telefono" class="form-label">Teléfono:</label>
-          <input type="tel" id="telefono" name="telefono" class="form-control" required />
-        </div>
+  <div class="col-md-6">
+    <label for="telefono" class="form-label">Teléfono:</label>
+    <input type="tel" id="telefono" th:field="*{telefono}" class="form-control" required />
+  </div>
 
-        <div class="col-12">
-          <label for="direccion" class="form-label">Dirección:</label>
-          <input type="text" id="direccion" name="direccion" class="form-control" required />
-        </div>
+  <div class="col-12">
+    <label for="direccion" class="form-label">Dirección:</label>
+    <input type="text" id="direccion" th:field="*{direccion}" class="form-control" required />
+  </div>
 
-        <div class="col-12 d-grid">
-          <button type="submit" class="btn btn-primary">Guardar Contacto</button>
-          <a href="/formularios/formularioRegistro" class="btn btn-secondary">Volver sin guardar</a>
-        </div>
-      </form>
+  <div class="col-12 d-grid">
+    <button type="submit" class="btn btn-primary">Guardar Contacto</button>
+    <a href="/formularios/formularioRegistro" class="btn btn-secondary">Volver sin guardar</a>
+  </div>
+</form>
 
       <!-- Mensaje de éxito -->
       <div th:if="${mensaje}" class="alert alert-success text-center">

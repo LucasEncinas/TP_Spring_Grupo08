@@ -76,7 +76,7 @@ public class RegistroController {
 
                 Cliente nuevoCliente = clienteService.guardarCliente(cliente);
 
-                redirectAttributes.addFlashAttribute("personaId", nuevoCliente.getIdPersona());
+                //redirectAttributes.addFlashAttribute("personaId", nuevoCliente.getIdPersona());
                 redirectAttributes.addFlashAttribute("mensaje",
                         "✔️ Cliente guardado correctamente, agregue un contacto.");
                 return "redirect:/contacto/formularioContacto?personaId=" + nuevoCliente.getIdPersona();
@@ -111,7 +111,7 @@ public class RegistroController {
                     nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
                     empleadoService.guardarEmpleado(nuevoEmpleado);
 
-                    redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getIdPersona());
+                    //redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getIdPersona());
                     redirectAttributes.addFlashAttribute("mensaje",
                             "Empleado guardado correctamente, agregue un contacto");
                     return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getIdPersona();

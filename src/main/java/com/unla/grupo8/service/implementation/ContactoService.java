@@ -24,30 +24,25 @@ public class ContactoService {
     }
 
     public void guardarContacto(Contacto contacto) {
-    boolean existe = contactoRepository.existsByEmailAndTelefonoAndDireccion(
-        contacto.getEmail(), contacto.getTelefono(), contacto.getDireccion()
-    );
+    boolean existe = contactoRepository.existsByEmail(contacto.getEmail());
 
     if (existe) {
-        System.out.println(" Contacto ya existe en la BD, obteniendo el contacto guardado...");
-        Optional<Contacto> contactoExistente = contactoRepository.findByEmailAndTelefonoAndDireccion(
-            contacto.getEmail(), contacto.getTelefono(), contacto.getDireccion()
-        );
+        Optional<Contacto> contactoExistente = contactoRepository.findByEmail(contacto.getEmail());
 
         if (contactoExistente.isPresent()) {
-            Contacto contactoPersistido = contactoExistente.get(); 
+            Contacto contactoPersistido = contactoExistente.get();
+            if (contacto.getId() != null && contacto.getId().equals(contactoPersistido.getId())) {
+            } else {
+                boolean enCliente = clienteRepository.existsByContacto(contactoPersistido);
+                boolean enEmpleado = empleadoRepository.existsByContacto(contactoPersistido);
 
-            boolean enCliente = clienteRepository.existsByContacto(contactoPersistido);
-            boolean enEmpleado = empleadoRepository.existsByContacto(contactoPersistido);
-
-            if (enCliente || enEmpleado) { 
-                System.out.println(" Contacto ya registrado con otro usuario, NO se puede reutilizar.");
-                throw new ExcepcionContacto("Este contacto ya está asignado a otra persona.");
+                if (enCliente || enEmpleado) {
+                    throw new ExcepcionContacto("El email ya se encuentra registrado, ingrese otro.");
+                }
             }
         }
     }
 
-    System.out.println(" Guardando contacto en la BD...");
     contactoRepository.save(contacto);
 }
 
