@@ -231,27 +231,26 @@
       <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
         <input type="hidden" th:field="*{idTurno}" />
 
-            <label for="servicio">Servicio:</label>
+        <label for="servicio">Servicio:</label>
         <select th:field="*{servicio.idServicio}" id="servicio" required>
-            <option value="" disabled selected>Seleccione un servicio</option>
-            <option th:each="servicio : ${servicios}" 
-                    th:value="${servicio.idServicio}" 
-                    th:text="${servicio.nombre}"></option>
+          <option value="" disabled selected>Seleccione un servicio</option>
+          <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}" th:text="${servicio.nombre}">
+          </option>
         </select>
 
         <label for="sucursal">Sucursal:</label>
         <select th:field="*{sucursal.idSucursal}" id="sucursal" required>
-            <option value="" disabled selected>Seleccione una sucursal</option>
+          <option value="" disabled selected>Seleccione una sucursal</option>
         </select>
 
         <label for="dia">Día:</label>
         <select th:field="*{dia.id}" id="dia" required>
-            <option value="" disabled selected>Seleccione un día</option>
+          <option value="" disabled selected>Seleccione un día</option>
         </select>
 
         <label for="hora">Hora:</label>
         <select id="hora" name="hora" required>
-            <option value="" disabled selected>Seleccione una hora</option>
+          <option value="" disabled selected>Seleccione una hora</option>
         </select>
 
         <label for="cliente">Cliente:</label>
@@ -288,72 +287,81 @@
       </form>
     </div>
   </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-  const servicioSelect = document.getElementById('servicio');
-  const sucursalSelect = document.getElementById('sucursal');
-  const diaSelect = document.getElementById('dia');
-  const horaSelect = document.getElementById('hora');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const servicioSelect = document.getElementById('servicio');
+      const sucursalSelect = document.getElementById('sucursal');
+      const diaSelect = document.getElementById('dia');
+      const horaSelect = document.getElementById('hora');
 
-  if (!servicioSelect.dataset.listenerAttached) {
-    servicioSelect.addEventListener('change', function () {
-    const id = this.value;
-    diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
-    horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+      if (!servicioSelect.dataset.listenerAttached) {
+        servicioSelect.addEventListener('change', function () {
+          const id = this.value;
+          diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
+          horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
 
-    // Cargo sucursales según el servicio
-    fetch(`/api/sucursales/por-servicio/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        sucursalSelect.innerHTML = '<option value="">Seleccione una sucursal</option>';
-        data.forEach(s => {
-          sucursalSelect.innerHTML += `<option value="${s.idSucursal}">${s.nombre}</option>`;
+          // Cargo sucursales según el servicio
+          fetch(`/api/sucursales/por-servicio/${id}`)
+            .then(res => res.json())
+            .then(data => {
+              sucursalSelect.innerHTML = '<option value="">Seleccione una sucursal</option>';
+              data.forEach(s => {
+                sucursalSelect.innerHTML += `<option value="${s.idSucursal}">${s.nombre}</option>`;
+              });
+
+              // Reseteo día y hora al cambiar servicio
+
+            });
+
+          // Cargo horarios según el servicio
+          fetch(`/api/horarios/por-servicio/${id}`)
+            .then(res => res.json())
+            .then(data => {
+              console.log("Horarios recibidos del servidor:", data);
+              horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+              console.log("👉 Evento change de servicio activado");
+              console.log("📢 Ejecutando fetch de horarios una vez más");
+              data.forEach(h => {
+                console.log("➡ Cargando horarios para servicio:", id);
+                console.log("Agregando opción:", h);
+                horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
+              });
+            });
         });
+        servicioSelect.dataset.listenerAttached = true; // Marcar que el listener ya está adjunto
+      }
 
-        // Reseteo día y hora al cambiar servicio
-        
+      sucursalSelect.addEventListener('change', function () {
+        const id = this.value;
+
+        // Cargo días según la sucursal
+        fetch(`/api/dias/por-sucursal/${id}`)
+          .then(res => res.json())
+          .then(data => {
+            diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas
+            // Ordenamos los datos por fecha (de la más antigua a la más reciente)
+            data.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+            data.forEach(d => {
+              const fecha = new Date(d.fecha);
+              fecha.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas
+              fecha.setHours(fecha.getHours() + 24);
+              if (fecha >= hoy) {
+                const fechaTexto = fecha.toLocaleDateString();
+                diaSelect.innerHTML += `<option value="${d.id}">${fechaTexto}</option>`;
+              }
+            });
+            // NO modifico horas aquí
+          });
       });
 
-    // Cargo horarios según el servicio
-    fetch(`/api/horarios/por-servicio/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log("Horarios recibidos del servidor:", data);
-        horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
-        console.log("👉 Evento change de servicio activado");
-        console.log("📢 Ejecutando fetch de horarios una vez más");
-        data.forEach(h => {
-          console.log("➡ Cargando horarios para servicio:", id);
-          console.log("Agregando opción:", h);
-          horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
-        });
-      });
-  });
-  servicioSelect.dataset.listenerAttached = true; // Marcar que el listener ya está adjunto
-  }
-
-  sucursalSelect.addEventListener('change', function () {
-    const id = this.value;
-
-    // Cargo días según la sucursal
-    fetch(`/api/dias/por-sucursal/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
-        data.forEach(d => {
-          const fecha = new Date(d.fecha).toLocaleDateString();
-          diaSelect.innerHTML += `<option value="${d.id}">${fecha}</option>`;
-        });
-        // NO modifico horas aquí
-      });
-  });
-
-  // No es necesario listener para diaSelect porque horas no dependen del día
-});
-</script>
+      // No es necesario listener para diaSelect porque horas no dependen del día
+    });
+  </script>
   <footer>
-        © 2025 Sistema de Turnos. Todos los derechos reservados.
-    </footer>
+    © 2025 Sistema de Turnos. Todos los derechos reservados.
+  </footer>
 </body>
 
 </html>

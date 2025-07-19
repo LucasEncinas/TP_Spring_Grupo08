@@ -387,7 +387,7 @@
                                 var myModal = new bootstrap.Modal(document.getElementById('addDayModal'));
                                 myModal.hide();
                             } else {
-                                alert('Error al guardar el día.');
+                                alert(data.error || 'Error al guardar el día.');
                             }
                         })
                         .catch(error => {

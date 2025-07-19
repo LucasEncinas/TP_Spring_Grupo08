@@ -1,6 +1,7 @@
 package com.unla.grupo8.service.implementation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,12 +19,13 @@ public class DiaService {
     }
 
     public void guardarDia(Dia dia) {
+        if (dia.getFecha().isBefore(LocalDate.now())) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String fechaFormateada = dia.getFecha().format(formatter);
+            throw new RuntimeException("❌ La fecha seleccionada (" + fechaFormateada
+                    + ") ya ha vencido.\nPor favor, ingresa una fecha válida.");
+        }
         diaRepository.save(dia);
-    }
-
-    public Dia guardarDiaR(Dia dia) {
-        diaRepository.save(dia);
-        return dia;
     }
 
     public List<Dia> obtenerDiasPorFecha(LocalDate fecha) {
@@ -44,7 +46,7 @@ public class DiaService {
     }
 
     public Dia buscarPorId(Long id) {
-    return diaRepository.findById(id).orElse(null);
-}
+        return diaRepository.findById(id).orElse(null);
+    }
 
 }
