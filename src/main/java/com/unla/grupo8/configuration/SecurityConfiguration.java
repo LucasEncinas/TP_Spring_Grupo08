@@ -3,28 +3,28 @@ package com.unla.grupo8.configuration;
 //import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 // import org.springframework.security.authentication.AuthenticationManager;
-// import org.springframework.security.authentication.AuthenticationProvider;
-// import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 // import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-// import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.unla.grupo8.service.implementation.ClienteService;
+import com.unla.grupo8.service.implementation.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-	private final ClienteService userService;
+	private final CustomUserDetailsService userService;
 
-	public SecurityConfiguration(ClienteService userService) {
+	public SecurityConfiguration(CustomUserDetailsService userService) {
 		this.userService = userService;
 	}
 
@@ -36,6 +36,8 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
+					//auth.requestMatchers("/cliente/**").hasRole("CLIENTE");
+					//auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");
 					auth.requestMatchers("/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/", "/vendor/bootstrap/js/", "/api/v1/**").permitAll();
 					auth.requestMatchers("/contacto/formularioContacto", "/contacto/guardar").permitAll();
@@ -52,8 +54,9 @@ public class SecurityConfiguration {
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.defaultSuccessUrl("/inicio", true); 
-					
+					login.successHandler(successHandler);//se agrego
+					//login.defaultSuccessUrl("/inicio", true);
+
 					login.permitAll();
 				})
 				.logout(logout -> {
@@ -70,16 +73,16 @@ public class SecurityConfiguration {
 	// return authenticationConfiguration.getAuthenticationManager();
 	// }
 
-	// @Bean
-	// AuthenticationProvider authenticationProvider(){
-	// DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	// provider.setPasswordEncoder(passwordEncoder());
-	// provider.setUserDetailsService(userService);
-	// return provider;
-	// }
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setPasswordEncoder(passwordEncoder());
+		provider.setUserDetailsService(userService);
+		return provider;
+	}
 
-	// @Bean
-	// PasswordEncoder passwordEncoder(){
-	// return new BCryptPasswordEncoder();
-	// }
+	@Bean
+	PasswordEncoder passwordEncoder(){
+	return new BCryptPasswordEncoder();
+	}
 }

@@ -1,5 +1,6 @@
 package com.unla.grupo8.service.implementation;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Cliente;
@@ -18,6 +19,9 @@ public class ClienteService {
     }
 
     public Cliente guardarCliente(Cliente cliente) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        cliente.setPassword(encoder.encode(cliente.getDni())); // Encriptar el DNI como contraseña
+        cliente.setRol("CLIENTE");
         return clienteRepository.save(cliente);
     }
 
@@ -41,4 +45,7 @@ public class ClienteService {
         clienteRepository.delete(cliente);
     }
 
+    public Cliente findByContactoEmail(String email) {
+    return clienteRepository.findByContactoEmail(email);
+}
 }

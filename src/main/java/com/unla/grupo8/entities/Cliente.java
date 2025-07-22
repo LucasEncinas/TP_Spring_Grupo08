@@ -27,6 +27,12 @@ public class Cliente extends Persona {
     @JsonBackReference("turno-cliente")
     private List<Turno> turnos = new ArrayList<>();
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "rol", nullable = false)
+    private String rol; // Rol del usuario (ej: "CLIENTE")
+
     // Constructor que hereda de Persona
     public Cliente(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto, String nroCliente) {
         super(nombre, apellido, dni, fechaNacimiento, contacto);

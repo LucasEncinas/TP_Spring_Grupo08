@@ -14,14 +14,16 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException {
-        String userType = request.getParameter("userType");
+        String userType = authentication.getAuthorities().iterator().next().getAuthority();
     
-        if ("cliente".equalsIgnoreCase(userType)) {
-            response.sendRedirect("cliente/index");
-        } else if ("empleado".equalsIgnoreCase(userType)) {
-            response.sendRedirect("turno/listaTurnos");
+        if ("ROLE_CLIENTE".equalsIgnoreCase(userType)) {
+            response.sendRedirect("/cliente/index");
+        } else if ("ROLE_EMPLEADO".equalsIgnoreCase(userType)) {
+            response.sendRedirect("/inicio");
+        } else if ("ROLE_ADMIN".equalsIgnoreCase(userType)) {
+            response.sendRedirect("/inicio");
         } else {
-            response.sendRedirect("turno/listaTurnos");
+            response.sendRedirect("/login");
         }
 
     }
