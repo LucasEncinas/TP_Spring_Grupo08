@@ -48,4 +48,15 @@ public class Disponibilidad {
         this.dia = dia;
     }
 
+    public LocalTime getHoraInicio() {
+    return horaDesde;
+    }
+
+    public LocalTime getHoraFin() {
+    return horaHasta;
+    }
+
+    public Dia getDia (){
+        return dia;
+    }
 }

@@ -44,37 +44,36 @@ public class DisponibilidadController {
     return "disponibilidad/nuevaDisponibilidad"; 
     }
    
-     // Guardar la nueva disponibilidad
     @PostMapping("/guardar")
-    public String guardarDisponibilidad(@RequestParam("servicioId") Long servicioId,
-                                        @RequestParam("dia") String dia, 
-                                        @RequestParam ("horaDesde")String horaDesde,
-                                        @RequestParam ("horaHasta") String horaHasta,
-                                        RedirectAttributes attributes) {
-        //casteo dia
-        Dia diaSeleccionado;
-        try {
-            diaSeleccionado = Dia.valueOf(dia.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            attributes.addFlashAttribute("error", "Día inválido.");
-            return "redirect:/disponibilidad/nuevaDisponibilidad";
-        }
-        LocalTime horaInicio = LocalTime.parse(horaDesde);
-        LocalTime horaFin = LocalTime.parse(horaHasta);
-              
+public String guardarDisponibilidad(@RequestParam("servicioId") Long servicioId,
+                                    @RequestParam("dia") List<String> dias, 
+                                    @RequestParam("horaDesde") List<String> horasDesde,
+                                    @RequestParam("horaHasta") List<String> horasHasta,
+                                    RedirectAttributes attributes) {
+
     Servicio servicio = servicioService.obtenerPorId(servicioId);
     if (servicio == null) {
         attributes.addFlashAttribute("error", "El servicio no existe.");
         return "redirect:/disponibilidad/nuevaDisponibilidad";
     }
 
-    Disponibilidad nuevaDisponibilidad = new Disponibilidad(horaInicio, horaFin, diaSeleccionado);
-    servicio.getDisponibilidades().add(nuevaDisponibilidad); // Asociar disponibilidad al servicio
-    servicioService.guardar(servicio);
-        // Mensaje de éxito 
-       attributes.addFlashAttribute("mensaje", "Servicio y disponibilidad guardada correctamente");
-        return "redirect:/servicios/listaServicios";
+    for (int i = 0; i < dias.size(); i++) {
+        try {
+            Dia diaSeleccionado = Dia.valueOf(dias.get(i).toUpperCase());
+            LocalTime horaInicio = LocalTime.parse(horasDesde.get(i));
+            LocalTime horaFin = LocalTime.parse(horasHasta.get(i));
+
+            Disponibilidad nuevaDisponibilidad = new Disponibilidad(horaInicio, horaFin, diaSeleccionado);
+            servicio.getDisponibilidades().add(nuevaDisponibilidad);
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error en la disponibilidad #" + (i+1));
+            return "redirect:/disponibilidad/nuevaDisponibilidad";
+        }
     }
 
+    servicioService.guardar(servicio);
+    attributes.addFlashAttribute("mensaje", "Servicio y disponibilidades guardadas correctamente");
+    return "redirect:/servicios/listaServicios";
+}
     
 }

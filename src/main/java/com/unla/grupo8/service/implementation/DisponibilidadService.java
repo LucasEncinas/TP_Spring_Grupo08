@@ -1,8 +1,13 @@
 package com.unla.grupo8.service.implementation;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.unla.grupo8.entities.Disponibilidad;
@@ -29,7 +34,38 @@ public class DisponibilidadService {
         return disponibilidadRepository.findByDia(dia);
     }
 
-    public List<String> obtenerHorariosPorServicio(Long idServicio) {
+    public List<Disponibilidad> obtenerPorServicioYDia(Long servicioId, Disponibilidad.Dia dia) {
+    return disponibilidadRepository.findByServicio_IdServicioAndDia(servicioId, dia);
+    }
+    public List<Disponibilidad> obtenerPorServicio(Long servicioId) {
+    return disponibilidadRepository.findByServicio_IdServicio(servicioId);
+    }
+
+    public List<LocalDate> obtenerFechasPorServicio(Long idServicio) {
+    List<Disponibilidad> disponibilidades = disponibilidadRepository.findByServicioId(idServicio);
+
+    Set<DayOfWeek> diasDelServicio = disponibilidades.stream()
+        .map(d -> DayOfWeek.valueOf(d.getDia().name())) // asumiendo que enum Dia tiene nombres compatibles con DayOfWeek
+        .collect(Collectors.toSet());
+
+    LocalDate hoy = LocalDate.now();
+    LocalDate limite = hoy.plusDays(30); // por ejemplo: próximos 30 días
+    List<LocalDate> fechas = new ArrayList<>();
+
+    while (!hoy.isAfter(limite)) {
+        if (diasDelServicio.contains(hoy.getDayOfWeek())) {
+            fechas.add(hoy);
+        }
+        hoy = hoy.plusDays(1);
+    }
+
+    return fechas;
+}
+
+
+
+    public List<String> obtenerHorariosPorServicio(Long idServicio)
+     {
         Servicio servicio = servicioService.obtenerPorId(idServicio);
         if (servicio == null)
             return List.of();

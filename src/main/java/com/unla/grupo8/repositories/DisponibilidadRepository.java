@@ -1,5 +1,6 @@
 package com.unla.grupo8.repositories;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,5 +23,10 @@ public interface DisponibilidadRepository extends JpaRepository<Disponibilidad, 
 
     List<Disponibilidad> findByServicio_IdServicio(Long idServicio);
 
+    List<Disponibilidad> findByServicio_IdServicioAndDia(Long servicioId, Disponibilidad.Dia dia);
+    //obtener disponibilidad por servicio
+    List<Disponibilidad> findByServicioId(Long idServicio);
+
+ 
     
 }
