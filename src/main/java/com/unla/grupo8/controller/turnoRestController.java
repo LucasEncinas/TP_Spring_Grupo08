@@ -4,10 +4,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unla.grupo8.dtos.DiaDTO;
 import com.unla.grupo8.entities.Disponibilidad;
+import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.DisponibilidadService;
+import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +34,9 @@ public class turnoRestController {
     @Autowired
     private DiaService diaService;
 
+    @Autowired
+    private EmpleadoService empleadoService;
+
     @GetMapping("/sucursales/por-servicio/{idServicio}")
     public List<Sucursal> obtenerSucursales(@PathVariable Long idServicio) {
         Servicio servicio = servicioService.obtenerPorId(idServicio);
@@ -50,6 +55,11 @@ public class turnoRestController {
         return diaService.obtenerDiasPorSucursal(idSucursal).stream()
                 .map(d -> new DiaDTO(d.getId(), d.getFecha()))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/empleados/por-sucursal/{idSucursal}")
+    public List<Empleado> obtenerEmpleadosPorSucursal(@PathVariable Long idSucursal) {
+        return empleadoService.obtenerEmpleadosPorSucursal(idSucursal);
     }
 
 }

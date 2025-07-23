@@ -11,7 +11,7 @@ import com.unla.grupo8.repositories.EmpleadoRepository;
 import java.util.List;
 
 @Service
-public class EmpleadoService{
+public class EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
 
@@ -31,8 +31,12 @@ public class EmpleadoService{
     }
 
     // Traer un empleado por su ID
-    public Empleado traerEmpleadoPorId(Long id){
+    public Empleado traerEmpleadoPorId(Long id) {
         return empleadoRepository.findById(id).orElse(null);
+    }
+
+    public List<Empleado> obtenerEmpleadosPorSucursal(Long idSucursal) {
+        return empleadoRepository.findBySucursalIdSucursal(idSucursal);
     }
 
     // Traer todos los empleados
@@ -52,6 +56,5 @@ public class EmpleadoService{
         empleadoRepository.save(empleadoAux);
         empleadoRepository.delete(empleado);
     }
-
 
 }

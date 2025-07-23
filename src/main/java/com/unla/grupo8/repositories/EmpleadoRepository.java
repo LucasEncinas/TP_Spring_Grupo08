@@ -8,6 +8,10 @@ import com.unla.grupo8.entities.Empleado;
 
 public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
     List<Empleado> findByLegajo(String legajo);
+
     boolean existsByContacto(Contacto contacto);
+
     Empleado findByContactoEmail(String email);
+
+    List<Empleado> findBySucursalIdSucursal(Long idSucursal);
 }

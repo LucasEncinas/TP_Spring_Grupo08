@@ -3,11 +3,42 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Formulario Turno</title>
+  <title>Reserva de Turno</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
   <style>
+    header {
+      background: linear-gradient(to right, #556df5, #7c8dfb);
+      padding: 20px 40px;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .header-btn {
+      font-size: 0.9rem;
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.4s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
     body {
       background: linear-gradient(to right, #e4e9ff, #f0f3ff);
       min-height: 100vh;
@@ -15,75 +46,18 @@
       font-family: "Segoe UI", Tahoma, sans-serif;
     }
 
-    .top-buttons {
-      width: 100%;
-      padding: 16px 30px;
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: transparent;
-    }
-
-    .top-buttons .btn {
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 14px;
-      border-radius: 6px;
-      padding: 8px 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .btn-outline-start {
-      color: #4a69bd;
-      border: 2px solid #4a69bd;
-      background-color: transparent;
-      box-shadow: 0px 2px 6px rgba(74, 105, 189, 0.3);
-    }
-
-    .btn-outline-start:hover {
-      background-color: #4a69bd;
-      color: white;
-    }
-
-    .btn-outline-view {
-      color: #6a72d6;
-      border: 2px solid #6a72d6;
-      background-color: transparent;
-      box-shadow: 0px 2px 6px rgba(106, 114, 214, 0.3);
-    }
-
-    .btn-outline-view:hover {
-      background-color: #6a72d6;
-      color: white;
-    }
-
-    .btn-outline-logout {
-      color: #a52222;
-      border: 2px solid #a52222;
-      background-color: transparent;
-      box-shadow: 0px 2px 6px rgba(165, 34, 34, 0.3);
-    }
-
-    .btn-outline-logout:hover {
-      background-color: #a52222;
-      color: white;
-    }
-
     .main-content {
-      padding-bottom: 70px;
+      padding-bottom: 20px;
     }
 
     .form-container {
       background-color: white;
       max-width: 600px;
       margin: 40px auto;
-      padding: 30px 40px;
+      padding: 24px 32px;
       border-radius: 12px;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      animation: fadeInUp 0.5s ease-out forwards;
     }
 
     .form-title {
@@ -109,11 +83,32 @@
       border-radius: 2px;
     }
 
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     label {
       font-weight: 600;
       margin-top: 12px;
       margin-bottom: 6px;
       display: block;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+      animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
     }
 
     input,
@@ -124,18 +119,64 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       box-sizing: border-box;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       transition: border-color 0.3s ease;
     }
 
-    input:focus,
-    select:focus {
-      border-color: #556df5;
-      outline: none;
+    select:hover {
+      cursor: pointer;
+      background-color: #f0f4ff;
     }
 
-    .btn-guardar,
-    .btn-volver {
+    .form-control {
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .form-control:focus {
+      border-color: #3b4cca;
+      box-shadow: 0 0 5px rgba(59, 76, 202, 0.4);
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus-visible {
+      outline: 2px solid rgba(59, 76, 202, 0.4);
+      outline-offset: 2px;
+    }
+
+    .input-group.mb-3 {
+      margin-bottom: 10px !important;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      height: 100%;
+      min-width: 40px;
+      border-radius: 6px 0 0 6px;
+    }
+
+    .input-group .form-control {
+      height: calc(2.25rem + 14px);
+      border-radius: 0 6px 6px 0;
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
+
+    .input-group-text i {
+      font-size: 1.1rem;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .btn-guardar {
       width: 100%;
       padding: 10px;
       border-radius: 6px;
@@ -143,24 +184,14 @@
       font-size: 15px;
       margin-top: 10px;
       border: none;
-    }
-
-    .btn-guardar {
       background-color: #556df5;
       color: white;
     }
 
     .btn-guardar:hover {
       background-color: #3e52c6;
-    }
-
-    .btn-volver {
-      background-color: #adb5bd;
-      color: white;
-    }
-
-    .btn-volver:hover {
-      background-color: #6c757d;
+      transform: scale(1.01);
+      transition: transform 0.15s ease-in-out;
     }
 
     .alert {
@@ -174,173 +205,201 @@
     }
 
     footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
       background-color: #f1f3f6;
       text-align: center;
-      padding: 16px 10px;
+      padding: 14px 10px;
       font-size: 14px;
       color: #666;
       box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
-      z-index: 20;
+      margin-top: auto;
     }
   </style>
 
 </head>
 
 <body>
-  <div class="main-content">
-    <!-- Encabezado estilo visual consistente -->
-    <div class="top-buttons">
-      <a href="/inicio" class="btn btn-outline-start">
-        <i class="bi bi-house-door-fill"></i> Inicio
-      </a>
-      <a href="/turno/listaTurnos" class="btn btn-outline-view">
-        <i class="bi bi-calendar-week"></i> Ver Turnos
-      </a>
-      <a href="/logout" class="btn btn-outline-logout">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-      </a>
-    </div>
+  <header>
+    <a href="/inicio" class="header-btn" aria-label="Inicio">
+      <i class="bi bi-house-door-fill"></i>
+      Inicio
+    </a>
+    <a href="/turno/listaTurnos" class="header-btn" aria-label="Ver Turnos">
+      <i class="bi bi-calendar-week"></i> Ver Turnos
+    </a>
+    <a href="/logout" class="header-btn" aria-label="Cerrar sesión">
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </a>
+  </header>
 
+  <div class="main-content">
 
     <!-- Formulario -->
     <div class="form-container">
-      <!-- Título visual -->
-      <h2 class="form-title">Crear Turno</h2>
-
-      <div th:if="${error}" class="alert alert-danger">
-        <p th:text="${error}"></p>
-      </div>
-
-      <div th:if="${#lists.isEmpty(clientes)}" class="alert">
-        ⚠ No hay clientes disponibles. Agregue clientes antes de crear un
-        turno.
-      </div>
-      <div th:if="${#lists.isEmpty(empleados)}" class="alert">
-        ⚠ No hay empleados disponibles. Agregue empleados antes de crear un
-        turno.
-      </div>
-      <div th:if="${#lists.isEmpty(servicios)}" class="alert">
-        ⚠ No hay servicios disponibles. Agregue servicios antes de crear un
-        turno.
-      </div>
+      <!-- Título -->
+      <h2 class="form-title">Reservar Turno</h2>
 
       <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
         <input type="hidden" th:field="*{idTurno}" />
 
+        <!-- Servicio -->
         <label for="servicio">Servicio:</label>
-        <select th:field="*{servicio.idServicio}" id="servicio" required>
-          <option value="" disabled selected>Seleccione un servicio</option>
-          <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}" th:text="${servicio.nombre}">
-          </option>
-        </select>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-list"></i></span>
+          <select th:field="*{servicio.idServicio}" id="servicio" required class="form-control">
+            <option value="" disabled selected>Seleccione un servicio</option>
+            <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}" th:text="${servicio.nombre}">
+            </option>
+          </select>
+        </div>
 
+        <!-- Sucursal -->
         <label for="sucursal">Sucursal:</label>
-        <select th:field="*{sucursal.idSucursal}" id="sucursal" required>
-          <option value="" disabled selected>Seleccione una sucursal</option>
-        </select>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-building"></i></span>
+          <select th:field="*{sucursal.idSucursal}" id="sucursal" required class="form-control" disabled>
+            <option value="" disabled selected>Seleccione una sucursal</option>
+          </select>
+        </div>
 
+        <!-- Día -->
         <label for="dia">Día:</label>
-        <select th:field="*{dia.id}" id="dia" required>
-          <option value="" disabled selected>Seleccione un día</option>
-        </select>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+          <select th:field="*{dia.id}" id="dia" required class="form-control" disabled>
+            <option value="" disabled selected>Seleccione un día</option>
+          </select>
+        </div>
 
+        <!-- Hora -->
         <label for="hora">Hora:</label>
-        <select id="hora" name="hora" required>
-          <option value="" disabled selected>Seleccione una hora</option>
-        </select>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><i class="bi bi-clock"></i></span>
+          <select id="hora" name="hora" required class="form-control" disabled>
+            <option value="" disabled selected>Seleccione una hora</option>
+          </select>
+        </div>
 
+        <!-- Cliente -->
         <label for="cliente">Cliente:</label>
-        <select th:field="*{cliente.idPersona}" id="cliente" required>
-          <option value="" disabled selected>Seleccione un cliente</option>
-          <option th:each="cliente : ${clientes}" th:value="${cliente.idPersona}"
-            th:text="${cliente.nombre + ' ' + cliente.apellido}"></option>
-        </select>
+        <div class="input-group mb-3">
+          <span class="input-group-text">
+            <i class="bi bi-person-lines-fill"></i>
+          </span>
+          <select th:field="*{cliente.idPersona}" id="cliente" required class="form-control">
+            <option value="" disabled selected>Seleccione un cliente</option>
+            <option th:each="cliente : ${clientes}" th:value="${cliente.idPersona}"
+              th:text="${cliente.nombre + ' ' + cliente.apellido}">
+            </option>
+          </select>
+        </div>
 
-        <label for="empleado">Empleado:</label>
-        <select th:field="*{empleado.idPersona}" id="empleado" required>
-          <option value="" disabled selected>Seleccione un empleado</option>
-          <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}"
-            th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
-        </select>
+        <!-- Empleado -->
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <label for="empleado">Empleado:</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="bi bi-person-workspace"></i></span>
+              <select th:field="*{empleado.idPersona}" id="empleado" required class="form-control">
+                <option value="" disabled selected>Seleccione un empleado</option>
+                <option th:each="empleado : ${empleados}" th:value="${empleado.idPersona}"
+                  th:text="${empleado.nombre + ' ' + empleado.apellido}"></option>
+              </select>
+            </div>
+          </div>
 
-        <label for="estado">Estado:</label>
-        <select th:field="*{estado}" id="estado" required>
-          <option value="Confirmado" th:selected="${turno.estado == 'Confirmado'}">
-            Confirmado
-          </option>
-          <option value="Pendiente" th:selected="${turno.estado == 'Pendiente'}">
-            Pendiente
-          </option>
-          <option value="Cancelado" th:selected="${turno.estado == 'Cancelado'}">
-            Cancelado
-          </option>
-        </select>
+          <!-- Estado -->
+          <div class="col-md-6 mb-2">
+            <label for="estado">Estado:</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="bi bi-check-circle"></i></span>
+              <select th:field="*{estado}" id="estado" required class="form-control">
+                <option value="Confirmado" th:selected="${turno.estado == 'Confirmado'}">Confirmado
+                </option>
+                <option value="Pendiente" th:selected="${turno.estado == 'Pendiente'}">Pendiente
+                </option>
+                <option value="Cancelado" th:selected="${turno.estado == 'Cancelado'}">Cancelado
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-        <button type="submit" class="btn-guardar">Guardar Turno</button>
-        <button type="button" class="btn-volver" onclick="history.back()">
-          Volver
-        </button>
+        <!-- Botón Guardar -->
+        <div class="d-grid">
+          <button type="submit" class="btn-guardar">
+            <i class="bi bi-calendar-check me-2"></i> Reservar
+          </button>
+
+        </div>
       </form>
     </div>
   </div>
+
+  <footer>
+    © 2025 Sistema de Turnos. Todos los derechos reservados.
+  </footer>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const servicioSelect = document.getElementById('servicio');
       const sucursalSelect = document.getElementById('sucursal');
       const diaSelect = document.getElementById('dia');
       const horaSelect = document.getElementById('hora');
+      const empleadoSelect = document.getElementById('empleado');
+      const clienteSelect = document.getElementById('cliente');
 
-      if (!servicioSelect.dataset.listenerAttached) {
-        servicioSelect.addEventListener('change', function () {
-          const id = this.value;
-          diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
-          horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+      servicioSelect.selectedIndex = 0;
+      empleadoSelect.selectedIndex = 0;
+      clienteSelect.selectedIndex = 0;
+      sucursalSelect.innerHTML = '<option value="" disabled selected>Seleccione una sucursal</option>';
+      diaSelect.innerHTML = '<option value="" disabled selected>Seleccione un día</option>';
+      empleadoSelect.innerHTML = '<option value="" disabled selected>Seleccione un empleado</option>';
+      empleadoSelect.disabled = true;
 
-          // Cargo sucursales según el servicio
-          fetch(`/api/sucursales/por-servicio/${id}`)
-            .then(res => res.json())
-            .then(data => {
-              sucursalSelect.innerHTML = '<option value="">Seleccione una sucursal</option>';
-              data.forEach(s => {
-                sucursalSelect.innerHTML += `<option value="${s.idSucursal}">${s.nombre}</option>`;
-              });
+      // Al cambiar el servicio
+      servicioSelect.addEventListener('change', function () {
+        const servicioId = this.value;
 
-              // Reseteo día y hora al cambiar servicio
+        // Reset y bloqueo de campos
+        sucursalSelect.innerHTML = '<option value="" disabled selected>Seleccione una sucursal</option>';
+        diaSelect.innerHTML = '<option value="" disabled selected>Seleccione un día</option>';
+        horaSelect.innerHTML = '<option value="" disabled selected>Seleccione una hora</option>';
+        empleadoSelect.innerHTML = '<option value="" disabled selected>Seleccione un empleado</option>';
+        sucursalSelect.disabled = true;
+        diaSelect.disabled = true;
+        horaSelect.disabled = true;
+        empleadoSelect.disabled = true;
 
-            });
-
-          // Cargo horarios según el servicio
-          fetch(`/api/horarios/por-servicio/${id}`)
-            .then(res => res.json())
-            .then(data => {
-              console.log("Horarios recibidos del servidor:", data);
-              horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
-              console.log("👉 Evento change de servicio activado");
-              console.log("📢 Ejecutando fetch de horarios una vez más");
-              data.forEach(h => {
-                console.log("➡ Cargando horarios para servicio:", id);
-                console.log("Agregando opción:", h);
-                horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
-              });
-            });
-        });
-        servicioSelect.dataset.listenerAttached = true; // Marcar que el listener ya está adjunto
-      }
-
-      sucursalSelect.addEventListener('change', function () {
-        const id = this.value;
-
-        // Cargo días según la sucursal
-        fetch(`/api/dias/por-sucursal/${id}`)
+        // Carga de sucursales según servicio
+        fetch(`/api/sucursales/por-servicio/${servicioId}`)
           .then(res => res.json())
           .then(data => {
-            diaSelect.innerHTML = '<option value="">Seleccione un día</option>';
+            data.forEach(s => {
+              sucursalSelect.innerHTML += `<option value="${s.idSucursal}">${s.nombre}</option>`;
+            });
+            sucursalSelect.disabled = false;
+          });
+      });
+
+      // Al cambiar la sucursal
+      sucursalSelect.addEventListener('change', function () {
+        const sucursalId = this.value;
+
+        // Reset y bloqueo
+        diaSelect.innerHTML = '<option value="" disabled selected>Seleccione un día</option>';
+        horaSelect.innerHTML = '<option value="" disabled selected>Seleccione una hora</option>';
+        empleadoSelect.innerHTML = '<option value="" disabled selected>Seleccione un empleado</option>';
+        diaSelect.disabled = true;
+        horaSelect.disabled = true;
+        empleadoSelect.disabled = true;
+
+        // Carga de días disponibles según sucursal
+        fetch(`/api/dias/por-sucursal/${sucursalId}`)
+          .then(res => res.json())
+          .then(data => {
             const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas
+            hoy.setHours(0, 0, 0, 0);// Eliminamos hora para comparar solo fechas
             // Ordenamos los datos por fecha (de la más antigua a la más reciente)
             data.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
             data.forEach(d => {
@@ -352,10 +411,22 @@
                 diaSelect.innerHTML += `<option value="${d.id}">${fechaTexto}</option>`;
               }
             });
-            // NO modifico horas aquí
+            diaSelect.disabled = false;
+          });
+
+        // Carga de empleados según sucursal
+        fetch(`/api/empleados/por-sucursal/${sucursalId}`)
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(e => {
+              const nombreCompleto = `${e.nombre} ${e.apellido}`;
+              empleadoSelect.innerHTML += `<option value="${e.idPersona}">${nombreCompleto}</option>`;
+            });
+            empleadoSelect.disabled = false;
           });
       });
 
+      // Al cambiar el día, cargar horas
       diaSelect.addEventListener('change', function () {
         const servicioId = servicioSelect.value;
         const fechaSeleccionada = this.options[this.selectedIndex].textContent;
@@ -373,17 +444,12 @@
             data.forEach(h => {
               horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
             });
+            horaSelect.disabled = false;
           });
       });
-
-
-
-      // No es necesario listener para diaSelect porque horas no dependen del día
     });
   </script>
-  <footer>
-    © 2025 Sistema de Turnos. Todos los derechos reservados.
-  </footer>
+
 </body>
 
 </html>

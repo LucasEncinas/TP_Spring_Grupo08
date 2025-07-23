@@ -26,6 +26,7 @@ import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.SucursalService;
 import com.unla.grupo8.service.implementation.TurnoService;
 
+import java.security.Principal;
 import java.time.LocalDate;
 
 import java.time.LocalTime;
@@ -101,6 +102,31 @@ public class TurnoController {
         return "turno/formularioTurno";
     }
 
+    @GetMapping("/formularioTurnoCliente")
+    public String mostrarFormularioTurnoCliente(Model model, Principal principal) {
+        String email = principal.getName();
+        Cliente cliente = clienteService.findByContactoEmail(email);
+
+        Turno turno = new Turno();
+        turno.setCliente(cliente);
+
+        List<Empleado> empleados = empleadoService.obtenerTodos();
+        List<Servicio> servicios = servicioService.obtenerTodos();
+        List<Sucursal> sucursales = sucursalService.obtenerTodas();
+
+        if (empleados.isEmpty() || servicios.isEmpty()) {
+            model.addAttribute("error", "No hay datos suficientes para crear un turno.");
+            return "error/noHayDatos"; // Podrías crear una vista de error
+        }
+
+        model.addAttribute("turno", turno);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("empleados", empleados);
+        model.addAttribute("servicios", servicios);
+        model.addAttribute("sucursales", sucursales);
+        return "turno/formularioTurnoCliente";
+    }
+
     @GetMapping("/hora/{hora}")
     public List<Turno> obtenerTurnosPorHora(@PathVariable LocalTime hora) {
         return turnoService.obtenerTurnosPorHora(hora);
@@ -124,14 +150,13 @@ public class TurnoController {
         }
 
         Dia diaCompleto = diaService.buscarPorId(turno.getDia().getId());
-        System.out.println("Dia completo: " + diaCompleto);
         if (diaCompleto == null) {
             throw new ExcepcionTurno("El día seleccionado no existe.");
         }
-        System.out.println("Turno a guardar: " + turno);
         if (turnoService.existeTurno(diaCompleto, turno.getHora(), turno.getSucursal())) {
-            throw new ExcepcionTurno("Ya existe un turno para el dia: " + diaCompleto.getFecha() + " a la hora: " + turno.getHora() 
-                    + " en la sucursal: " + diaCompleto.getSucursal().getNombre());
+            throw new ExcepcionTurno(
+                    "Ya existe un turno para el dia: " + diaCompleto.getFecha() + " a la hora: " + turno.getHora()
+                            + " en la sucursal: " + diaCompleto.getSucursal().getNombre());
         }
 
         turno.setDia(diaCompleto);
