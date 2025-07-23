@@ -1,5 +1,6 @@
 package com.unla.grupo8.service.implementation;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.unla.grupo8.entities.Empleado;
@@ -10,7 +11,7 @@ import com.unla.grupo8.repositories.EmpleadoRepository;
 import java.util.List;
 
 @Service
-public class EmpleadoService {
+public class EmpleadoService{
 
     private final EmpleadoRepository empleadoRepository;
 
@@ -19,6 +20,9 @@ public class EmpleadoService {
     }
 
     public Empleado guardarEmpleado(Empleado empleado) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        empleado.setPassword(encoder.encode(empleado.getDni())); // Encriptar el DNI como contraseña
+        empleado.setRol("EMPLEADO"); // Asigna el rol
         return empleadoRepository.save(empleado);
     }
 
@@ -48,5 +52,6 @@ public class EmpleadoService {
         empleadoRepository.save(empleadoAux);
         empleadoRepository.delete(empleado);
     }
+
 
 }

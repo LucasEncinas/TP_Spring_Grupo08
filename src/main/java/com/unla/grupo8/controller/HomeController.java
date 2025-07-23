@@ -1,5 +1,6 @@
 package com.unla.grupo8.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,15 @@ public class HomeController {
 
 	@GetMapping("/inicio")
 	public String vistaHome() {
-		return "inicio/home";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+			return "inicio/home";
+		} else if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_CLIENTE"))) {
+			return "redirect:/cliente/index";
+		} else if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_EMPLEADO"))) {
+			return "inicio/home";
+		}
+		return "redirect:/login";
 	}
 
 	// GET Example: SERVER/hello?name=someName

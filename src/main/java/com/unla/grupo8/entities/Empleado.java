@@ -38,6 +38,12 @@ public class Empleado extends Persona {
     @JsonBackReference("empleado-servicio")
     private Set<Servicio> servicios;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "rol", nullable = false)
+    private String rol; // Rol del usuario (ej: "EMPLEADO")
+
     // CONSTRUCTOR que hereda de Persona
     public Empleado(String nombre, String apellido, String dni, LocalDate fechaNacimiento, Contacto contacto,
             String legajo) {
