@@ -356,6 +356,28 @@
           });
       });
 
+      diaSelect.addEventListener('change', function () {
+        const servicioId = servicioSelect.value;
+        const fechaSeleccionada = this.options[this.selectedIndex].textContent;
+
+        if (!servicioId || !fechaSeleccionada) return;
+
+        const fecha = new Date(fechaSeleccionada.split("/").reverse().join("-")); // convierte "dd/mm/yyyy" a "yyyy-mm-dd"
+        const diasSemana = ["DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"];
+        const diaTexto = diasSemana[fecha.getDay()]; // obtiene el nombre del día compatible con el enum
+
+        fetch(`/api/horarios/por-servicio-y-dia?idServicio=${servicioId}&diaTexto=${diaTexto}`)
+          .then(res => res.json())
+          .then(data => {
+            horaSelect.innerHTML = '<option value="">Seleccione una hora</option>';
+            data.forEach(h => {
+              horaSelect.innerHTML += `<option value="${h}">${h}</option>`;
+            });
+          });
+      });
+
+
+
       // No es necesario listener para diaSelect porque horas no dependen del día
     });
   </script>

@@ -220,71 +220,38 @@
         <div class="card">
             <h2 class="form-title">Nueva Disponibilidad</h2>
 
-   <form action="/disponibilidad/guardar" method="post">
-  <input type="hidden" name="servicioId" th:value="${servicio.idServicio}" />
+            <form action="/disponibilidad/guardar" method="post">
+                <input type="hidden" name="servicioId" th:value="${servicio.idServicio}" />
 
-  <!-- Contenedor inicial -->
-  <div id="contenedorDisponibilidades">
-    <div class="disponibilidad mb-3">
-      <div class="row">
-        <div class="col-md-4">
-          <label class="form-label">Día:</label>
-          <select name="dia" class="form-select" required id="select-dias">
-            <option th:each="dia : ${dias}" th:value="${dia}" th:text="${dia}"></option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Hora Desde:</label>
-          <input type="time" name="horaDesde" class="form-control" required>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Hora Hasta:</label>
-          <input type="time" name="horaHasta" class="form-control" required>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="mb-3">
+                    <label class="form-label">Días:</label>
+                    <div class="row">
+                        <div class="col-6" th:each="dia : ${dias}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="dia" th:value="${dia}"
+                                    th:id="${dia}" />
+                                <label class="form-check-label" th:for="${dia}" th:text="${dia}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="d-grid gap-2 mb-3">
-    <button type="button" class="btn btn-secondary" onclick="agregarOtraDisponibilidad()">Agregar otra disponibilidad</button>
-  </div>
+                <div class="mb-3">
+                    <label class="form-label">Hora Desde:</label>
+                    <input type="time" name="horaDesde" class="form-control" required />
+                </div>
 
-  <div class="d-grid">
-    <button type="submit" class="btn btn-primary">Guardar Disponibilidades</button>
-  </div>
-</form>
+                <div class="mb-3">
+                    <label class="form-label">Hora Hasta:</label>
+                    <input type="time" name="horaHasta" class="form-control" required />
+                </div>
 
-<!-- Renderiza la lista de días como array JS -->
-<script>
-  const dias = /*[[${dias}]]*/ ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"]; // Reemplazado automáticamente por Thymeleaf
-
-  function agregarOtraDisponibilidad() {
-    const contenedor = document.getElementById("contenedorDisponibilidades");
-
-    const disponibilidad = document.createElement("div");
-    disponibilidad.classList.add("disponibilidad", "mb-3");
-    disponibilidad.innerHTML = `
-      <div class="row">
-        <div class="col-md-4">
-          <label class="form-label">Día:</label>
-          <select name="dia" class="form-select" required>
-            ${dias.map(dia => `<option value="${dia}">${dia}</option>`).join('')}
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Hora Desde:</label>
-          <input type="time" name="horaDesde" class="form-control" required>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Hora Hasta:</label>
-          <input type="time" name="horaHasta" class="form-control" required>
-        </div>
-      </div>
-    `;
-
-    contenedor.appendChild(disponibilidad);
-  }
-</script>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Guardar Disponibilidad</button>
+                    <button type="button" class="btn btn-outline-secondary mt-2"
+                        onclick="history.back()">Volver</button>
+                </div>
+            </form>
 
 
             <div th:if="${mensaje}" class="alert alert-success mt-3 text-center">

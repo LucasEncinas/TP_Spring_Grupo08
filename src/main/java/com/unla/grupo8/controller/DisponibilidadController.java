@@ -47,8 +47,8 @@ public class DisponibilidadController {
     @PostMapping("/guardar")
 public String guardarDisponibilidad(@RequestParam("servicioId") Long servicioId,
                                     @RequestParam("dia") List<String> dias, 
-                                    @RequestParam("horaDesde") List<String> horasDesde,
-                                    @RequestParam("horaHasta") List<String> horasHasta,
+                                    @RequestParam("horaDesde") String horasDesde,
+                                    @RequestParam("horaHasta") String horasHasta,
                                     RedirectAttributes attributes) {
 
     Servicio servicio = servicioService.obtenerPorId(servicioId);
@@ -60,8 +60,8 @@ public String guardarDisponibilidad(@RequestParam("servicioId") Long servicioId,
     for (int i = 0; i < dias.size(); i++) {
         try {
             Dia diaSeleccionado = Dia.valueOf(dias.get(i).toUpperCase());
-            LocalTime horaInicio = LocalTime.parse(horasDesde.get(i));
-            LocalTime horaFin = LocalTime.parse(horasHasta.get(i));
+            LocalTime horaInicio = LocalTime.parse(horasDesde);
+            LocalTime horaFin = LocalTime.parse(horasHasta);
 
             Disponibilidad nuevaDisponibilidad = new Disponibilidad(horaInicio, horaFin, diaSeleccionado);
             servicio.getDisponibilidades().add(nuevaDisponibilidad);

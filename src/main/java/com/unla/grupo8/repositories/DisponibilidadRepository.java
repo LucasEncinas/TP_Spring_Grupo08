@@ -1,6 +1,5 @@
 package com.unla.grupo8.repositories;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -18,15 +17,14 @@ public interface DisponibilidadRepository extends JpaRepository<Disponibilidad, 
     
     List<Disponibilidad> findByHoraHasta(LocalTime horaHasta);
 
-    @Query("SELECT d.horaDesde FROM Disponibilidad d WHERE d.servicio.idServicio = :servicioId")
-    List<LocalTime> findHorariosByServicioId(@Param("servicioId") Long servicioId);
+    @Query("SELECT d FROM Disponibilidad d WHERE d.servicio.idServicio = :idServicio")
+    List<Disponibilidad> findByServicioId(@Param("idServicio") Long idServicio);
 
     List<Disponibilidad> findByServicio_IdServicio(Long idServicio);
 
     List<Disponibilidad> findByServicio_IdServicioAndDia(Long servicioId, Disponibilidad.Dia dia);
-    //obtener disponibilidad por servicio
-    List<Disponibilidad> findByServicioId(Long idServicio);
 
- 
-    
+    @Query("SELECT d.horaDesde FROM Disponibilidad d WHERE d.servicio.idServicio = :servicioId")
+    List<LocalTime> findHorariosByServicioId(@Param("servicioId") Long servicioId);
 }
+
