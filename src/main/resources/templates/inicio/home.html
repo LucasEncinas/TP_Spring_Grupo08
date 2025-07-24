@@ -159,6 +159,13 @@
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
             margin-top: auto;
         }
+        .usuario-nombre {
+            margin-right: 20px;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size: 2.0rem;
+            color: #3345d5;
+        }
     </style>
 </head>
 
@@ -172,8 +179,9 @@
         <h1>Sistema de Turnos</h1>
         <p>Panel de gestión para el personal autorizado</p>
     </header>
-
+    <span class="usuario-nombre">Hola, <span th:text="${nombreUsuario}">Usuario</span>!</span>
     <div class="dashboard">
+        
 
         <!-- Servicios -->
         <a href="/servicios/listaServicios" class="card-link">

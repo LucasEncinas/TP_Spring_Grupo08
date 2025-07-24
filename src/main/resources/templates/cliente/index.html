@@ -276,6 +276,13 @@
             justify-content: flex-end;
             margin: 0px auto 10px auto;
         }
+
+        .usuario-nombre {
+            margin-right: 20px;
+            font-weight: 500;
+            font-size: 2.0rem;
+            color: #3345d5;
+        }
     </style>
 </head>
 
@@ -291,6 +298,7 @@
         </header>
 
         <div class="acciones-turno">
+            <span class="usuario-nombre">Hola, <span th:text="${nombre}">Usuario</span>!</span>
             <div class="nuevo-turno-container">
                 <a href="/turno/formularioTurnoCliente" class="btn-agregar">
                     <i class="bi bi-plus-circle"></i> Nuevo Turno

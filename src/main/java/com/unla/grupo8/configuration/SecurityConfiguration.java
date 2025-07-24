@@ -55,8 +55,6 @@ public class SecurityConfiguration {
 					login.usernameParameter("username");
 					login.passwordParameter("password");
 					login.successHandler(successHandler);//se agrego
-					//login.defaultSuccessUrl("/inicio", true);
-
 					login.permitAll();
 				})
 				.logout(logout -> {

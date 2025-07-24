@@ -2,6 +2,8 @@ package com.unla.grupo8.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +82,21 @@ public class TurnoController {
         List<Turno> turnos = turnoService.obtenerTodos();
         model.addAttribute("turnos", turnos);
         return "turno/listaTurnos";
+    }
+
+    @GetMapping("/redireccionNuevoTurno")
+    public String redireccionarNuevoTurno() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+            return "redirect:/turno/formularioTurno";
+        } else if (authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_CLIENTE"))) {
+            return "redirect:/turno/formularioTurnoCliente";
+        } else if (authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_EMPLEADO"))) {
+            return "redirect:/turno/formularioTurno";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/formularioTurno")
@@ -213,7 +230,17 @@ public class TurnoController {
         System.out.println("ID a eliminar: " + id);
         turnoService.eliminarPorId(id);
         redirectAttributes.addFlashAttribute("mensajeExito", "✅ Turno eliminado correctamente.");
-        return "redirect:/turno/listaTurnos";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getAuthorities().stream().anyMatch(
+                auth -> auth.getAuthority().equals("ROLE_ADMIN") || auth.getAuthority().equals("ROLE_EMPLEADO"))) {
+            return "redirect:/turno/listaTurnos";
+        } else if (authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_CLIENTE"))) {
+            return "redirect:/cliente/index";
+        }
+
+        return "redirect:/login";
     }
 
     @GetMapping("/editar/{id}")

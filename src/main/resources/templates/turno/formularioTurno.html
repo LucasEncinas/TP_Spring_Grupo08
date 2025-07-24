@@ -239,6 +239,10 @@
       <!-- Título -->
       <h2 class="form-title">Reservar Turno</h2>
 
+      <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+      </div>
+
       <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
         <input type="hidden" th:field="*{idTurno}" />
 

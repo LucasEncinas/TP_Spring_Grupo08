@@ -57,4 +57,8 @@ public class EmpleadoService {
         empleadoRepository.delete(empleado);
     }
 
+    public Empleado findByContactoEmail(String email) {
+        return empleadoRepository.findByContactoEmail(email);
+    }
+
 }
