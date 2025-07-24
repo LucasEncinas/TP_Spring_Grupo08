@@ -36,16 +36,12 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
-					//auth.requestMatchers("/cliente/**").hasRole("CLIENTE");
-					//auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");
+					// auth.requestMatchers("/cliente/**").hasRole("CLIENTE");
+					// auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");
 					auth.requestMatchers("/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/", "/vendor/bootstrap/js/", "/api/v1/**").permitAll();
-					auth.requestMatchers("/contacto/formularioContacto", "/contacto/guardar").permitAll();
-					auth.requestMatchers("/turno/formularioTurno").permitAll();
-					auth.requestMatchers("/servicios/formularioServicio").permitAll();
-					auth.requestMatchers("/contacto/formularioContacto").permitAll();
-					auth.requestMatchers("/turno/listaTurnos").permitAll();
-					auth.requestMatchers("/disponibilidad/nuevaDisponibilidad").permitAll();
+					auth.requestMatchers("/formularios/formularioInicial").permitAll();
+					auth.requestMatchers("/formularios/guardarRegistro").permitAll();
 
 					auth.anyRequest().authenticated();
 				})
@@ -54,7 +50,7 @@ public class SecurityConfiguration {
 					login.loginProcessingUrl("/loginprocess");
 					login.usernameParameter("username");
 					login.passwordParameter("password");
-					login.successHandler(successHandler);//se agrego
+					login.successHandler(successHandler);// se agrego
 					login.permitAll();
 				})
 				.logout(logout -> {
@@ -80,7 +76,7 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder(){
-	return new BCryptPasswordEncoder();
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,11 +14,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.unla.grupo8.dtos.RegistroDTO;
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
+import com.unla.grupo8.service.implementation.RegistroService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
 @Controller
@@ -25,6 +28,9 @@ import com.unla.grupo8.service.implementation.SucursalService;
 @SessionAttributes({ "clienteId", "empleadoId" })
 
 public class RegistroController {
+
+    @Autowired
+    private RegistroService registroService;
 
     @Autowired
     private ClienteService clienteService;
@@ -40,6 +46,18 @@ public class RegistroController {
         model.addAttribute("sucursales", sucursalService.obtenerTodas());
         model.addAttribute("tituloFormulario", "Registrar Usuario");
         return "formularios/formularioRegistro";
+    }
+
+    @GetMapping("/formularioInicial")
+    public String mostrarFormularioInicial(Model model) {
+        model.addAttribute("tituloFormulario", "Registro");
+        return "registro/formularioInicial";
+    }
+
+    @PostMapping("/guardarRegistro")
+    public String guardarRegistro(@ModelAttribute("registroDTO") RegistroDTO registroDTO) {
+        registroService.guardarRegistro(registroDTO);
+        return "redirect:/registro/formularioInicial";
     }
 
     @PostMapping("/guardar")
@@ -76,7 +94,8 @@ public class RegistroController {
 
                 Cliente nuevoCliente = clienteService.guardarCliente(cliente);
 
-                //redirectAttributes.addFlashAttribute("personaId", nuevoCliente.getIdPersona());
+                // redirectAttributes.addFlashAttribute("personaId",
+                // nuevoCliente.getIdPersona());
                 redirectAttributes.addFlashAttribute("mensaje",
                         "✔️ Cliente guardado correctamente, agregue un contacto.");
                 return "redirect:/contacto/formularioContacto?personaId=" + nuevoCliente.getIdPersona();
@@ -111,7 +130,8 @@ public class RegistroController {
                     nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
                     empleadoService.guardarEmpleado(nuevoEmpleado);
 
-                    //redirectAttributes.addFlashAttribute("personaId", nuevoEmpleado.getIdPersona());
+                    // redirectAttributes.addFlashAttribute("personaId",
+                    // nuevoEmpleado.getIdPersona());
                     redirectAttributes.addFlashAttribute("mensaje",
                             "Empleado guardado correctamente, agregue un contacto");
                     return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getIdPersona();

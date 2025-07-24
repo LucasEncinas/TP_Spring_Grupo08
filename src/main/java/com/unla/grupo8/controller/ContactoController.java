@@ -54,79 +54,76 @@ public class ContactoController {
 
     @GetMapping("/verContacto/{id}") // ver contacto cliente
     public String verContacto(@PathVariable Long id, Model model) {
-    Cliente cliente = clienteService.traerClientePorId(id);
-    model.addAttribute("cliente", cliente);
-    return "contacto/verContacto"; 
+        Cliente cliente = clienteService.traerClientePorId(id);
+        model.addAttribute("cliente", cliente);
+        return "contacto/verContacto";
     }
 
     @GetMapping("/verContactoEmpleado/{id}") // ver contacto empleado
     public String verContactoEmpleado(@PathVariable Long id, Model model) {
-    Empleado empleado = empleadoService.traerEmpleadoPorId(id);
-    model.addAttribute("cliente", empleado); 
-    return "contacto/verContacto";
+        Empleado empleado = empleadoService.traerEmpleadoPorId(id);
+        model.addAttribute("cliente", empleado);
+        return "contacto/verContacto";
     }
 
     @GetMapping("/formularioContacto/{id}")
     public String editarContacto(@PathVariable Long id, Model model) {
-    Contacto contacto = contactoService.obtenerPorId(id);
+        Contacto contacto = contactoService.obtenerPorId(id);
 
-    model.addAttribute("contacto", contacto);
-   
-    Persona persona = personaService.obtenerPorContactoId(id);
-    model.addAttribute("personaId", persona.getIdPersona());
+        model.addAttribute("contacto", contacto);
 
-    return "contacto/formularioContacto";
-}
-
-
-
-
-@PostMapping("/guardar")
-public String guardarContacto(
-        @RequestParam("personaId") Long personaId,
-        @RequestParam(value = "id", required = false) Long contactoId,
-        @RequestParam("email") String email,
-        @RequestParam("telefono") String telefono,
-        @RequestParam("direccion") String direccion,
-        Model model,
-        RedirectAttributes redirectAttributes) {
-
-    try {
-        Persona persona = personaService.obtenerPorId(personaId);
-        Contacto contacto;
-
-        if (contactoId != null) {
-            contacto = contactoService.obtenerPorId(contactoId);
-            contacto.setEmail(email);
-            contacto.setTelefono(telefono);
-            contacto.setDireccion(direccion);
-        } else {
-            contacto = new Contacto(email, telefono, direccion);
-        }
-
-        contactoService.guardarContacto(contacto);
-
-        if (persona instanceof Cliente cliente) {
-            cliente.setContacto(contacto);
-            clienteService.guardarCliente(cliente);
-            redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Cliente guardado correctamente.");
-            return "redirect:/cliente/listaClientes";
-        } else if (persona instanceof Empleado empleado) {
-            empleado.setContacto(contacto);
-            empleadoService.guardarEmpleado(empleado);
-            redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Empleado guardado correctamente.");
-            return "redirect:/empleado/listaEmpleados";
-        }
-
-        return "redirect:/formularios/formularioRegistro";
-
-    } catch (ExcepcionContacto e) {
-        model.addAttribute("error", e.getMessage());
-        model.addAttribute("personaId", personaId);
-        model.addAttribute("contacto", new Contacto(email, telefono, direccion));
+        Persona persona = personaService.obtenerPorContactoId(id);
+        model.addAttribute("personaId", persona.getIdPersona());
 
         return "contacto/formularioContacto";
     }
-}
+
+    @PostMapping("/guardar")
+    public String guardarContacto(
+            @RequestParam("personaId") Long personaId,
+            @RequestParam(value = "id", required = false) Long contactoId,
+            @RequestParam("email") String email,
+            @RequestParam("telefono") String telefono,
+            @RequestParam("direccion") String direccion,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            Persona persona = personaService.obtenerPorId(personaId);
+            Contacto contacto;
+
+            if (contactoId != null) {
+                contacto = contactoService.obtenerPorId(contactoId);
+                contacto.setEmail(email);
+                contacto.setTelefono(telefono);
+                contacto.setDireccion(direccion);
+            } else {
+                contacto = new Contacto(email, telefono, direccion);
+            }
+
+            contactoService.guardarContacto(contacto);
+
+            if (persona instanceof Cliente cliente) {
+                cliente.setContacto(contacto);
+                clienteService.guardarCliente(cliente);
+                redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Cliente guardado correctamente.");
+                return "redirect:/cliente/listaClientes";
+            } else if (persona instanceof Empleado empleado) {
+                empleado.setContacto(contacto);
+                empleadoService.guardarEmpleado(empleado);
+                redirectAttributes.addFlashAttribute("mensajeExitoCrear", "✔️ Empleado guardado correctamente.");
+                return "redirect:/empleado/listaEmpleados";
+            }
+
+            return "redirect:/formularios/formularioRegistro";
+
+        } catch (ExcepcionContacto e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("personaId", personaId);
+            model.addAttribute("contacto", new Contacto(email, telefono, direccion));
+
+            return "contacto/formularioContacto";
+        }
+    }
 
 }

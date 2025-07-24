@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${tituloFormulario}">Formulario Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background: linear-gradient(to right, #e4e9ff, #f0f3ff);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(to right, #556df5, #7c8dfb);
+            padding: 25px 40px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .header-btn {
+            font-size: 0.9rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.4s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .header-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .card {
+            border: 1px solid #d9e0f2;
+            border-radius: 12px;
+            padding: 32px 28px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.4s ease;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #c7d1ea;
+            padding: 12px;
+            box-shadow: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .form-label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .form-control:focus {
+            border-color: #3b4cca;
+            box-shadow: 0 0 5px rgba(59, 76, 202, 0.4);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus-visible {
+            outline: 2px solid rgba(59, 76, 202, 0.4);
+            outline-offset: 2px;
+        }
+
+        .form-control:hover {
+            background-color: #f7f9ff;
+            box-shadow: 0 0 8px rgba(59, 76, 202, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #4a69bd;
+            text-align: center;
+            border-bottom: 2px solid #dee2f7;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .card h2::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #6a72d6;
+            border-radius: 2px;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(90deg, #556df5, #6a72d6);
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(85, 109, 245, 0.3);
+            color: #fff;
+        }
+
+        .btn-guardar:hover {
+            background: linear-gradient(90deg, #3c5aa6, #4a69bd);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 12px rgba(85, 109, 245, 0.2);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Formulario -->
+    <div class="container d-flex justify-content-center mt-4">
+        <div class="mx-auto">
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4" th:text="${tituloFormulario}">Formulario Registro</h2>
+                <form action="/formularios/guardarRegistro" method="post">
+                    <input type="hidden" name="idPersona" th:if="${persona != null}" th:value="${persona.idPersona}" />
+                    <div class="row">
+                        <!-- Fila 1 - 3 campos -->
+                        <!-- Nombre -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required
+                                    placeholder="Ejemplo: Juan" />
+                            </div>
+                        </div>
+
+                        <!-- Apellido -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="apellido" class="form-label">Apellido:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" id="apellido" name="apellido" class="form-control" required
+                                    placeholder="Ejemplo: Pérez" />
+                            </div>
+                        </div>
+
+                        <!-- DNI -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="dni" class="form-label">DNI:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-file-earmark-person"></i></span>
+                                <input type="text" id="dni" name="dni" class="form-control" required
+                                    placeholder="Ejemplo: 12345678" />
+                            </div>
+                        </div>
+
+                        <!-- Fila 2 - 3 campos -->
+                        <!-- Fecha de Nacimiento -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control"
+                                required />
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="direccion" class="form-label">Dirección:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" id="direccion" name="direccion" class="form-control" required
+                                    placeholder="Ejemplo: Av. Siempre Viva 123" />
+                            </div>
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="col-md-4 col-12 mb-4">
+                            <label for="telefono" class="form-label">Teléfono:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" id="telefono" name="telefono" class="form-control" required
+                                    placeholder="Ejemplo: 11 2345-6789" />
+                            </div>
+                        </div>
+
+                        <!-- Tipo -->
+                        <input type="hidden" name="tipo" value="cliente" />
+
+                        <!-- Fila 3 - 2 campos -->
+                        <!-- Email -->
+                        <div class="col-md-6 col-12 mb-4">
+                            <label for="email" class="form-label">Email:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" id="email" name="email" class="form-control" required
+                                    placeholder="Ejemplo: nombre@gmail.com" />
+                            </div>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="col-md-6 col-12 mb-4">
+                            <label for="password" class="form-label">Contraseña:</label>
+                            <div class="position-relative">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" id="password" name="password" class="form-control pe-5"
+                                        required placeholder="Ingrese su contraseña" autocomplete="new-password" />
+                                    <i class="bi bi-eye-slash toggle-password position-absolute top-50 end-0 translate-middle-y me-3"
+                                        style="cursor: pointer;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <div class="col-12 d-grid">
+                            <button type="submit" class="btn btn-guardar">
+                                <i class="bi bi-person-plus me-2"></i> Registrarse
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleIcon = document.querySelector(".toggle-password");
+            const passwordInput = document.getElementById("password");
+
+            toggleIcon.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                toggleIcon.classList.toggle("bi-eye", isPassword);
+                toggleIcon.classList.toggle("bi-eye-slash", !isPassword);
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
