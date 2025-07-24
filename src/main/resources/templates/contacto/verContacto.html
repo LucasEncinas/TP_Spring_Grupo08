@@ -64,78 +64,6 @@
             right: 20px;
         }
 
-        .btn-container {
-            max-width: 850px;
-            margin: 0 auto 20px auto;
-            padding: 0 15px;
-            text-align: left;
-        }
-
-        
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-6px);
-            }
-        }
-
-        .container-main {
-            max-width: 850px;
-            margin: 30px auto 80px auto;
-            padding: 0 15px;
-            flex-grow: 1;
-        }
-
-        @keyframes fadeOutUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-        }
-
-        .alert.fade-out {
-            animation: fadeOutUp 0.8s forwards;
-        }
-
-        .alert {
-            padding: 10px 16px;
-            position: fixed;
-            top: 120px;
-            right: 40px;
-            z-index: 9999;
-            min-width: 220px;
-            border-radius: 6px;
-            font-size: 14px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: -12px;
-        }
-
-        .alert-success {
-            background-color: #d1f7d6;
-            color: #207d3a;
-            border: 1px solid #a5e2af;
-        }
-
-        .alert-danger {
-            background-color: #ffe1e1;
-            color: #a52222;
-            border: 1px solid #ffbaba;
-        }
-
         table {
             opacity: 0;
             transform: translateY(20px);
@@ -184,28 +112,6 @@
             transition: background-color 0.25s ease;
         }
 
-        .btn-gest {
-            border-radius: 10px;
-            font-weight: 600;
-            padding: 6px;
-            font-size: 1.1rem;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            user-select: none;
-        }
-
-        
-        .gestion-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
         footer {
             background-color: #f1f3f6;
             text-align: center;
@@ -214,6 +120,60 @@
             color: #666;
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
             margin-top: auto;
+        }
+
+        .encabezado-perfil {
+            background: linear-gradient(to right, #edf0ff, #d9dfff);
+            padding: 30px 20px;
+            border-radius: 14px;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .circulo-icono i {
+            font-size: 3.7rem;
+            color: #4c60f5;
+            background: #e1e7ff;
+            border-radius: 50%;
+            padding: 16px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .circulo-icono:hover i {
+            transform: scale(1.06);
+        }
+
+        .nombre-cliente {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #2f3257;
+            margin-top: 8px;
+        }
+
+        .dato-bloque {
+            background: linear-gradient(to right, #f5f7ff, #e8edff);
+            padding: 12px 14px;
+            border: 1px solid #d1d9f0;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-bottom: 16px;
+        }
+
+        .dato-vista {
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .banner-contacto {
+            background-color: #dde3fa;
+            color: #2c317d;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 12px 12px 0 0;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: -60px;
         }
     </style>
 </head>
@@ -224,62 +184,79 @@
             <i class="bi bi-house-door-fill"></i>
             Inicio
         </a>
-        <div class="mt-4">
-            <a href="/cliente/listaClientes" class="btn-volver btn btn-primary">
-              <i class="bi bi-arrow-left-circle"></i> Volver a la lista
+        <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+
+            <a th:if="${origen == 'cliente'}" href="/cliente/listaClientes" class="header-btn">
+                <i class="bi bi-arrow-left-circle"></i> Volver a la lista de clientes
             </a>
 
-            <a th:href="@{/contacto/formularioContacto/{id}(id=${cliente.contacto.id})}" class="btn btn-warning">
+            <a th:if="${origen == 'empleado'}" href="/empleado/listaEmpleados" class="header-btn">
+                <i class="bi bi-arrow-left-circle"></i> Volver a la lista de empleados
+            </a>
+
+
+            <a th:href="@{/contacto/formularioContacto/{id}(id=${cliente.contacto.id})}" class="header-btn">
                 <i class="bi bi-pencil-square"></i> Editar contacto
-              </a>
-              
-          </div>
+            </a>
+
+        </div>
+
         <a href="/logout" class="header-btn" aria-label="Cerrar sesión">
             <i class="bi bi-box-arrow-right"></i>
             Cerrar sesión
         </a>
     </header>
 
-  
+    <div class="banner-contacto text-center">
+        <span>Información de contacto</span>
+    </div>
     <div class="d-flex justify-content-center align-items-center min-vh-100">
+
         <div class="card sombra-card p-4" style="width: 100%; max-width: 500px;">
-          <div class="card-header text-center bg-light mb-3 border-0">
-            <i class="bi bi-person-circle fs-1 text-primary mb-2"></i>
-            <h2>
-              <span th:text="${cliente.nombre}">Nombre</span>
-              <span th:text="${cliente.apellido}">Apellido</span>
-            </h2>
-          </div>
-          <div class="card-body text-start">
-  <div class="mb-3">
-    <label for="email" class="form-label">
-      <i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong>
-    </label>
-    <input type="email" class="form-control" id="email" name="contacto.email"
-           th:value="${cliente.contacto.email}" placeholder="Sin email" />
-  </div>
 
-  <div class="mb-3">
-    <label for="direccion" class="form-label">
-      <i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Dirección:</strong>
-    </label>
-    <input type="text" class="form-control" id="direccion" name="contacto.direccion"
-           th:value="${cliente.contacto.direccion}" placeholder="Sin dirección" />
-  </div>
+            <div class="card-header encabezado-perfil text-center border-0">
+                <div class="circulo-icono mx-auto mb-3">
+                    <i class="bi bi-person-circle"></i>
+                </div>
 
-  <div class="mb-3">
-    <label for="telefono" class="form-label">
-      <i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>Teléfono:</strong>
-    </label>
-    <input type="text" class="form-control" id="telefono" name="contacto.telefono"
-           th:value="${cliente.contacto.telefono}" placeholder="Sin teléfono" />
-  </div>
-</div>
+                <h2 class="nombre-cliente">
+                    <span th:text="${cliente.nombre}">Nombre</span>
+                    <span th:text="${cliente.apellido}">Apellido</span>
+                </h2>
+            </div>
+
+            <div class="card-body text-start">
+
+                <div class="mb-3 dato-bloque">
+                    <label class="form-label d-block mb-1">
+                        <i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong>
+                    </label>
+                    <div class="dato-vista" th:text="${cliente.contacto.email}">Sin email</div>
+                </div>
+
+                <div class="mb-3 dato-bloque">
+                    <label class="form-label d-block mb-1">
+                        <i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Dirección:</strong>
+                    </label>
+                    <div class="dato-vista" th:text="${cliente.contacto.direccion}">Sin dirección</div>
+                </div>
+
+                <div class="mb-3 dato-bloque">
+                    <label class="form-label d-block mb-1">
+                        <i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>Teléfono:</strong>
+                    </label>
+                    <div class="dato-vista" th:text="${cliente.contacto.telefono}">Sin teléfono</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer fijo -->
     <footer class="footer">
-      © 2025 Sistema de Turnos. Todos los derechos reservados.
+        © 2025 Sistema de Turnos. Todos los derechos reservados.
     </footer>
-  
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
+
 </html>

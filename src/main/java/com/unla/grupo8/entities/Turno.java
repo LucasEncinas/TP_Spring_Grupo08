@@ -52,7 +52,6 @@ public class Turno {
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
 
-    // Constructor con parámetros
     public Turno(LocalTime hora, String estado) {
         this.hora = hora;
         this.estado = estado;

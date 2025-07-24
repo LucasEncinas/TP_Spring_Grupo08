@@ -76,7 +76,6 @@ public class ServicioController {
 
         boolean esNuevo = (servicio.getIdServicio() == null);
 
-        // Validación para evitar nombres repetidos (cuando lo creamos o editamos)
         List<Servicio> existentesConMismoNombre = servicioService.obtenerServiciosPorNombre(servicio.getNombre());
 
         boolean nombreDuplicado = existentesConMismoNombre.stream()
@@ -87,7 +86,7 @@ public class ServicioController {
         }
 
         servicio.setSucursales(new ArrayList<>());
-        servicio.getSucursales().add(sucursal); // Asignar la sucursal al servicio
+        servicio.getSucursales().add(sucursal); 
         servicioService.guardar(servicio);
 
         if (esNuevo) {
@@ -107,7 +106,6 @@ public class ServicioController {
             redirectAttributes.addFlashAttribute("mensajeExito",
                     "✔️ Servicio '" + servicio.getNombre() + "' eliminada correctamente.");
         } catch (Exception e) {
-            // TODO: handle exception
             redirectAttributes.addFlashAttribute("mensajeError",
                     "❌ No se pueden eliminar servicios con turnos asignados.");
         }

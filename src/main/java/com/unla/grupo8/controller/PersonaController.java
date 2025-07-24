@@ -19,12 +19,9 @@ public class PersonaController {
         this.personaService = personaService;
     }
 
-    // Traer todas las personas
     @GetMapping
     public ResponseEntity<List<Persona>> traerTodasLasPersonas() {
         return ResponseEntity.ok(personaService.getAll());
     }
-
-    
 
 }

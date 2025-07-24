@@ -27,7 +27,6 @@ public class HomeController {
 		this.empleadoRepository = empleadoRepository;
 	}
 
-	// GET Example: SERVER/index
 	@GetMapping("/index")
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.INDEX);

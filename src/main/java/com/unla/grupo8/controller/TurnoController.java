@@ -177,7 +177,6 @@ public class TurnoController {
         }
 
         turno.setDia(diaCompleto);
-        // Guardar el turno
         turnoService.guardar(turno);
 
         // Recuperamos versiones completas de servicio, empleado, cliente y sucursal

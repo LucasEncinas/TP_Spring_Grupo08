@@ -56,13 +56,15 @@ public class ContactoController {
     public String verContacto(@PathVariable Long id, Model model) {
         Cliente cliente = clienteService.traerClientePorId(id);
         model.addAttribute("cliente", cliente);
+        model.addAttribute("origen", "cliente"); // 👈 acá
         return "contacto/verContacto";
     }
 
     @GetMapping("/verContactoEmpleado/{id}") // ver contacto empleado
     public String verContactoEmpleado(@PathVariable Long id, Model model) {
         Empleado empleado = empleadoService.traerEmpleadoPorId(id);
-        model.addAttribute("cliente", empleado);
+        model.addAttribute("cliente", empleado); // asumís que el fragmento comparte vista
+        model.addAttribute("origen", "empleado"); // 👈 acá
         return "contacto/verContacto";
     }
 

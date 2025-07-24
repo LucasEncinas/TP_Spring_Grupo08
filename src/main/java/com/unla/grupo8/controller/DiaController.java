@@ -65,7 +65,6 @@ public class DiaController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            // Si algo sale mal, devolvemos error
             response.put("success", false);
             response.put("error", e.getMessage());
             return ResponseEntity.status(500).body(response);
@@ -98,7 +97,7 @@ public class DiaController {
             evento.put("data.id", dia.getId()); // ID del evento
             evento.put("title", "Día cargado"); // titulo
             evento.put("start", dia.getFecha().toString()); // Formato YYYY-MM-DD
-            evento.put("color", "#4CAF50"); // Verde
+            evento.put("color", "#4CAF50"); 
             eventos.add(evento);
         }
 
