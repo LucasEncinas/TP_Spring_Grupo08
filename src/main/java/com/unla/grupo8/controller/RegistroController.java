@@ -18,6 +18,7 @@ import com.unla.grupo8.dtos.RegistroDTO;
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Sucursal;
+import com.unla.grupo8.repositories.ClienteRepository;
 import com.unla.grupo8.service.implementation.ClienteService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.RegistroService;
@@ -34,6 +35,9 @@ public class RegistroController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private EmpleadoService empleadoService;
@@ -55,9 +59,12 @@ public class RegistroController {
     }
 
     @PostMapping("/guardarRegistro")
-    public String guardarRegistro(@ModelAttribute("registroDTO") RegistroDTO registroDTO) {
+    public String guardarRegistro(@ModelAttribute("registroDTO") RegistroDTO registroDTO,
+            RedirectAttributes redirectAttributes) {
         registroService.guardarRegistro(registroDTO);
-        return "redirect:/registro/formularioInicial";
+        redirectAttributes.addFlashAttribute("mensajeExitoRegistro",
+                "✔️ ¡Registro exitoso!");
+        return "redirect:/login";
     }
 
     @PostMapping("/guardar")
@@ -87,15 +94,13 @@ public class RegistroController {
                         "✔️ Cliente 'nro " + cliente.getNroCliente() + "' modificado correctamente.");
                 return "redirect:/cliente/listaClientes";
             } else {
-                long totalClientes = clienteService.contarClientes();
-                // Creamos y guardamos cliente
-                String nroCliente = String.valueOf(totalClientes + 1);
+                String maxNro = clienteRepository.findMaxNroCliente();
+                long nextNro = (maxNro == null) ? 1 : Long.parseLong(maxNro) + 1;
+                String nroCliente = String.valueOf(nextNro);
                 Cliente cliente = new Cliente(nombre, apellido, dni, fechaNac, null, nroCliente);
 
                 Cliente nuevoCliente = clienteService.guardarCliente(cliente);
 
-                // redirectAttributes.addFlashAttribute("personaId",
-                // nuevoCliente.getIdPersona());
                 redirectAttributes.addFlashAttribute("mensaje",
                         "✔️ Cliente guardado correctamente, agregue un contacto.");
                 return "redirect:/contacto/formularioContacto?personaId=" + nuevoCliente.getIdPersona();
@@ -116,22 +121,22 @@ public class RegistroController {
                             "✔️ Empleado '" + empleado.getLegajo() + "' modificado correctamente.");
                     return "redirect:/empleado/listaEmpleados";
                 } else {
-                    long totalEmpleados = empleadoService.contarEmpleados();
                     // Verificamos si existe la sucursal
                     if (sucursal == null) {
                         redirectAttributes.addFlashAttribute("error",
                                 "El campo sucursal es obligatorio para un empleado");
                         return "redirect:/formularios/formularioRegistro"; // Redirige al formulario con el error
                     }
+                    Empleado ultimoEmpleado = empleadoService.traerUltimoEmpleado();
+                    String legajoCompleto = ultimoEmpleado.getLegajo();
+                    String legajoNumero = legajoCompleto.substring(3);
+                    long legajoNumeroLong = (legajoNumero == null) ? 1 : Long.parseLong(legajoNumero) + 1;
+                    String nroLegajo = String.valueOf(legajoNumeroLong);
 
-                    // Creamos y guardamos empleado
-                    String nroLegajo = String.valueOf(totalEmpleados + 1);
                     Empleado nuevoEmpleado = new Empleado(nombre, apellido, dni, fechaNac, null, "EM-" + nroLegajo);
                     nuevoEmpleado.setSucursal(sucursal); // Asignamos la sucursal al empleado
                     empleadoService.guardarEmpleado(nuevoEmpleado);
 
-                    // redirectAttributes.addFlashAttribute("personaId",
-                    // nuevoEmpleado.getIdPersona());
                     redirectAttributes.addFlashAttribute("mensaje",
                             "Empleado guardado correctamente, agregue un contacto");
                     return "redirect:/contacto/formularioContacto?personaId=" + nuevoEmpleado.getIdPersona();

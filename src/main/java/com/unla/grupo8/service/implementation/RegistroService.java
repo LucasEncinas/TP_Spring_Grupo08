@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.unla.grupo8.dtos.RegistroDTO;
 import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Contacto;
+import com.unla.grupo8.repositories.ClienteRepository;
 import com.unla.grupo8.repositories.PersonaRepository;
 
 @Service
@@ -16,7 +17,7 @@ public class RegistroService {
     private PersonaRepository personaRepository;
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -27,8 +28,9 @@ public class RegistroService {
         cliente.setApellido(registroDTO.getApellido());
         cliente.setDni(registroDTO.getDni());
         cliente.setFechaNacimiento(registroDTO.getFechaNacimiento());
-        long totalClientes = clienteService.contarClientes();
-        String nroCliente = String.valueOf(totalClientes + 1);
+        String maxNro = clienteRepository.findMaxNroCliente();
+        long nextNro = (maxNro == null) ? 1 : Long.parseLong(maxNro) + 1;
+        String nroCliente = String.valueOf(nextNro);
         cliente.setNroCliente(nroCliente);
 
         Contacto contacto = new Contacto();

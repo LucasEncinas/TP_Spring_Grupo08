@@ -50,18 +50,4 @@ public class EmpleadoController {
         return "formularios/formularioRegistro";
     }
 
-    // traer todos los empleados
-    // @GetMapping
-    // public ResponseEntity<List<Empleado>> traerTodosLosEmpleados() {
-    // return ResponseEntity.ok(empleadoService.traerTodosLosEmpleados());
-    // }
-
-    // traer empleado por ID
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Empleado> traerEmpleadoPorId(@PathVariable Long id) {
-    // Optional<Empleado> empleado = empleadoService.traerEmpleadoPorId(id);
-    // return empleado.map(ResponseEntity::ok).orElseGet(() ->
-    // ResponseEntity.notFound().build());
-    // }
-
 }

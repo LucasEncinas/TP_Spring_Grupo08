@@ -58,30 +58,17 @@ public class ClienteController {
     }
 
     @GetMapping("/filtrar")
-public String filtrarTurnosCliente(@RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
-                                    Model model, Principal principal) {
-    String email = principal.getName();
-    Cliente cliente = clienteService.findByContactoEmail(email);
-    List<Turno> turnosFiltrados = cliente.getTurnos().stream()
-        .filter(t -> t.getDia().getFecha().equals(fecha))
-        .toList();
-    model.addAttribute("nombre", cliente.getNombre());
-    model.addAttribute("turnos", turnosFiltrados);
-    return "cliente/index";
-}
-
-    // traer todos los clientes
-    // @GetMapping
-    // public ResponseEntity<List<Cliente>> traerTodosLosClientes() {
-    // return ResponseEntity.ok(clienteService.traerTodosLosClientes());
-    // }
-
-    // traer cliente por ID
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Cliente> traerClientePorId(@PathVariable Long id) {
-    // Optional<Cliente> cliente = clienteService.traerClientePorId(id);
-    // return cliente.map(ResponseEntity::ok).orElseGet(() ->
-    // ResponseEntity.notFound().build());
-    // }
+    public String filtrarTurnosCliente(
+            @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Model model, Principal principal) {
+        String email = principal.getName();
+        Cliente cliente = clienteService.findByContactoEmail(email);
+        List<Turno> turnosFiltrados = cliente.getTurnos().stream()
+                .filter(t -> t.getDia().getFecha().equals(fecha))
+                .toList();
+        model.addAttribute("nombre", cliente.getNombre());
+        model.addAttribute("turnos", turnosFiltrados);
+        return "cliente/index";
+    }
 
 }

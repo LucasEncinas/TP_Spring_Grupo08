@@ -61,4 +61,12 @@ public class EmpleadoService {
         return empleadoRepository.findByContactoEmail(email);
     }
 
+    public Empleado traerUltimoEmpleado() {
+        List<Empleado> empleados = empleadoRepository.findAll();
+        if (empleados.isEmpty()) {
+            return null; // No hay empleados registrados
+        }
+        return empleados.get(empleados.size() - 1); // Retorna el último empleado de la lista
+    }
+
 }
