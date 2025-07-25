@@ -53,3 +53,9 @@ claves para la eficiencia.</p>
 <p>Alta y baja de Día</p>
 <p>Alta y modificación de Disponibilidad</p>
 <h3>Autores:</h3>
+<p>
+  <ul a link href>https://github.com/camiroldan017</ul>
+  <ul a link href>https://github.com/MicaelaInsfran02</ul>
+  <ul a link href>https://github.com/LucaasCardozo</ul>
+  <ul a link href>https://github.com/LucasEncinas</ul>
+</p>
