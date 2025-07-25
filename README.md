@@ -1,5 +1,5 @@
 <h1>Sobre el Proyecto</h1>
-<p>Trabajo Práctico Orientación a Objetos 2 Primera parte Spring Boot.</p>
+<p>Trabajo Práctico Orientación a Objetos 2 Spring Boot.</p>
 <p>Consiste en la creación de un sistema genérico para la gestión de Turnos: en los cuales se le puede asignar empleados, clientes, sucursales y servicios donde se brindan los mismos. Donde la organización y el orden son
 claves para la eficiencia.</p>
 <h2>Tecnologías usadas</h2>
