@@ -2,8 +2,10 @@ package com.unla.grupo8.dtos;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record DiaDTO(
-        Long id,
-        LocalDate fecha,
-        Long idSucursal) {
+                Long id,
+                @NotBlank LocalDate fecha,
+                @NotBlank Long idSucursal) {
 }

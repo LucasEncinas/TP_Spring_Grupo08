@@ -3,7 +3,6 @@ package com.unla.grupo8.service.implementation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.unla.grupo8.entities.Cliente;
 import com.unla.grupo8.entities.Empleado;
 import com.unla.grupo8.entities.Servicio;
 import com.unla.grupo8.exception.ExcepcionEmpleadoEliminar;
@@ -46,8 +45,9 @@ public class EmpleadoService {
     }
 
     public Empleado modificarEmpleado(Empleado empleado) {
-    return empleadoRepository.save(empleado);
-    } 
+        return empleadoRepository.save(empleado);
+    }
+
     public void eliminarEmpleado(Empleado empleado) {
         Empleado empleadoAux = traerEmpleadoPorId(empleado.getIdPersona());
         if (!empleadoAux.getTurnos().isEmpty())

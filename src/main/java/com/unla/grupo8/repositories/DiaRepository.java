@@ -15,5 +15,7 @@ public interface DiaRepository extends JpaRepository<Dia, Long> {
     List<Dia> findBySucursalIdSucursal(Long idSucursal);
 
     Optional<Dia> findById(Long id);
-    
+
+    boolean existsByFechaAndSucursalIdSucursal(LocalDate fecha, Long idSucursal);
+
 }
