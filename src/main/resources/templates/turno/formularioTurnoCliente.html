@@ -383,7 +383,7 @@
                 empleadoSelect.disabled = true;
 
                 // Carga de días disponibles según sucursal
-                fetch(`/api/dias/por-sucursal/${sucursalId}`)
+                fetch(`/api/dia/por-sucursal/${sucursalId}`)
                     .then(res => res.json())
                     .then(data => {
                         const hoy = new Date();

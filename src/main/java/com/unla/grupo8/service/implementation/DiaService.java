@@ -4,15 +4,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.unla.grupo8.dtos.DiaDTO;
 import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.repositories.DiaRepository;
+import com.unla.grupo8.repositories.SucursalRepository;
 
 @Service
 public class DiaService {
 
     private final DiaRepository diaRepository;
+
+    @Autowired
+    private SucursalService sucursalService;
 
     public DiaService(DiaRepository diaRepository) {
         this.diaRepository = diaRepository;
@@ -26,6 +32,13 @@ public class DiaService {
                     + ") ya ha vencido.\nPor favor, ingresa una fecha válida.");
         }
         diaRepository.save(dia);
+    }
+
+    public void guardarDiaDesdeDTO(DiaDTO dto) {
+        Dia dia = new Dia();
+        dia.setFecha(dto.fecha());
+        dia.setSucursal(sucursalService.obtenerPorId(dto.idSucursal()));
+        guardarDia(dia);
     }
 
     public List<Dia> obtenerDiasPorFecha(LocalDate fecha) {

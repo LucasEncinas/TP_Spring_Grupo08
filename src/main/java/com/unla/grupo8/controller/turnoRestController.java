@@ -50,13 +50,6 @@ public class turnoRestController {
         return disponibilidadService.obtenerHorariosPorServicioYDia(idServicio, dia);
     }
 
-    @GetMapping("/dias/por-sucursal/{idSucursal}")
-    public List<DiaDTO> obtenerDias(@PathVariable Long idSucursal) {
-        return diaService.obtenerDiasPorSucursal(idSucursal).stream()
-                .map(d -> new DiaDTO(d.getId(), d.getFecha()))
-                .collect(Collectors.toList());
-    }
-
     @GetMapping("/empleados/por-sucursal/{idSucursal}")
     public List<Empleado> obtenerEmpleadosPorSucursal(@PathVariable Long idSucursal) {
         return empleadoService.obtenerEmpleadosPorSucursal(idSucursal);

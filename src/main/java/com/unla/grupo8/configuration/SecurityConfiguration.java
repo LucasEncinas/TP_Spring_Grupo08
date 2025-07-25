@@ -42,6 +42,7 @@ public class SecurityConfiguration {
 							"/vendor/jquery/", "/vendor/bootstrap/js/", "/api/v1/**").permitAll();
 					auth.requestMatchers("/formularios/formularioInicial").permitAll();
 					auth.requestMatchers("/formularios/guardarRegistro").permitAll();
+					auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll();
 
 					auth.anyRequest().authenticated();
 				})
