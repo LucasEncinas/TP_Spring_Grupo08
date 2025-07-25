@@ -338,7 +338,7 @@
                     <th>Gestión</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="sucursales-body">
                 <tr th:each="sucursal : ${sucursales}">
                     <td th:text="${sucursal.nombre ?: 'Sin nombre'}"></td>
                     <td th:text="${sucursal.direccion ?: 'Sin dirección'}"></td>
@@ -366,18 +366,77 @@
             </tbody>
         </table>
         <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                const mensajes = document.querySelectorAll('.alert');
-                mensajes.forEach(msg => {
-                    setTimeout(() => {
-                        msg.classList.add('fade-out');
-                        msg.addEventListener('animationend', () => {
-                            msg.remove();
-                        });
-                    }, 4000);
+    window.addEventListener('DOMContentLoaded', () => {
+        // Desvanecer mensajes
+        const mensajes = document.querySelectorAll('.alert');
+        mensajes.forEach(msg => {
+            setTimeout(() => {
+                msg.classList.add('fade-out');
+                msg.addEventListener('animationend', () => {
+                    msg.remove();
                 });
+            }, 4000);
+        });
+
+        // 🔥 Cargar sucursales vía Fetch
+        fetch('/api/sucursales')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener sucursales');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('sucursales-body');
+                tbody.innerHTML = '';
+
+                data.forEach(sucursal => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${sucursal.nombre || 'Sin nombre'}</td>
+                        <td>${sucursal.direccion || 'Sin dirección'}</td>
+                        <td>${sucursal.telefono || 'Sin teléfono'}</td>
+                        <td>${sucursal.mail || 'Sin mail'}</td>
+                        <td>
+                            <a class="btn-ver-dias"
+                               href="/dia/calendario/${sucursal.idSucursal}"
+                               title="Ver días">
+                                <i class="bi bi-calendar3"></i> Ver días
+                            </a>
+                        </td>
+                        <td>
+                            <div class="gestion-group">
+                                <a class="btn-gest btn-eliminar"
+                                   href="/sucursal/eliminar/${sucursal.idSucursal}"
+                                   onclick="return confirm('¿Desea eliminar la sucursal?')"
+                                   title="Eliminar">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </a>
+                                <a class="btn-gest btn-modificar"
+                                   href="/sucursal/editar/${sucursal.idSucursal}"
+                                   title="Modificar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error('Error al cargar sucursales:', err);
+                const tbody = document.getElementById('sucursales-body');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: red;">
+                            No se pudieron cargar las sucursales.
+                        </td>
+                    </tr>
+                `;
             });
-        </script>
+    });
+</script>
+
     </main>
     <footer>
         © 2025 Sistema de Turnos. Todos los derechos reservados.
