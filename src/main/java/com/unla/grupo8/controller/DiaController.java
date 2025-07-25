@@ -12,13 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unla.grupo8.entities.Dia;
-import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
@@ -44,31 +42,6 @@ public class DiaController {
     @GetMapping("/fecha/{fecha}")
     public List<Dia> obtenerDiasPorFecha(@PathVariable LocalDate fecha) {
         return diaService.obtenerDiasPorFecha(fecha);
-    }
-
-    @PostMapping("/guardar")
-    public ResponseEntity<Map<String, Object>> guardarDia(@RequestParam("fecha") String fecha,
-            @RequestParam("idSucursal") Long idSucursal) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            LocalDate localDate = LocalDate.parse(fecha);
-
-            Sucursal sucursal = sucursalService.obtenerPorId(idSucursal);
-
-            Dia dia = new Dia();
-            dia.setFecha(localDate);
-            dia.setSucursal(sucursal);
-
-            diaService.guardarDia(dia);
-
-            response.put("success", true);
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(500).body(response);
-        }
     }
 
     @DeleteMapping("/eliminar")
@@ -97,7 +70,7 @@ public class DiaController {
             evento.put("data.id", dia.getId()); // ID del evento
             evento.put("title", "Día cargado"); // titulo
             evento.put("start", dia.getFecha().toString()); // Formato YYYY-MM-DD
-            evento.put("color", "#4CAF50"); 
+            evento.put("color", "#4CAF50");
             eventos.add(evento);
         }
 
