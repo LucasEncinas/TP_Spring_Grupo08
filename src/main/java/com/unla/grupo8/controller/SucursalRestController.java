@@ -9,13 +9,19 @@ import jakarta.validation.Valid;
 import com.unla.grupo8.exception.ExcepcionSucursalNombre;
 import com.unla.grupo8.exception.ExcepcionSucursalEliminar;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -48,7 +54,11 @@ public class SucursalRestController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener una sucursal por su ID")
-    public ResponseEntity<SucursalDTO> getById(
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sucursal encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SucursalDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Sucursal no encontrada", content = @Content(schema = @Schema(example = "{ \"mensaje\": \"No se encontró la sucursal con ID 10\" }")))
+    })
+    public ResponseEntity<?> getById(
             @Parameter(description = "ID de la sucursal a buscar", required = true) @PathVariable Long id) {
 
         Sucursal sucursal = sucursalService.obtenerPorId(id);
@@ -61,7 +71,8 @@ public class SucursalRestController {
                     sucursal.getMail());
             return ResponseEntity.ok(dto);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("mensaje", "No se encontró la sucursal con ID " + id));
         }
     }
 
@@ -103,7 +114,8 @@ public class SucursalRestController {
 
         Sucursal existente = sucursalService.obtenerPorId(id);
         if (existente == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("mensaje", "No se encontró la sucursal con ID " + id));
         }
 
         existente.setNombre(dto.nombre());
