@@ -20,8 +20,11 @@ import com.unla.grupo8.entities.Dia;
 import com.unla.grupo8.service.implementation.DiaService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Controller
 @RequestMapping("/dia")
+@Tag(name = "Dia")
 public class DiaController {
 
     private final DiaService diaService;

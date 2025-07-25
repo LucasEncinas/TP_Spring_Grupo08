@@ -106,18 +106,6 @@
             }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.96);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
         .form-title {
             font-size: 1.8rem;
             font-weight: 600;
@@ -208,7 +196,7 @@
         <a href="/inicio" class="btn btn-outline-start">
             <i class="bi bi-house-door-fill"></i> Inicio
         </a>
-        <a href="/servicios" class="btn btn-outline-view">
+        <a href="#" id="btnHeaderServicios" class="btn btn-outline-view disabled" aria-disabled="true">
             <i class="bi bi-building"></i> Ver Servicios
         </a>
         <a href="/logout" class="btn btn-outline-logout">
@@ -220,8 +208,8 @@
         <div class="card">
             <h2 class="form-title">Nueva Disponibilidad</h2>
 
-            <form action="/disponibilidad/guardar" method="post">
-                <input type="hidden" name="servicioId" th:value="${servicio.idServicio}" />
+            <form id="form-disponibilidad">
+                <input type="hidden" id="servicioId" th:value="${servicio.idServicio}" />
 
                 <div class="mb-3">
                     <label class="form-label">Días:</label>
@@ -238,12 +226,12 @@
 
                 <div class="mb-3">
                     <label class="form-label">Hora Desde:</label>
-                    <input type="time" name="horaDesde" class="form-control" required />
+                    <input type="time" id="horaDesde" class="form-control" required />
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Hora Hasta:</label>
-                    <input type="time" name="horaHasta" class="form-control" required />
+                    <input type="time" id="horaHasta" class="form-control" required />
                 </div>
 
                 <div class="d-grid">
@@ -253,10 +241,8 @@
                 </div>
             </form>
 
+            <div id="mensajeRespuesta" class="alert mt-3 text-center d-none"></div>
 
-            <div th:if="${mensaje}" class="alert alert-success mt-3 text-center">
-                <span th:text="${mensaje}"></span>
-            </div>
         </div>
     </div>
 
@@ -266,7 +252,62 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+        document.getElementById("form-disponibilidad").addEventListener("submit", function (e) {
+            e.preventDefault();
 
+            const servicioId = parseInt(document.getElementById("servicioId").value);
+            const horaDesde = document.getElementById("horaDesde").value;
+            const horaHasta = document.getElementById("horaHasta").value;
+
+            const diasSeleccionados = Array.from(document.querySelectorAll("input[name='dia']:checked"))
+                .map(el => el.value);
+
+            if (diasSeleccionados.length === 0) {
+                mostrarMensaje("Por favor seleccioná al menos un día.", "danger");
+                return;
+            }
+
+            const dto = {
+                servicioId: servicioId,
+                dias: diasSeleccionados,
+                horaDesde: horaDesde,
+                horaHasta: horaHasta
+            };
+
+            fetch("/api/disponibilidades/guardar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dto)
+            })
+                .then(res => res.text().then(msg => ({ status: res.status, msg })))
+                .then(res => {
+                    if (res.status === 201) {
+                        mostrarMensaje(res.msg, "success");
+
+                        const btnHeader = document.getElementById("btnHeaderServicios");
+                        btnHeader.classList.remove("disabled");
+                        btnHeader.removeAttribute("aria-disabled");
+                        btnHeader.setAttribute("href", "/servicios/listaServicios");
+
+                        // Redirección automática opcional (2 segundos):
+                        // setTimeout(() => window.location.href = "/servicios/listaServicios", 2000);
+                    } else {
+                        mostrarMensaje(res.msg, "danger");
+                    }
+                })
+                .catch(err => mostrarMensaje("Error: " + err.message, "danger"));
+        });
+
+        function mostrarMensaje(texto, tipo) {
+            const mensajeDiv = document.getElementById("mensajeRespuesta");
+            mensajeDiv.className = `alert alert-${tipo} mt-3 text-center`;
+            mensajeDiv.textContent = texto;
+            mensajeDiv.classList.remove("d-none");
+        }
+    </script>
+</body>
 
 </html>

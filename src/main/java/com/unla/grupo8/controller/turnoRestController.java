@@ -9,6 +9,9 @@ import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.DisponibilidadService;
 import com.unla.grupo8.service.implementation.EmpleadoService;
 import com.unla.grupo8.service.implementation.ServicioService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Turno", description = "Operaciones relacionadas a la gestión de turnos")
 public class turnoRestController {
 
     @Autowired

@@ -1,6 +1,8 @@
 package com.unla.grupo8.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,18 @@ import com.unla.grupo8.entities.Sucursal;
 import com.unla.grupo8.service.implementation.ServicioService;
 import com.unla.grupo8.service.implementation.SucursalService;
 
-import org.springframework.web.bind.annotation.RequestBody; 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/servicios")
+@Tag(name = "Servicio", description = "Operaciones relacionadas a la gestión de servicios")
 public class ServicioRestController {
 
     @Autowired
@@ -50,61 +60,74 @@ public class ServicioRestController {
                 .toList();
     }
 
-   @PostMapping("/guardar")
-    public ResponseEntity<String> guardarServicio(@RequestBody ServicioCrearDTO dto) {
-    try {
-        // Validar nombre
-        if (dto.nombre() == null || dto.nombre().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("El nombre es obligatorio");
+    @PostMapping("/guardar")
+    @Operation(summary = "Crear o actualizar un servicio", description = "Crea un nuevo servicio o actualiza uno existente. La respuesta incluye el ID del servicio para usarlo en el endpoint de disponibilidades.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Servicio creado/actualizado correctamente", content = @Content(schema = @Schema(example = "{\n  \"mensaje\": \"Servicio creado correctamente. Usá el ID 5 para llamar a /api/disponibilidades/guardar.\",\n  \"idServicio\": 5\n}"))),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content(schema = @Schema(example = "{ \"mensaje\": \"El nombre es obligatorio\" }"))),
+            @ApiResponse(responseCode = "409", description = "Conflicto por nombre duplicado", content = @Content(schema = @Schema(example = "{ \"mensaje\": \"Ya existe un servicio con ese nombre\" }")))
+    })
+    public ResponseEntity<Map<String, Object>> guardarServicio(@RequestBody ServicioCrearDTO dto) {
+        try {
+            // Validar nombre
+            if (dto.nombre() == null || dto.nombre().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("mensaje", "El nombre es obligatorio"));
+            }
+
+            // Validar duración
+            if (dto.duracion() == null || dto.duracion() <= 0) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("mensaje", "La duración debe ser mayor a 0"));
+            }
+
+            // Validar sucursales
+            List<Sucursal> sucursales = dto.idsSucursales().stream()
+                    .map(sucursalService::obtenerPorId)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            if (sucursales.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("mensaje", "No se encontraron sucursales válidas"));
+            }
+
+            // Validar nombre duplicado
+            List<Servicio> existentes = servicioService.obtenerServiciosPorNombre(dto.nombre());
+            boolean duplicado = existentes.stream()
+                    .anyMatch(s -> !Objects.equals(s.getIdServicio(), dto.id()));
+
+            if (!existentes.isEmpty() && duplicado) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("mensaje", "Ya existe un servicio con ese nombre"));
+            }
+
+            // Crear o actualizar entidad Servicio
+            Servicio servicio = (dto.id() != null)
+                    ? servicioService.obtenerPorId(dto.id())
+                    : new Servicio();
+
+            servicio.setNombre(dto.nombre().trim());
+            servicio.setDuracion(dto.duracion());
+            servicio.setSucursales(sucursales);
+
+            servicioService.guardar(servicio);
+
+            // Respuesta con ID y mensaje
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", (dto.id() == null)
+                    ? "Servicio creado correctamente. Usá el ID " + servicio.getIdServicio()
+                            + " para llamar a /api/disponibilidades/guardar."
+                    : "Servicio actualizado correctamente. ID del servicio: "
+                            + servicio.getIdServicio());
+            response.put("idServicio", servicio.getIdServicio());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", "Ocurrió un error al guardar el servicio"));
         }
-
-        // Validar duración
-        if (dto.duracion() == null || dto.duracion() <= 0) {
-            return ResponseEntity.badRequest().body("La duración debe ser mayor a 0");
-        }
-
-        // Validar sucursales
-        List<Sucursal> sucursales = dto.idsSucursales().stream()
-            .map(sucursalService::obtenerPorId)
-            .filter(Objects::nonNull)
-            .toList();  
-
-        if (sucursales.isEmpty()) {
-            return ResponseEntity.badRequest().body("No se encontraron sucursales válidas");
-        }
-
-        // Validar nombre duplicado
-        List<Servicio> existentes = servicioService.obtenerServiciosPorNombre(dto.nombre());
-        boolean duplicado = existentes.stream()
-            .anyMatch(s -> !Objects.equals(s.getIdServicio(), dto.id()));
-
-        if (!existentes.isEmpty() && duplicado) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body("Ya existe un servicio con ese nombre");
-        }
-
-        // Crear o actualizar entidad Servicio
-        Servicio servicio = new Servicio();
-
-        if (dto.id() != null) {
-            servicio.setIdServicio(dto.id());
-        }
-
-        servicio.setNombre(dto.nombre().trim());
-        servicio.setDuracion(dto.duracion());
-        servicio.setSucursales(sucursales);
-
-        servicioService.guardar(servicio);
-
-        String mensaje = (dto.id() == null)
-            ? "Servicio creado correctamente"
-            : "Servicio actualizado correctamente";
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(mensaje);
-
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body("Ocurrió un error al guardar el servicio");
     }
-}
 
 }
