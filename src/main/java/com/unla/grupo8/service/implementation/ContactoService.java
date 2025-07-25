@@ -23,7 +23,7 @@ public class ContactoService {
         this.empleadoRepository = empleadoRepository;
     }
 
-    public void guardarContacto(Contacto contacto) {
+    public Contacto guardarContacto(Contacto contacto) {
     boolean existe = contactoRepository.existsByEmail(contacto.getEmail());
 
     if (existe) {
@@ -43,7 +43,7 @@ public class ContactoService {
         }
     }
 
-    contactoRepository.save(contacto);
+    return contactoRepository.save(contacto);
 }
 
     public List<Contacto> obtenerTodos() {

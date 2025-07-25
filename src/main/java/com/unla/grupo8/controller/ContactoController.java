@@ -56,15 +56,15 @@ public class ContactoController {
     public String verContacto(@PathVariable Long id, Model model) {
         Cliente cliente = clienteService.traerClientePorId(id);
         model.addAttribute("cliente", cliente);
-        model.addAttribute("origen", "cliente"); // 👈 acá
+        model.addAttribute("origen", "cliente"); 
         return "contacto/verContacto";
     }
 
     @GetMapping("/verContactoEmpleado/{id}") // ver contacto empleado
     public String verContactoEmpleado(@PathVariable Long id, Model model) {
         Empleado empleado = empleadoService.traerEmpleadoPorId(id);
-        model.addAttribute("cliente", empleado); // asumís que el fragmento comparte vista
-        model.addAttribute("origen", "empleado"); // 👈 acá
+        model.addAttribute("empleado", empleado); 
+        model.addAttribute("origen", "empleado"); 
         return "contacto/verContacto";
     }
 
@@ -81,7 +81,7 @@ public class ContactoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarContacto(
+    public String guardarContactoFormulario(
             @RequestParam("personaId") Long personaId,
             @RequestParam(value = "id", required = false) Long contactoId,
             @RequestParam("email") String email,

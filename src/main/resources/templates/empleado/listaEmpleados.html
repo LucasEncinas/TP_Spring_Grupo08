@@ -278,6 +278,13 @@
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.06);
             margin-top: auto;
         }
+        .mensaje-overlay {
+        display: flex;
+        justify-content: center;  
+        align-items: center;      
+        height: 100px;           
+        text-align: center;
+        }
     </style>
 </head>
 
@@ -341,13 +348,15 @@
                     <td th:text="${empleado.dni ?: 'Sin dni'}"></td>
                     <td th:text="${#temporals.format(empleado.fechaNacimiento, 'dd/MM/yyyy')}"></td>
                     <td th:text="${empleado.getSucursal().getNombre() ?: 'Sin sucursal'}"></td>
-                    <td>
-                        <a class="btn-ver-contacto"
-                        th:href="@{/contacto/verContactoEmpleado/{id}(id=${empleado.idPersona})}"
-                        title="Ver contacto">
-                        <i class="bi bi-telephone"></i>
-                     </a>
-                    </td>
+                     <td>
+                <a class="btn-ver-contacto"
+             href="#"
+       th:attr="data-contacto=${empleado.contacto != null}, data-id=${empleado.idPersona}"
+       onclick="verContacto(this); return false;"
+       title="Ver contacto">
+       <i class="bi bi-telephone"></i>
+    </a>
+</td>
                     <td>
                         <div class="gestion-group">
                             <a class="btn-gest btn-eliminar" th:href="@{'/empleado/eliminar/' + ${empleado.idPersona}}"
@@ -363,6 +372,42 @@
                 </tr>
             </tbody>
         </table>
+         <div id="contenedorBotonAsociar" class="mensaje-overlay"></div> 
+        <script>
+     function verContacto(element) {
+    const tieneContacto = element.getAttribute('data-contacto') === 'true';
+    const idPersona = element.getAttribute('data-id');
+    const contenedor = document.getElementById('contenedorBotonAsociar');
+
+    
+    contenedor.innerHTML = '';
+
+    if (tieneContacto) {
+        window.location.href = '/contacto/verContactoEmpleado/' + idPersona;
+    } else {
+        
+        const mensaje = document.createElement('div');
+        mensaje.className = 'alert alert-warning d-flex flex-column align-items-start';
+        mensaje.style.marginTop = '10px';
+
+        mensaje.innerHTML = `
+            <strong>⚠️ Esta persona no tiene contacto asignado.</strong>
+            <a href="/contacto/formularioContacto?personaId=${idPersona}"
+               class="btn btn-outline-success mt-2">
+                🧩 Asociar contacto
+            </a>
+        `;
+
+        contenedor.appendChild(mensaje);
+
+      
+        setTimeout(() => {
+            mensaje.classList.add('fade-out');
+            mensaje.addEventListener('animationend', () => mensaje.remove());
+        }, 5000);
+    }
+}
+</script>
         <script>
             window.addEventListener('DOMContentLoaded', () => {
                 const mensajes = document.querySelectorAll('.alert');

@@ -45,6 +45,11 @@ public class ClienteService {
         clienteRepository.delete(cliente);
     }
 
+    public Cliente modificarCliente(Cliente cliente) {
+    return clienteRepository.save(cliente);
+    }
+
+
     public Cliente findByContactoEmail(String email) {
     return clienteRepository.findByContactoEmail(email);
 }

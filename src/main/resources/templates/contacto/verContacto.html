@@ -195,9 +195,17 @@
             </a>
 
 
-            <a th:href="@{/contacto/formularioContacto/{id}(id=${cliente.contacto.id})}" class="header-btn">
-                <i class="bi bi-pencil-square"></i> Editar contacto
-            </a>
+            <a th:if="${origen == 'cliente'}"
+   th:href="@{/contacto/formularioContacto/{id}(id=${cliente.contacto.id})}"
+   class="header-btn">
+    <i class="bi bi-pencil-square"></i> Editar contacto
+</a>
+<a th:if="${origen == 'empleado'}"
+   th:href="@{/contacto/formularioContacto/{id}(id=${empleado.contacto.id})}"
+   class="header-btn">
+    <i class="bi bi-pencil-square"></i> Editar contacto
+</a>
+
 
         </div>
 
@@ -219,10 +227,17 @@
                     <i class="bi bi-person-circle"></i>
                 </div>
 
-                <h2 class="nombre-cliente">
+                
+                <h2 class="nombre-cliente" th:if="${origen == 'cliente'}">
                     <span th:text="${cliente.nombre}">Nombre</span>
                     <span th:text="${cliente.apellido}">Apellido</span>
                 </h2>
+                <h2 class="nombre-empleado" th:if="${origen == 'empleado'}">
+                    <span th:text="${empleado.nombre}">Nombre</span>
+                    <span th:text="${empleado.apellido}">Apellido</span>
+                </h2>
+
+
             </div>
 
             <div class="card-body text-start">
@@ -231,21 +246,29 @@
                     <label class="form-label d-block mb-1">
                         <i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong>
                     </label>
-                    <div class="dato-vista" th:text="${cliente.contacto.email}">Sin email</div>
+                    
+                    <div class="dato-vista" th:if="${origen == 'cliente'}" th:text="${cliente.contacto.email}">Sin email</div>
+                    <div class="dato-vista" th:if="${origen == 'empleado'}" th:text="${empleado.contacto.email}">Sin email</div>
+
                 </div>
 
                 <div class="mb-3 dato-bloque">
                     <label class="form-label d-block mb-1">
                         <i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Dirección:</strong>
                     </label>
-                    <div class="dato-vista" th:text="${cliente.contacto.direccion}">Sin dirección</div>
+                    <div class="dato-vista" th:if="${origen == 'cliente'}" th:text="${cliente.contacto.direccion}">Sin dirección</div>
+                    <div class="dato-vista" th:if="${origen == 'empleado'}" th:text="${empleado.contacto.direccion}">Sin dirección</div>
+
                 </div>
 
                 <div class="mb-3 dato-bloque">
                     <label class="form-label d-block mb-1">
                         <i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>Teléfono:</strong>
                     </label>
-                    <div class="dato-vista" th:text="${cliente.contacto.telefono}">Sin teléfono</div>
+                    <div class="dato-vista" th:if="${origen == 'cliente'}" th:text="${cliente.contacto.telefono}">Sin teléfono</div>
+                    <div class="dato-vista" th:if="${origen == 'empleado'}" th:text="${empleado.contacto.telefono}">Sin teléfono</div>
+                </div>
+
                 </div>
             </div>
         </div>
