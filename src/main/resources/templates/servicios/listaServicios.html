@@ -10,9 +10,9 @@
     <style>
         body {
             background: linear-gradient(to right, #e4e9ff, #f0f3ff);
-            min-height: 100vh;
-            margin: 0;
             font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -44,10 +44,10 @@
             padding: 6px 12px;
             border-radius: 6px;
             text-decoration: none;
-            transition: background-color 0.4s ease, transform 0.2s ease;
             display: flex;
             align-items: center;
             gap: 5px;
+            transition: background-color 0.4s ease, transform 0.2s ease;
         }
 
         .header-btn:hover {
@@ -56,44 +56,33 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
-        .header-btn:first-of-type {
-            left: 20px;
-        }
-
-        .header-btn:last-of-type {
-            right: 20px;
-        }
-
         .btn-container {
             width: 100%;
-            padding-left: 0;
-            margin-bottom: 10px;
             max-width: 850px;
-            margin: 0 auto 10px auto;
+            margin: 0 auto 10px;
+            padding-left: 0;
         }
-
 
         .btn-agregar {
             background-color: #3345d5;
-            border: none;
             color: white;
+            border: none;
+            padding: 8px 14px;
             margin-bottom: 15px;
             font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(51, 69, 213, 0.2);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
             font-size: 0.95rem;
+            border-radius: 6px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            box-shadow: 0 4px 8px rgba(51, 69, 213, 0.2);
             text-decoration: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn-agregar:hover {
             background-color: #556df5;
             box-shadow: 0 8px 18px rgba(85, 109, 245, 0.5);
-            text-decoration: none;
             animation: bounce 0.35s;
         }
 
@@ -114,22 +103,9 @@
             margin: 30px auto 80px auto;
             padding: 0 15px;
             flex-grow: 1;
-        }
-
-        @keyframes fadeOutUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-        }
-
-        .alert.fade-out {
-            animation: fadeOutUp 0.8s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .alert {
@@ -145,7 +121,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: -12px;
         }
 
         .alert-success {
@@ -160,18 +135,34 @@
             border: 1px solid #ffbaba;
         }
 
+        .alert.fade-out {
+            animation: fadeOutUp 0.8s forwards;
+        }
+
+        @keyframes fadeOutUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
         table {
             max-width: 850px;
             width: 100%;
+            border-collapse: collapse;
+            border-radius: 14px;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.6s ease forwards;
             animation-delay: 0.15s;
-            border-collapse: collapse;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
-            background-color: white;
         }
 
         @keyframes fadeInUp {
@@ -180,7 +171,6 @@
                 transform: translateY(0);
             }
         }
-
 
         thead tr {
             background: linear-gradient(to right, #5a72f2, #768af7);
@@ -192,21 +182,8 @@
         thead th {
             padding: 16px 20px;
             text-align: center;
-        }
-
-        th {
-            background-color: #556df5;
-            color: white;
-            font-weight: 600;
             font-size: 15px;
             letter-spacing: 0.5px;
-            text-align: center;
-        }
-
-
-        thead th:nth-child(6),
-        tbody td:nth-child(6) {
-            min-width: 120px;
         }
 
         tbody td {
@@ -226,6 +203,12 @@
             transition: background-color 0.25s ease;
         }
 
+        .gestion-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
         .btn-gest {
             border-radius: 10px;
             font-weight: 600;
@@ -236,9 +219,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            user-select: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn-modificar {
@@ -263,12 +245,6 @@
             box-shadow: 0 6px 14px rgba(176, 42, 55, 0.5);
         }
 
-        .gestion-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
         footer {
             background-color: #f1f3f6;
             text-align: center;
@@ -279,51 +255,33 @@
             margin-top: auto;
         }
 
-        .container-main {
-            max-width: 100%;
-            margin: 30px auto 80px auto;
-            padding: 0 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .toast-mensaje {
-            position: fixed;
-            top: 90px;
-            right: 32px;
-            background-color: #d1f7d6;
-            color: #207d3a;
-            border: 1px solid #a5e2af;
-            padding: 10px 16px;
-            border-radius: 8px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: fadeIn 0.3s ease, fadeOut 0.8s 3.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .btn-agregar {
+                font-size: 0.9rem;
             }
-        }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: translateY(-8px);
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                font-size: 0.85rem;
+            }
+
+            .alert {
+                top: 90px;
+                right: 20px;
+            }
+
+            .btn-gest {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -367,7 +325,7 @@
                     <i class="bi bi-plus-circle"></i> Agregar Servicio
                 </a>
             </div>
-            <!-- Tabla de servicios -->
+
             <table>
                 <thead>
                     <tr>
@@ -377,33 +335,10 @@
                         <th>Gestión</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="servicio : ${servicios}">
-                        <td th:text="${servicio.nombre}">Nombre</td>
-                        <td th:text="${servicio.duracion}">Duración</td>
-                        <td>
-                            <span th:each="sucursal, iterStat : ${servicio.sucursales}">
-                                <span th:text="${sucursal.nombre}"></span><span th:if="${!iterStat.last}">, </span>
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="gestion-group">
-                                <a class="btn-gest btn-eliminar"
-                                    th:href="@{'/servicios/eliminar/' + ${servicio.idServicio}}"
-                                    onclick="return confirm('¿Desea eliminar este servicio?')" title="Eliminar">
-                                    <i class="bi bi-trash3-fill"></i>
-                                </a>
-                                <a class="btn-gest btn-modificar"
-                                    th:href="@{'/servicios/editar/' + ${servicio.idServicio}}" title="Modificar">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </a>
-                            </div>
-                        </td>
-
-                    </tr>
+                <tbody id="tabla-servicios">
                 </tbody>
             </table>
+
             <script>
                 window.addEventListener('DOMContentLoaded', () => {
                     const mensajes = document.querySelectorAll('.alert');
@@ -413,8 +348,47 @@
                             msg.addEventListener('animationend', () => msg.remove());
                         }, 4000);
                     });
+
+                    // Cargar servicios desde API REST
+                    fetch('/api/servicios/listar')
+                        .then(response => response.json())
+                        .then(servicios => {
+                            const tabla = document.getElementById('tabla-servicios');
+                            tabla.innerHTML = '';
+
+                            servicios.forEach(servicio => {
+                                const sucursales = servicio.nombresSucursales.join(', ');
+
+
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+            <td>${servicio.nombre}</td>
+            <td>${servicio.duracion}</td>
+            <td>${sucursales}</td>
+            <td>
+              <div class="gestion-group">
+                <a class="btn-gest btn-eliminar"
+                   href="/servicios/eliminar/${servicio.id}"
+                   onclick="return confirm('¿Desea eliminar este servicio?')"
+                   title="Eliminar">
+                  <i class="bi bi-trash3-fill"></i>
+                </a>
+                <a class="btn-gest btn-modificar"
+                   href="/servicios/editar/${servicio.id}"
+                   title="Modificar">
+                  <i class="bi bi-pencil-fill"></i>
+                </a>
+              </div>
+            </td>
+          `;
+                                tabla.appendChild(row);
+                            });
+                        })
+                        .catch(error => console.error('Error al cargar servicios:', error));
                 });
             </script>
+
+
 
     </div>
 

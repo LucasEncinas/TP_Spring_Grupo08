@@ -14,7 +14,7 @@ public interface ServicioRepository extends JpaRepository<Servicio, Long> {
 
     List<Servicio> findByDuracion(Integer duracion);
 
-    @Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.sucursales")
+    @Query("SELECT s FROM Servicio s JOIN FETCH s.sucursales")
     List<Servicio> findAllWithSucursales();
 
     @Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.sucursales WHERE s.idServicio = :id")
