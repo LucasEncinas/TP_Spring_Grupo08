@@ -27,10 +27,10 @@ public class Sucursal {
     @Column(name = "direccion", nullable = false)
     private String direccion;
 
-    @Column(name = "telefono", unique = true, nullable = false, length = 45)
+    @Column(name = "telefono", nullable = false, length = 45)
     private String telefono;
 
-    @Column(name = "mail", unique = true, nullable = false, length = 45)
+    @Column(name = "mail", nullable = false, length = 45)
     private String mail;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)

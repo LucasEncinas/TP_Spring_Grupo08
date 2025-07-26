@@ -60,24 +60,4 @@ public class DiaController {
             return ResponseEntity.status(500).body(response);
         }
     }
-
-    @GetMapping("/cargados/{idSucursal}")
-    @ResponseBody
-    public ResponseEntity<List<Map<String, Object>>> obtenerDiasCargados(@PathVariable("idSucursal") Long idSucursal) {
-        List<Dia> dias = diaService.obtenerDiasPorSucursal(idSucursal);
-        List<Map<String, Object>> eventos = new ArrayList<>();
-
-        for (Dia dia : dias) {
-            Map<String, Object> evento = new HashMap<>();
-            evento.put("id", dia.getId()); // ID del dia
-            evento.put("data.id", dia.getId()); // ID del evento
-            evento.put("title", "Día cargado"); // titulo
-            evento.put("start", dia.getFecha().toString()); // Formato YYYY-MM-DD
-            evento.put("color", "#4CAF50");
-            eventos.add(evento);
-        }
-
-        return ResponseEntity.ok(eventos);
-    }
-
 }

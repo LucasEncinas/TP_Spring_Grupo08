@@ -29,7 +29,7 @@ public class Persona {
     @Column(name="dni", unique=true, nullable=false, length=15)
     private String dni;
 
-    @Column(name="fecha_nacimiento", unique = true, nullable=false)
+    @Column(name="fecha_nacimiento", nullable=false)
     private LocalDate fechaNacimiento;
 
     @OneToOne(cascade = CascadeType.ALL)

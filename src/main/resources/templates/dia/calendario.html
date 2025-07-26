@@ -337,7 +337,7 @@
             });
 
             // Cargamos eventos desde el backend y los transformamos
-            fetch('/dia/cargados/' + idSucursal)
+            fetch('/api/dia/cargados/' + idSucursal)
                 .then(response => response.json())
                 .then(data => {
                     const events = data.map(event => ({

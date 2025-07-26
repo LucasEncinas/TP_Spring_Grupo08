@@ -1,5 +1,6 @@
 package com.unla.grupo8.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,30 @@ public class DiaRestController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/cargados/{idSucursal}")
+    @Operation(summary = "Obtiene días cargados para un calendario", description = "Devuelve una lista de días cargados para una sucursal específica.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Días cargados obtenidos exitosamente", content = @Content(schema = @Schema(implementation = DiaDTO.class))),
+    })
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> obtenerDiasCargados(
+            @Parameter(description = "ID de la sucursal", required = true) @PathVariable("idSucursal") Long idSucursal) {
+        List<Dia> dias = diaService.obtenerDiasPorSucursal(idSucursal);
+        List<Map<String, Object>> eventos = new ArrayList<>();
+
+        for (Dia dia : dias) {
+            Map<String, Object> evento = new HashMap<>();
+            evento.put("id", dia.getId()); // ID del dia
+            evento.put("data.id", dia.getId()); // ID del evento
+            evento.put("title", "Día cargado"); // titulo
+            evento.put("start", dia.getFecha().toString()); // Formato YYYY-MM-DD
+            evento.put("color", "#4CAF50");
+            eventos.add(evento);
+        }
+
+        return ResponseEntity.ok(eventos);
     }
 
 }
